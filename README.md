@@ -7,7 +7,7 @@ This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a
     <li>Creating <b>OWL-DL/SWRL reasoners</b> with <b>forward-chaining</b> inference materialization capabilities</li>
 </ul>
 
-Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.4.3/RDFSharp.Semantics-3.4.3.pdf">here</a>
+Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.4.4/RDFSharp.Semantics-3.4.4.pdf">here</a>
 
 <hr/>
 A set of <a href="https://github.com/mdesalvo/RDFSharp.Semantics.Extensions">extensions</a> is also available for modeling SKOS taxonomies, GeoSPARQL geographical entities and OWL-Time temporal entities. All of these make RDFSharp an amazing platform suited for successfully realizing every kind of idea.
