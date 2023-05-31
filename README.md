@@ -10,4 +10,4 @@ This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a
 Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.4.4/RDFSharp.Semantics-3.4.4.pdf">here</a>
 
 <hr/>
-A set of <a href="https://github.com/mdesalvo/RDFSharp.Semantics.Extensions">extensions</a> is available for modeling SKOS taxonomies, GeoSPARQL geographical entities and OWL-Time temporal entities. All of these make RDFSharp an amazing platform suited for successfully realizing every kind of idea.
+A set of <a href="https://github.com/mdesalvo/RDFSharp.Semantics.Extensions">extensions</a> is available for modeling SKOS taxonomies, GeoSPARQL geographical features and OWL-Time temporal features. All of these make RDFSharp an amazing platform suited for successfully realizing every kind of idea!
