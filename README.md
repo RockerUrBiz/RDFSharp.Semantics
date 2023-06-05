@@ -1,4 +1,4 @@
-# RDFSharp.Semantics [![NuGet Badge](https://buildstats.info/nuget/RDFSharp.Semantics?includePreReleases=true)](https://www.nuget.org/packages/RDFSharp.Semantics) [![codecov](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics/branch/master/graph/badge.svg?token=txVQYAJazG)](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics)
+# RDFSharp.Semantics [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![NuGet Badge](https://buildstats.info/nuget/RDFSharp.Semantics?includePreReleases=true)](https://www.nuget.org/packages/RDFSharp.Semantics) [![codecov](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics/branch/master/graph/badge.svg?token=txVQYAJazG)](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics)
 
 This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> layer expressively suited for:
 <ul>
