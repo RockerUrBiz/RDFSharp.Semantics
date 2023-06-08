@@ -14,8 +14,24 @@
    limitations under the License.
 */
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-[assembly: ComVisible(false)]
-[assembly: Guid("10E8013A-CE1C-4641-B1BF-27AB111A54D6")]
-[assembly: InternalsVisibleTo("RDFSharp.Semantics.Test")]
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RDFSharp.Model;
+using System;
+
+namespace RDFSharp.Semantics.Extensions.TIME.Test
+{
+    [TestClass]
+    public class TIMEEntityTest
+    {
+        #region Tests
+        [TestMethod]
+        public void ShouldCreateEntity()
+        {
+            TIMEEntity timeEntity = new TIMEEntity(new RDFResource("ex:timeEntity"));
+
+            Assert.IsNotNull(timeEntity);
+            Assert.IsTrue(timeEntity.URI.Equals(new Uri("ex:timeEntity")));
+        }
+        #endregion
+    }
+}

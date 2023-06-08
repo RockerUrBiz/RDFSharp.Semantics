@@ -66,33 +66,6 @@ namespace RDFSharp.Semantics.Test
                 Assert.IsTrue(mex.InnerException.Message.Equals("This is the inner exception!"));
             }
         }
-
-        [TestMethod]
-        public void ShouldSerializeSemanticsException()
-        {
-            byte[] SerializeToBytes(OWLSemanticsException e)
-            {
-                using (MemoryStream stream = new MemoryStream())
-                { 
-                    new BinaryFormatter().Serialize(stream, e);
-                    return stream.GetBuffer();
-                }
-            }
-
-            OWLSemanticsException DeserializeFromBytes(byte[] data)
-            {
-                using (MemoryStream stream = new MemoryStream(data))
-                    return (OWLSemanticsException)new BinaryFormatter().Deserialize(stream);
-            }
-
-            OWLSemanticsException mex = new OWLSemanticsException("OWLSemanticsException is serializable");
-            byte[] bytes = SerializeToBytes(mex);
-            Assert.IsTrue(bytes.Length > 0);
-
-            OWLSemanticsException result = DeserializeFromBytes(bytes);
-            Assert.IsTrue(result.Message.Equals("OWLSemanticsException is serializable"));
-            Assert.IsNull(result.InnerException);
-        }
         #endregion
     }
 }

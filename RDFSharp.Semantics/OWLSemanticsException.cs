@@ -15,7 +15,6 @@
 */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace RDFSharp.Semantics
 {
@@ -40,11 +39,6 @@ namespace RDFSharp.Semantics
         /// Basic ctor to throw an OWLSemanticsException with message and inner exception
         /// </summary>
         public OWLSemanticsException(string message, Exception innerException) : base(message, innerException) { }
-
-        /// <summary>
-        /// Basic ctor to support serialization of a remotely thrown OWLSemanticsException
-        /// </summary>
-        protected OWLSemanticsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
         #endregion
     }
 }

@@ -14,8 +14,21 @@
    limitations under the License.
 */
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-[assembly: ComVisible(false)]
-[assembly: Guid("10E8013A-CE1C-4641-B1BF-27AB111A54D6")]
-[assembly: InternalsVisibleTo("RDFSharp.Semantics.Test")]
+using RDFSharp.Model;
+
+namespace RDFSharp.Semantics.Extensions.TIME
+{
+    /// <summary>
+    /// Represents the definition of a reference system for expressing temporal extents, coordinates and ordinals.
+    /// </summary>
+    public class TIMEReferenceSystem : RDFResource
+    {
+        #region Ctors
+        /// <summary>
+        /// Builds a generic TRS with the given URI
+        /// </summary>
+        internal TIMEReferenceSystem(RDFResource trsUri)
+            : base(trsUri?.ToString()) { }
+        #endregion
+    }
+}

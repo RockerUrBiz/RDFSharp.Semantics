@@ -1,12 +1,9 @@
 ﻿/*
    Copyright 2012-2023 Marco De Salvo
-
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-
      http://www.apache.org/licenses/LICENSE-2.0
-
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +11,21 @@
    limitations under the License.
 */
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-[assembly: ComVisible(false)]
-[assembly: Guid("10E8013A-CE1C-4641-B1BF-27AB111A54D6")]
-[assembly: InternalsVisibleTo("RDFSharp.Semantics.Test")]
+using RDFSharp.Model;
+
+namespace RDFSharp.Semantics.Extensions.TIME
+{
+    /// <summary>
+    /// Represents the description of a temporal extension in terms of an instant or an interval
+    /// </summary>
+    public class TIMEEntity : RDFResource
+    {
+        #region Ctors
+        /// <summary>
+        /// Builds a time entity with given Uri
+        /// </summary>
+        internal TIMEEntity(RDFResource timeEntityUri)
+            : base(timeEntityUri?.ToString()) { }
+        #endregion
+    }
+}
