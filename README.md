@@ -1,4 +1,4 @@
-# RDFSharp.Semantics [![NuGet Badge](https://buildstats.info/nuget/RDFSharp.Semantics?includePreReleases=true)](https://www.nuget.org/packages/RDFSharp.Semantics) [![codecov](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics/branch/master/graph/badge.svg?token=txVQYAJazG)](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics)
+# RDFSharp.Semantics [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![NuGet Badge](https://buildstats.info/nuget/RDFSharp.Semantics?includePreReleases=true)](https://www.nuget.org/packages/RDFSharp.Semantics) [![codecov](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics/branch/master/graph/badge.svg?token=txVQYAJazG)](https://codecov.io/gh/mdesalvo/RDFSharp.Semantics)
 
 This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> layer expressively suited for:
 <ul>
@@ -10,4 +10,4 @@ This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a
 Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.4.4/RDFSharp.Semantics-3.4.4.pdf">here</a>
 
 <hr/>
-A set of <a href="https://github.com/mdesalvo/RDFSharp.Semantics.Extensions">extensions</a> is also available for modeling SKOS taxonomies, GeoSPARQL geographical entities and OWL-Time temporal entities. All of these make RDFSharp an amazing platform suited for successfully realizing every kind of idea.
+A set of <a href="https://github.com/mdesalvo/RDFSharp.Semantics.Extensions">extensions</a> is available for modeling SKOS schemes, GeoSPARQL geographical features and OWL-Time temporal features. All of these make RDFSharp an amazing platform for successfully realizing every kind of idea!
