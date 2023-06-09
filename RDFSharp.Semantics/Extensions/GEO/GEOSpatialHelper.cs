@@ -28,7 +28,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
     /// <summary>
     /// GEOSpatialHelper represents an helper for spatial analysis on features
     /// </summary>
-    public class GEOSpatialHelper
+    public static class GEOSpatialHelper
     {
         #region Properties
         /// <summary>
@@ -50,19 +50,6 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// Writer for GML spatial representation
         /// </summary>
         internal static GMLWriter GMLWriter = new GMLWriter();
-
-        /// <summary>
-        /// The wrapped ontology on which performing spatial analysis
-        /// </summary>
-        internal GEOOntology Ontology { get; set; }
-        #endregion
-
-        #region Ctors
-        /// <summary>
-        /// Default-ctor to build a geospatial helper on the given ontology
-        /// </summary>
-        internal GEOSpatialHelper(GEOOntology ontology)
-            => Ontology = ontology;
         #endregion
 
         #region Methods
@@ -71,22 +58,24 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the distance, expressed in meters, between the given features
         /// </summary>
-        public double? GetDistanceBetweenFeatures(RDFResource fromFeatureUri, RDFResource toFeatureUri)
+        public static double? GetDistanceBetweenFeatures(this OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
         {
+            #region Guards
             if (fromFeatureUri == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
             if (toFeatureUri == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"toFeatureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of "From" feature
-            (Geometry,Geometry) defaultGeometryOfFromFeature = Ontology.GetDefaultGeometryOfFeature(fromFeatureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFromFeature = Ontology.GetSecondaryGeometriesOfFeature(fromFeatureUri);
+            (Geometry,Geometry) defaultGeometryOfFromFeature = ontology.GetDefaultGeometryOfFeature(fromFeatureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFromFeature = ontology.GetSecondaryGeometriesOfFeature(fromFeatureUri);
             if (defaultGeometryOfFromFeature.Item1 != null && defaultGeometryOfFromFeature.Item2 != null)
                 secondaryGeometriesOfFromFeature.Add(defaultGeometryOfFromFeature);
 
             //Collect geometries of "To" feature
-            (Geometry,Geometry) defaultGeometryOfToFeature = Ontology.GetDefaultGeometryOfFeature(toFeatureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfToFeature = Ontology.GetSecondaryGeometriesOfFeature(toFeatureUri);
+            (Geometry,Geometry) defaultGeometryOfToFeature = ontology.GetDefaultGeometryOfFeature(toFeatureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfToFeature = ontology.GetSecondaryGeometriesOfFeature(toFeatureUri);
             if (defaultGeometryOfToFeature.Item1 != null && defaultGeometryOfToFeature.Item2 != null)
                 secondaryGeometriesOfToFeature.Add(defaultGeometryOfToFeature);
 
@@ -107,25 +96,27 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the distance, expressed in meters, between the given feature and the given WKT feature
         /// </summary>
-        public double? GetDistanceBetweenFeatures(RDFResource fromFeatureUri, RDFTypedLiteral toFeatureWKT)
+        public static double? GetDistanceBetweenFeatures(this OWLOntology ontology, RDFResource fromFeatureUri, RDFTypedLiteral toFeatureWKT)
         {
+            #region Guards
             if (fromFeatureUri == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
             if (toFeatureWKT == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"toFeatureWKT\" parameter is null");
             if (!toFeatureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get distance between features because given \"toFeatureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Collect geometries of "From" feature
-            (Geometry, Geometry) defaultGeometryOfFromFeature = Ontology.GetDefaultGeometryOfFeature(fromFeatureUri);
-            List<(Geometry, Geometry)> secondaryGeometriesOfFromFeature = Ontology.GetSecondaryGeometriesOfFeature(fromFeatureUri);
+            (Geometry, Geometry) defaultGeometryOfFromFeature = ontology.GetDefaultGeometryOfFeature(fromFeatureUri);
+            List<(Geometry, Geometry)> secondaryGeometriesOfFromFeature = ontology.GetSecondaryGeometriesOfFeature(fromFeatureUri);
             if (defaultGeometryOfFromFeature.Item1 != null && defaultGeometryOfFromFeature.Item2 != null)
                 secondaryGeometriesOfFromFeature.Add(defaultGeometryOfFromFeature);
 
             //Transform "To" feature into geometry
             Geometry wgs84GeometryTo = WKTReader.Read(toFeatureWKT.Value);
             wgs84GeometryTo.SRID = 4326;
-            Geometry lazGeometryTo = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
+            Geometry lazGeometryTo = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
 
             //Perform spatial analysis between collected geometries (calibrate minimum distance)
             double? featuresDistance = double.MaxValue;
@@ -142,8 +133,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the distance, expressed in meters, between the given WKT features
         /// </summary>
-        public double GetDistanceBetweenFeatures(RDFTypedLiteral fromFeatureWKT, RDFTypedLiteral toFeatureWKT)
+        public static double GetDistanceBetweenFeatures(RDFTypedLiteral fromFeatureWKT, RDFTypedLiteral toFeatureWKT)
         {
+            #region Guards
             if (fromFeatureWKT == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"fromFeatureWKT\" parameter is null");
             if (!fromFeatureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
@@ -152,16 +144,17 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot get distance between features because given \"toFeatureWKT\" parameter is null");
             if (!toFeatureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get distance between features because given \"toFeatureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform "From" feature into geometry
             Geometry wgs84GeometryFrom = WKTReader.Read(fromFeatureWKT.Value);
             wgs84GeometryFrom.SRID = 4326;
-            Geometry lazGeometryFrom = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryFrom);
+            Geometry lazGeometryFrom = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryFrom);
 
             //Transform "To" feature into geometry
             Geometry wgs84GeometryTo = WKTReader.Read(toFeatureWKT.Value);
             wgs84GeometryTo.SRID = 4326;
-            Geometry lazGeometryTo = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
+            Geometry lazGeometryTo = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
 
             //Perform spatial analysis between geometries
             return lazGeometryFrom.Distance(lazGeometryTo);
@@ -172,14 +165,16 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the length, expressed in meters, of the given feature (the perimeter in case of area)
         /// </summary>
-        public double? GetLengthOfFeature(RDFResource featureUri)
+        public static double? GetLengthOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get length of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
@@ -198,17 +193,19 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the length, expressed in meters, of the given WKT feature (the perimeter in case of area)
         /// </summary>
-        public double GetLengthOfFeature(RDFTypedLiteral featureWKT)
+        public static double GetLengthOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get length of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get length of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             return lazGeometry.Length;
         }
@@ -216,14 +213,16 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the area, expressed in square meters, of the given feature
         /// </summary>
-        public double? GetAreaOfFeature(RDFResource featureUri)
+        public static double? GetAreaOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get area of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry, Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry, Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
@@ -242,17 +241,19 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the area, expressed in square meters, of the given WKT feature
         /// </summary>
-        public double GetAreaOfFeature(RDFTypedLiteral featureWKT)
+        public static double GetAreaOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get area of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get area of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             return lazGeometry.Area;
         }
@@ -262,27 +263,29 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the centroid of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetCentroidOfFeature(RDFResource featureUri)
+        public static RDFTypedLiteral GetCentroidOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get centroid of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Analyze default geometry of feature
-            (Geometry, Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
+            (Geometry, Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
             {
                 Geometry centroidGeometryAZ = defaultGeometryOfFeature.Item2.Centroid;
-                Geometry centroidGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
                 string wktCentroidGeometryWGS84 = WKTWriter.Write(centroidGeometryWGS84);
                 return new RDFTypedLiteral(wktCentroidGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature: if any, just work on the first available
-            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (secondaryGeometriesOfFeature.Any())
             {
                 Geometry centroidGeometryAZ = secondaryGeometriesOfFeature.First().Item2.Centroid;
-                Geometry centroidGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
                 string wktCentroidGeometryWGS84 = WKTWriter.Write(centroidGeometryWGS84);
                 return new RDFTypedLiteral(wktCentroidGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -293,21 +296,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the centroid of the given WKT feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetCentroidOfFeature(RDFTypedLiteral featureWKT)
+        public static RDFTypedLiteral GetCentroidOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get centroid of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get centroid of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
             Geometry centroidGeometryAZ = lazGeometry.Centroid;
-            Geometry centroidGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+            Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
             string wktCentroidGeometryWGS84 = WKTWriter.Write(centroidGeometryWGS84);
             return new RDFTypedLiteral(wktCentroidGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
         }
@@ -317,28 +322,30 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the boundaries of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetBoundaryOfFeature(RDFResource featureUri)
+        public static RDFTypedLiteral GetBoundaryOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get boundary of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Analyze default geometry of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
             {
                 Geometry boundaryGeometryAZ = defaultGeometryOfFeature.Item2.Boundary;
-                Geometry boundaryGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+                Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
                 string wktBoundaryGeometryWGS84 = WKTWriter.Write(boundaryGeometryWGS84)
                                                     .Replace("LINEARRING", "LINESTRING");
                 return new RDFTypedLiteral(wktBoundaryGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature: if any, just work on the first available
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (secondaryGeometriesOfFeature.Any())
             {
                 Geometry boundaryGeometryAZ = secondaryGeometriesOfFeature.First().Item2.Boundary;
-                Geometry boundaryGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+                Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
                 string wktBoundaryGeometryWGS84 = WKTWriter.Write(boundaryGeometryWGS84)
                                                     .Replace("LINEARRING", "LINESTRING");
                 return new RDFTypedLiteral(wktBoundaryGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
@@ -350,21 +357,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the boundaries of the given WKT feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetBoundaryOfFeature(RDFTypedLiteral featureWKT)
+        public static RDFTypedLiteral GetBoundaryOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get boundary of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get boundary of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
             Geometry boundaryGeometryAZ = lazGeometry.Boundary;
-            Geometry boundaryGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+            Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
             string wktBoundaryGeometryWGS84 = WKTWriter.Write(boundaryGeometryWGS84)
                                                 .Replace("LINEARRING", "LINESTRING");
             return new RDFTypedLiteral(wktBoundaryGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
@@ -375,27 +384,29 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates a buffer of the given meters on the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetBufferAroundFeature(RDFResource featureUri, double bufferMeters)
+        public static RDFTypedLiteral GetBufferAroundFeature(this OWLOntology ontology, RDFResource featureUri, double bufferMeters)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get buffer around feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Analyze default geometry of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
             {
                 Geometry bufferGeometryAZ = defaultGeometryOfFeature.Item2.Buffer(bufferMeters);
-                Geometry bufferGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
                 string wktBufferGeometryWGS84 = WKTWriter.Write(bufferGeometryWGS84);
                 return new RDFTypedLiteral(wktBufferGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature: if any, just work on the first available
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (secondaryGeometriesOfFeature.Any())
             {
                 Geometry bufferGeometryAZ = secondaryGeometriesOfFeature.First().Item2.Buffer(bufferMeters);
-                Geometry bufferGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
                 string wktBufferGeometryWGS84 = WKTWriter.Write(bufferGeometryWGS84);
                 return new RDFTypedLiteral(wktBufferGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -406,21 +417,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates a buffer of the given meters on the given WKT feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetBufferAroundFeature(RDFTypedLiteral featureWKT, double bufferMeters)
+        public static RDFTypedLiteral GetBufferAroundFeature(RDFTypedLiteral featureWKT, double bufferMeters)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get buffer around feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get buffer around feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
             Geometry bufferGeometryAZ = lazGeometry.Buffer(bufferMeters);
-            Geometry bufferGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+            Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
             string wktBufferGeometryWGS84 = WKTWriter.Write(bufferGeometryWGS84);
             return new RDFTypedLiteral(wktBufferGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
         }
@@ -430,27 +443,29 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the ConvexHull (smallest convex polygon containing) of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetConvexHullOfFeature(RDFResource featureUri)
+        public static RDFTypedLiteral GetConvexHullOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get ConvexHull of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Analyze default geometry of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
             {
                 Geometry convexHullGeometryAZ = defaultGeometryOfFeature.Item2.ConvexHull();
-                Geometry convexHullGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
+                Geometry convexHullGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
                 string wktConvexHullGeometryWGS84 = WKTWriter.Write(convexHullGeometryWGS84);
                 return new RDFTypedLiteral(wktConvexHullGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature: if any, just work on the first available
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (secondaryGeometriesOfFeature.Any())
             {
                 Geometry convexHullGeometryAZ = secondaryGeometriesOfFeature.First().Item2.ConvexHull();
-                Geometry convexHullGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
+                Geometry convexHullGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
                 string wktConvexHullGeometryWGS84 = WKTWriter.Write(convexHullGeometryWGS84);
                 return new RDFTypedLiteral(wktConvexHullGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -461,21 +476,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the ConvexHull (smallest convex polygon containing) of the given WKT feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetConvexHullOfFeature(RDFTypedLiteral featureWKT)
+        public static RDFTypedLiteral GetConvexHullOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get ConvexHull of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get convexHull of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
             Geometry convexHullGeometryAZ = lazGeometry.ConvexHull();
-            Geometry convexHullGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
+            Geometry convexHullGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(convexHullGeometryAZ);
             string wktConvexHullGeometryWGS84 = WKTWriter.Write(convexHullGeometryWGS84);
             return new RDFTypedLiteral(wktConvexHullGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
         }
@@ -485,27 +502,29 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the envelope (bounding-box) of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetEnvelopeOfFeature(RDFResource featureUri)
+        public static RDFTypedLiteral GetEnvelopeOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get envelope of feature because given \"featureUri\" parameter is null");
+            #endregion
 
             //Analyze default geometry of feature
-            (Geometry, Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
+            (Geometry, Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
             {
                 Geometry envelopeGeometryAZ = defaultGeometryOfFeature.Item2.Envelope;
-                Geometry envelopeGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
+                Geometry envelopeGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
                 string wktEnvelopeGeometryWGS84 = WKTWriter.Write(envelopeGeometryWGS84);
                 return new RDFTypedLiteral(wktEnvelopeGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature: if any, just work on the first available
-            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            List<(Geometry, Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (secondaryGeometriesOfFeature.Any())
             {
                 Geometry envelopeGeometryAZ = secondaryGeometriesOfFeature.First().Item2.Envelope;
-                Geometry envelopeGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
+                Geometry envelopeGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
                 string wktEnvelopeGeometryWGS84 = WKTWriter.Write(envelopeGeometryWGS84);
                 return new RDFTypedLiteral(wktEnvelopeGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -516,38 +535,41 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the envelope (bounding-box) of the given WKT feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public RDFTypedLiteral GetEnvelopeOfFeature(RDFTypedLiteral featureWKT)
+        public static RDFTypedLiteral GetEnvelopeOfFeature(RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get envelope of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get envelope of feature because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
             Geometry envelopeGeometryAZ = lazGeometry.Envelope;
-            Geometry envelopeGeometryWGS84 = GEOConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
+            Geometry envelopeGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(envelopeGeometryAZ);
             string wktEnvelopeGeometryWGS84 = WKTWriter.Write(envelopeGeometryWGS84);
             return new RDFTypedLiteral(wktEnvelopeGeometryWGS84, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
         }
-
         #endregion
 
         #region Proximity
         /// <summary>
         /// Gets the features near the given feature within a radius of given meters 
         /// </summary>
-        public List<RDFResource> GetFeaturesNearBy(RDFResource featureUri, double radiusMeters)
+        public static List<RDFResource> GetFeaturesNearBy(this OWLOntology ontology, RDFResource featureUri, double radiusMeters)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features nearby because given \"featureUri\" parameter is null");
+            #endregion
 
             //Get centroid of feature
-            RDFTypedLiteral centroidOfFeature = GetCentroidOfFeature(featureUri);
+            RDFTypedLiteral centroidOfFeature = GetCentroidOfFeature(ontology, featureUri);
             if (centroidOfFeature == null)
                 return null;
 
@@ -556,10 +578,10 @@ namespace RDFSharp.Semantics.Extensions.GEO
             wgs84CentroidOfFeature.SRID = 4326;
 
             //Create Lambert Azimuthal geometry from centroid of feature
-            Geometry lazCentroidOfFeature = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84CentroidOfFeature);
+            Geometry lazCentroidOfFeature = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84CentroidOfFeature);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries()
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries()
                 .Where(ft => !ft.Item1.Equals(featureUri)).ToList();
 
             //Perform spatial analysis between collected geometries:
@@ -576,21 +598,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features near the given WGS84 Lon/Lat point within a radius of given meters 
         /// </summary>
-        public List<RDFResource> GetFeaturesNearPoint((double,double) wgs84LonLat, double radiusMeters)
+        public static List<RDFResource> GetFeaturesNearPoint(this OWLOntology ontology, (double,double) wgs84LonLat, double radiusMeters)
         {
+            #region Guards
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features near point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
                 throw new OWLSemanticsException("Cannot get features near point because given \"wgs84LonLat\" parameter has not a valid latitude for WGS84");
+            #endregion
 
             //Create WGS84 geometry from given center of search
             Geometry wgs84SearchPoint = new Point(wgs84LonLat.Item1, wgs84LonLat.Item2) { SRID = 4326 };
 
             //Create Lambert Azimuthal geometry from given center of search
-            Geometry lazSearchPoint = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchPoint);
+            Geometry lazSearchPoint = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchPoint);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those within given radius
@@ -608,18 +632,20 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located north of the given WGS84 Lon/Lat point
         /// </summary>
-        public List<RDFResource> GetFeaturesNorthOfPoint((double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesNorthOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
         {
+            #region Guards
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features north of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
                 throw new OWLSemanticsException("Cannot get features north of point because given \"wgs84LonLat\" parameter has not a valid latitude for WGS84");
+            #endregion
 
             //Create WGS84 geometry from given point
             Geometry wgs84SearchPoint = new Point(wgs84LonLat.Item1, wgs84LonLat.Item2) { SRID = 4326 };
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those having latitudes higher than given point
@@ -635,18 +661,20 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located east of the given WGS84 Lon/Lat point
         /// </summary>
-        public List<RDFResource> GetFeaturesEastOfPoint((double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesEastOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
         {
+            #region Guards
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features east of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
                 throw new OWLSemanticsException("Cannot get features east of point because given \"wgs84LonLat\" parameter has not a valid latitude for WGS84");
+            #endregion
 
             //Create WGS84 geometry from given point
             Geometry wgs84SearchPoint = new Point(wgs84LonLat.Item1, wgs84LonLat.Item2) { SRID = 4326 };
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those having longitudes greater than given point
@@ -662,18 +690,20 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located west of the given WGS84 Lon/Lat point
         /// </summary>
-        public List<RDFResource> GetFeaturesWestOfPoint((double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesWestOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
         {
+            #region Guards
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features west of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
                 throw new OWLSemanticsException("Cannot get features west of point because given \"wgs84LonLat\" parameter has not a valid latitude for WGS84");
+            #endregion
 
             //Create WGS84 geometry from given point
             Geometry wgs84SearchPoint = new Point(wgs84LonLat.Item1, wgs84LonLat.Item2) { SRID = 4326 };
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those having longitudes lower than given point
@@ -689,18 +719,20 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located south of the given WGS84 Lon/Lat point
         /// </summary>
-        public List<RDFResource> GetFeaturesSouthOfPoint((double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesSouthOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
         {
+            #region Guards
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features south of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
                 throw new OWLSemanticsException("Cannot get features south of point because given \"wgs84LonLat\" parameter has not a valid latitude for WGS84");
+            #endregion
 
             //Create WGS84 geometry from given point
             Geometry wgs84SearchPoint = new Point(wgs84LonLat.Item1, wgs84LonLat.Item2) { SRID = 4326 };
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those having latitudes lower than given point
@@ -718,8 +750,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features inside the given box represented by WGS84 Lon/Lat (lower-left, upper-right) corner points
         /// </summary>
-        public List<RDFResource> GetFeaturesInsideBox((double,double) wgs84LonLat_LowerLeft, (double,double) wgs84LonLat_UpperRight)
+        public static List<RDFResource> GetFeaturesInsideBox(this OWLOntology ontology, (double,double) wgs84LonLat_LowerLeft, (double,double) wgs84LonLat_UpperRight)
         {
+            #region Guards
             if (wgs84LonLat_LowerLeft.Item1 < -180 || wgs84LonLat_LowerLeft.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LonMin\" parameter is not a valid longitude for WGS84");
             if (wgs84LonLat_LowerLeft.Item2 < -90 || wgs84LonLat_LowerLeft.Item2 > 90)
@@ -732,6 +765,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LonMin\" parameter must be lower than given \"wgs84LonMax\" parameter");
             if (wgs84LonLat_LowerLeft.Item2 >= wgs84LonLat_UpperRight.Item2)
                 throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LatMin\" parameter must be lower than given \"wgs84LatMax\" parameter");
+            #endregion
 
             //Create WGS84 geometry from given box corners
             Geometry wgs84SearchBox = new Polygon(new LinearRing(new Coordinate[] {
@@ -743,10 +777,10 @@ namespace RDFSharp.Semantics.Extensions.GEO
             })) { SRID = 4326 };
 
             //Create Lambert Azimuthal geometry from given box corners
-            Geometry lazSearchBox = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchBox);
+            Geometry lazSearchBox = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchBox);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those inside given box
@@ -762,8 +796,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features outside the given box represented by WGS84 Lon/Lat (lower-left, upper-right) corner points
         /// </summary>
-        public List<RDFResource> GetFeaturesOutsideBox((double, double) wgs84LonLat_LowerLeft, (double, double) wgs84LonLat_UpperRight)
+        public static List<RDFResource> GetFeaturesOutsideBox(this OWLOntology ontology, (double, double) wgs84LonLat_LowerLeft, (double, double) wgs84LonLat_UpperRight)
         {
+            #region Guards
             if (wgs84LonLat_LowerLeft.Item1 < -180 || wgs84LonLat_LowerLeft.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features outside box because given \"wgs84LonMin\" parameter is not a valid longitude for WGS84");
             if (wgs84LonLat_LowerLeft.Item2 < -90 || wgs84LonLat_LowerLeft.Item2 > 90)
@@ -776,6 +811,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot get features outside box because given \"wgs84LonMin\" parameter must be lower than given \"wgs84LonMax\" parameter");
             if (wgs84LonLat_LowerLeft.Item2 >= wgs84LonLat_UpperRight.Item2)
                 throw new OWLSemanticsException("Cannot get features outside box because given \"wgs84LatMin\" parameter must be lower than given \"wgs84LatMax\" parameter");
+            #endregion
 
             //Create WGS84 geometry from given box corners
             Geometry wgs84SearchBox = new Polygon(new LinearRing(new Coordinate[] {
@@ -787,10 +823,10 @@ namespace RDFSharp.Semantics.Extensions.GEO
             })) { SRID = 4326 };
 
             //Create Lambert Azimuthal geometry from given box corners
-            Geometry lazSearchBox = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchBox);
+            Geometry lazSearchBox = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84SearchBox);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between collected geometries:
             //iterate geometries and collect those outside given box
@@ -808,19 +844,21 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features crossed by the given feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesCrossedBy(RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesCrossedBy(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features crossed because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries()
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries()
                 .Where(ft => !ft.Item1.Equals(featureUri)).ToList();
 
             //Perform spatial analysis between collected geometries:
@@ -839,20 +877,22 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features crossed by the given WKT feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesCrossedBy(RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesCrossedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get features crossed because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get features crossed because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between retrieved geometries:
             //iterate geometries and collect those crossed by given one
@@ -868,19 +908,21 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features touched by the given feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesTouchedBy(RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesTouchedBy(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features touched because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries()
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries()
                 .Where(ft => !ft.Item1.Equals(featureUri)).ToList();
 
             //Perform spatial analysis between collected geometries:
@@ -899,20 +941,22 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features touched by the given WKT feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesTouchedBy(RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesTouchedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get features touched because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get features touched because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between retrieved geometries:
             //iterate geometries and collect those touched by given one
@@ -928,19 +972,21 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features overlapped by the given feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesOverlappedBy(RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesOverlappedBy(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features overlapped because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries()
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries()
                 .Where(ft => !ft.Item1.Equals(featureUri)).ToList();
 
             //Perform spatial analysis between collected geometries:
@@ -959,20 +1005,22 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features overlapped by the given WKT feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesOverlappedBy(RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesOverlappedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get features overlapped because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get features overlapped because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between retrieved geometries:
             //iterate geometries and collect those overlapped by given one
@@ -988,19 +1036,21 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features within the given feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesWithin(RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesWithin(this OWLOntology ontology, RDFResource featureUri)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features within because given \"featureUri\" parameter is null");
+            #endregion
 
             //Collect geometries of feature
-            (Geometry,Geometry) defaultGeometryOfFeature = Ontology.GetDefaultGeometryOfFeature(featureUri);
-            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = Ontology.GetSecondaryGeometriesOfFeature(featureUri);
+            (Geometry,Geometry) defaultGeometryOfFeature = ontology.GetDefaultGeometryOfFeature(featureUri);
+            List<(Geometry,Geometry)> secondaryGeometriesOfFeature = ontology.GetSecondaryGeometriesOfFeature(featureUri);
             if (defaultGeometryOfFeature.Item1 != null && defaultGeometryOfFeature.Item2 != null)
                 secondaryGeometriesOfFeature.Insert(0, defaultGeometryOfFeature);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries()
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries()
                 .Where(ft => !ft.Item1.Equals(featureUri)).ToList();
 
             //Perform spatial analysis between collected geometries:
@@ -1019,20 +1069,22 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features within the given WKT feature 
         /// </summary>
-        public List<RDFResource> GetFeaturesWithin(RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesWithin(this OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
+            #region Guards
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get features within because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
                 throw new OWLSemanticsException("Cannot get features within because given \"featureWKT\" parameter is not a WKT literal");
+            #endregion
 
             //Transform feature into geometry
             Geometry wgs84Geometry = WKTReader.Read(featureWKT.Value);
             wgs84Geometry.SRID = 4326;
-            Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Execute SPARQL query to retrieve WKT/GML serialization of features having geometries
-            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = Ontology.GetFeaturesWithGeometries();
+            List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = ontology.GetFeaturesWithGeometries();
 
             //Perform spatial analysis between retrieved geometries:
             //iterate geometries and collect those within the given one

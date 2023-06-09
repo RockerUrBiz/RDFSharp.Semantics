@@ -15,7 +15,6 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NetTopologySuite.Geometries;
 using RDFSharp.Model;
 
 namespace RDFSharp.Semantics.Extensions.GEO.Test
@@ -78,7 +77,7 @@ namespace RDFSharp.Semantics.Extensions.GEO.Test
 
 
             //LOAD OWL+GEO
-            GEOOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
+            OWLOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
 
             //Test persistence of OWL+GEO knowledge
             Assert.IsNotNull(geoOntology);
@@ -127,7 +126,7 @@ namespace RDFSharp.Semantics.Extensions.GEO.Test
             graph.AddTriple(new RDFTriple(new RDFResource("ex:geometrycollection"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.GEOMETRY_COLLECTION));
 
             //LOAD OWL+GEO
-            GEOOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
+            OWLOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
 
             //Test persistence of OWL+GEO knowledge
             Assert.IsNotNull(geoOntology);

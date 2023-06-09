@@ -40,8 +40,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Declares the given point feature to the spatial ontology (coordinates of the geometry must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclarePointFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, (double,double) wgs84Point, bool isDefaultGeometry)
+        public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, (double,double) wgs84Point, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare point feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -50,10 +51,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare point feature to the spatial ontology because given \"geometry\" parameter has not a valid longitude for WGS84");
             if (wgs84Point.Item2 < -90 || wgs84Point.Item2 > 90)
                 throw new OWLSemanticsException("Cannot declare point feature to the spatial ontology because given \"geometry\" parameter has not a valid latitude for WGS84");
+            #endregion
 
-            return DeclarePointFeatureInternal(geoOntology, featureUri, geometryUri, new Point(wgs84Point.Item1, wgs84Point.Item2) { SRID = 4326 }, isDefaultGeometry);
+            return DeclarePointFeatureInternal(ontology, featureUri, geometryUri, new Point(wgs84Point.Item1, wgs84Point.Item2) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclarePointFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, Point geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclarePointFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, Point geometry, bool isDefaultGeometry)
         {
             //Build sf:Point serializations
             string wgs84PointWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -66,22 +68,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.POINT);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84PointWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84PointGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.POINT);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84PointWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84PointGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given line feature to the spatial ontology (coordinates of the geometry must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareLineFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Line, bool isDefaultGeometry)
+        public static OWLOntology DeclareLineFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Line, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare line feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -94,10 +97,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare line feature to the spatial ontology because given \"wgs84Line\" parameter contains a point with invalid longitude for WGS84");
             if (wgs84Line.Any(pt => pt.Item2 < -90 || pt.Item2 > 90))
                 throw new OWLSemanticsException("Cannot declare line feature to the spatial ontology because given \"wgs84Line\" parameter contains a point with invalid latitude for WGS84");
+            #endregion
 
-            return DeclareLineFeatureInternal(geoOntology, featureUri, geometryUri, new LineString(wgs84Line.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray()) { SRID = 4326 }, isDefaultGeometry);
+            return DeclareLineFeatureInternal(ontology, featureUri, geometryUri, new LineString(wgs84Line.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray()) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareLineFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, LineString geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareLineFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, LineString geometry, bool isDefaultGeometry)
         {
             //Build sf:LineString serializations
             string wgs84LineStringWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -110,22 +114,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.LINESTRING);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84LineStringWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84LineStringGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.LINESTRING);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84LineStringWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84LineStringGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given area feature to the spatial ontology (coordinates of the geometry must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareAreaFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Area, bool isDefaultGeometry)
+        public static OWLOntology DeclareAreaFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Area, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare area feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -138,15 +143,16 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare area feature to the spatial ontology because given \"wgs84Area\" parameter contains a point with invalid longitude for WGS84");
             if (wgs84Area.Any(pt => pt.Item2 < -90 || pt.Item2 > 90))
                 throw new OWLSemanticsException("Cannot declare area feature to the spatial ontology because given \"wgs84Area\" parameter contains a point with invalid latitude for WGS84");
+            #endregion
 
             //Automatically close polygon (if needed)
             if (wgs84Area[0].Item1 != wgs84Area[wgs84Area.Count-1].Item1
                  && wgs84Area[0].Item2 != wgs84Area[wgs84Area.Count-1].Item2)
                 wgs84Area.Add(wgs84Area[0]);
 
-            return DeclareAreaFeatureInternal(geoOntology, featureUri, geometryUri, new Polygon(new LinearRing(wgs84Area.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray())) { SRID = 4326 }, isDefaultGeometry);
+            return DeclareAreaFeatureInternal(ontology, featureUri, geometryUri, new Polygon(new LinearRing(wgs84Area.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray())) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareAreaFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, Polygon geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareAreaFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, Polygon geometry, bool isDefaultGeometry)
         {
             //Build sf:Polygon serializations
             string wgs84PolygonWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -159,22 +165,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.POLYGON);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84PolygonWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84PolygonGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.POLYGON);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84PolygonWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84PolygonGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given multipoint feature to the spatial ontology (coordinates of the geometries must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareMultiPointFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Points, bool isDefaultGeometry)
+        public static OWLOntology DeclareMultiPointFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Points, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare multipoint feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -187,10 +194,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare multipoint feature to the spatial ontology because given \"wgs84Points\" parameter contains a point with invalid longitude for WGS84");
             if (wgs84Points.Any(pt => pt.Item2 < -90 || pt.Item2 > 90))
                 throw new OWLSemanticsException("Cannot declare multipoint feature to the spatial ontology because given \"wgs84Points\" parameter contains a point with invalid latitude for WGS84");
+            #endregion
 
-            return DeclareMultiPointFeatureInternal(geoOntology, featureUri, geometryUri, new MultiPoint(wgs84Points.Select(wgs84Point => new Point(wgs84Point.Item1, wgs84Point.Item2) { SRID = 4326 }).ToArray()) { SRID = 4326 }, isDefaultGeometry);
+            return DeclareMultiPointFeatureInternal(ontology, featureUri, geometryUri, new MultiPoint(wgs84Points.Select(wgs84Point => new Point(wgs84Point.Item1, wgs84Point.Item2) { SRID = 4326 }).ToArray()) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareMultiPointFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, MultiPoint geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareMultiPointFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, MultiPoint geometry, bool isDefaultGeometry)
         {
             //Build sf:MultiPoint serializations
             string wgs84MultiPointWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -203,22 +211,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_POINT);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiPointWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiPointGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_POINT);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiPointWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiPointGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given multiline feature to the spatial ontology (coordinates of the geometries must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareMultiLineFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<List<(double,double)>> wgs84Lines, bool isDefaultGeometry)
+        public static OWLOntology DeclareMultiLineFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<List<(double,double)>> wgs84Lines, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare multiline feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -235,15 +244,16 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare multiline feature to the spatial ontology because given \"wgs84Lines\" parameter contains a linestring having point with invalid longitude for WGS84");
             if (wgs84Lines.Any(ls => ls.Any(pt => pt.Item2 < -90 || pt.Item2 > 90)))
                 throw new OWLSemanticsException("Cannot declare multiline feature to the spatial ontology because given \"wgs84Lines\" parameter contains a linestring having point with invalid latitude for WGS84");
+            #endregion
 
             //Reconstruct sf:MultiLineString
             List<LineString> wgs84LineStrings = new List<LineString>();
             foreach (List<(double, double)> wgs84LineString in wgs84Lines)
                 wgs84LineStrings.Add(new LineString(wgs84LineString.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray()) { SRID = 4326 });
 
-            return DeclareMultiLineFeatureInternal(geoOntology, featureUri, geometryUri, new MultiLineString(wgs84LineStrings.ToArray()) { SRID = 4326 }, isDefaultGeometry);
+            return DeclareMultiLineFeatureInternal(ontology, featureUri, geometryUri, new MultiLineString(wgs84LineStrings.ToArray()) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareMultiLineFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, MultiLineString geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareMultiLineFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, MultiLineString geometry, bool isDefaultGeometry)
         {
             //Build sf:MultiLineString serializations
             string wgs84MultiLineStringWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -256,22 +266,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_LINESTRING);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiLineStringWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiLineStringGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_LINESTRING);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiLineStringWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiLineStringGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given multiarea to the spatial ontology (coordinates of the geometries must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareMultiAreaFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<List<(double,double)>> wgs84Areas, bool isDefaultGeometry)
+        public static OWLOntology DeclareMultiAreaFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<List<(double,double)>> wgs84Areas, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare multiarea feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -288,6 +299,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare multiarea feature to the spatial ontology because given \"wgs84Areas\" parameter contains a polygon having point with invalid longitude for WGS84");
             if (wgs84Areas.Any(pl => pl.Any(pt => pt.Item2 < -90 || pt.Item2 > 90)))
                 throw new OWLSemanticsException("Cannot declare multiarea feature to the spatial ontology because given \"wgs84Areas\" parameter contains a polygon having point with invalid latitude for WGS84");
+            #endregion
 
             //Reconstruct sf:MultiPolygon
             List<Polygon> wgs84Polygons = new List<Polygon>();
@@ -300,9 +312,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 wgs84Polygons.Add(new Polygon(new LinearRing(wgs84Polygon.Select(wgs84Point => new Coordinate(wgs84Point.Item1, wgs84Point.Item2)).ToArray())) { SRID = 4326 });
             }
 
-            return DeclareMultiAreaFeatureInternal(geoOntology, featureUri, geometryUri, new MultiPolygon(wgs84Polygons.ToArray()) { SRID = 4326 }, isDefaultGeometry);
+            return DeclareMultiAreaFeatureInternal(ontology, featureUri, geometryUri, new MultiPolygon(wgs84Polygons.ToArray()) { SRID = 4326 }, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareMultiAreaFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, MultiPolygon geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareMultiAreaFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, MultiPolygon geometry, bool isDefaultGeometry)
         {
             //Build sf:MultiPolygon serializations
             string wgs84MultiPolygonWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -315,23 +327,24 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_POLYGON);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiPolygonWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiPolygonGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.MULTI_POLYGON);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84MultiPolygonWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84MultiPolygonGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
 
         /// <summary>
         /// Declares the given collection feature to the spatial ontology (coordinates of the geometries must be WGS84 Lon/Lat)
         /// </summary>
-        public static GEOOntology DeclareCollectionFeature(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Points, 
+        public static OWLOntology DeclareCollectionFeature(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, List<(double,double)> wgs84Points, 
             List<List<(double,double)>> wgs84Lines, List<List<(double,double)>> wgs84Areas, bool isDefaultGeometry)
         {
+            #region Guards
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot declare collection feature to the spatial ontology because given \"featureUri\" parameter is null");
             if (geometryUri == null)
@@ -356,6 +369,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot declare collection feature to the spatial ontology because given \"wgs84Areas\" parameter contains a polygon having a point with invalid longitude for WGS84");
             if (wgs84Areas?.Any(pl => pl.Any(pt => pt.Item2 < -90 || pt.Item2 > 90)) ?? false)
                 throw new OWLSemanticsException("Cannot declare collection feature to the spatial ontology because given \"wgs84Areas\" parameter contains a polygon having a point with invalid latitude for WGS84");
+            #endregion
 
             //Reconstruct sf:Point(s)
             List<Point> wgs84CollectionPoints = new List<Point>();
@@ -384,9 +398,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
                                         .Union(wgs84CollectionLineStrings.OfType<Geometry>())
                                          .Union(wgs84CollectionPolygons.OfType<Geometry>())
                                           .ToArray()) { SRID = 4326 };
-            return DeclareCollectionFeatureInternal(geoOntology, featureUri, geometryUri, wgs84GeometryCollection, isDefaultGeometry);
+            return DeclareCollectionFeatureInternal(ontology, featureUri, geometryUri, wgs84GeometryCollection, isDefaultGeometry);
         }
-        internal static GEOOntology DeclareCollectionFeatureInternal(this GEOOntology geoOntology, RDFResource featureUri, RDFResource geometryUri, GeometryCollection geometry, bool isDefaultGeometry)
+        internal static OWLOntology DeclareCollectionFeatureInternal(this OWLOntology ontology, RDFResource featureUri, RDFResource geometryUri, GeometryCollection geometry, bool isDefaultGeometry)
         {
             //Build sf:GeometryCollection serializations
             string wgs84GeometryCollectionWKT = GEOSpatialHelper.WKTWriter.Write(geometry);
@@ -399,15 +413,15 @@ namespace RDFSharp.Semantics.Extensions.GEO
             }
 
             //Add knowledge to the A-BOX
-            geoOntology.Data.DeclareIndividual(featureUri);
-            geoOntology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
-            geoOntology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
-            geoOntology.Data.DeclareIndividual(geometryUri);
-            geoOntology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.GEOMETRY_COLLECTION);
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84GeometryCollectionWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            geoOntology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84GeometryCollectionGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
+            ontology.Data.DeclareIndividual(featureUri);
+            ontology.Data.DeclareIndividualType(featureUri, RDFVocabulary.GEOSPARQL.FEATURE);
+            ontology.Data.DeclareObjectAssertion(featureUri, isDefaultGeometry ? RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY : RDFVocabulary.GEOSPARQL.HAS_GEOMETRY, geometryUri);
+            ontology.Data.DeclareIndividual(geometryUri);
+            ontology.Data.DeclareIndividualType(geometryUri, RDFVocabulary.GEOSPARQL.SF.GEOMETRY_COLLECTION);
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral(wgs84GeometryCollectionWKT, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            ontology.Data.DeclareDatatypeAssertion(geometryUri, RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral(wgs84GeometryCollectionGML, RDFModelEnums.RDFDatatypes.GEOSPARQL_GML));
 
-            return geoOntology;
+            return ontology;
         }
         #endregion
 
@@ -415,7 +429,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the default geometry (WGS84,UTM) assigned to the given feature
         /// </summary>
-        internal static (Geometry,Geometry) GetDefaultGeometryOfFeature(this GEOOntology geoOntology, RDFResource featureUri)
+        internal static (Geometry,Geometry) GetDefaultGeometryOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
             //Execute SPARQL query to retrieve WKT/GML serialization of the given feature's default geometry
             RDFSelectQuery selectQuery = new RDFSelectQuery()
@@ -429,7 +443,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 .AddProjectionVariable(new RDFVariable("?GEOMWKT"))
                 .AddProjectionVariable(new RDFVariable("?GEOMGML"))
                 .AddModifier(new RDFLimitModifier(1));
-            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(geoOntology.Data.ABoxGraph);
+            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(ontology.Data.ABoxGraph);
 
             //Parse retrieved WKT/GML serialization into (WGS84,UTM) result geometry
             if (selectQueryResult.SelectResultsCount > 0)
@@ -445,7 +459,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         return (wgs84Geometry, lazGeometry);
                     }
@@ -463,7 +477,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         return (wgs84Geometry, lazGeometry);
                     }
@@ -477,7 +491,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the list of secondary geometries (WGS84,UTM) assigned to the feature
         /// </summary>
-        internal static List<(Geometry,Geometry)> GetSecondaryGeometriesOfFeature(this GEOOntology geoOntology, RDFResource featureUri)
+        internal static List<(Geometry,Geometry)> GetSecondaryGeometriesOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
             List<(Geometry,Geometry)> secondaryGeometries = new List<(Geometry,Geometry)>();
 
@@ -492,7 +506,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         new RDFDatatypeFilter(new RDFVariable("?GEOMGML"), RDFModelEnums.RDFDatatypes.GEOSPARQL_GML))))
                 .AddProjectionVariable(new RDFVariable("?GEOMWKT"))
                 .AddProjectionVariable(new RDFVariable("?GEOMGML"));
-            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(geoOntology.Data.ABoxGraph);
+            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(ontology.Data.ABoxGraph);
 
             //Parse retrieved WKT/GML serialization into (WGS84,UTM) result geometries
             foreach (DataRow selectResultsRow in selectQueryResult.SelectResults.Rows)
@@ -510,7 +524,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         geometryCollected = true;
                         secondaryGeometries.Add((wgs84Geometry, lazGeometry));
@@ -529,7 +543,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         secondaryGeometries.Add((wgs84Geometry, lazGeometry));
                     }
@@ -543,7 +557,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features having at least one serialized WKT/GML geometry (WGS84,UTM)
         /// </summary>
-        internal static List<(RDFResource,Geometry,Geometry)> GetFeaturesWithGeometries(this GEOOntology geoOntology)
+        internal static List<(RDFResource,Geometry,Geometry)> GetFeaturesWithGeometries(this OWLOntology ontology)
         {
             List<(RDFResource,Geometry,Geometry)> featuresWithGeometry = new List<(RDFResource,Geometry,Geometry)>();
 
@@ -569,7 +583,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 .AddProjectionVariable(new RDFVariable("?FEATURE"))
                 .AddProjectionVariable(new RDFVariable("?GEOMWKT"))
                 .AddProjectionVariable(new RDFVariable("?GEOMGML"));
-            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(geoOntology.Data.ABoxGraph);
+            RDFSelectQueryResult selectQueryResult = selectQuery.ApplyToGraph(ontology.Data.ABoxGraph);
 
             //Parse retrieved WKT/GML serialization into (WGS84,UTM) result geometries
             foreach (DataRow selectResultsRow in selectQueryResult.SelectResults.Rows)
@@ -590,7 +604,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         geometryCollected = true;
                         featuresWithGeometry.Add((featureUri, wgs84Geometry, lazGeometry));
@@ -612,7 +626,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
-                        Geometry lazGeometry = GEOConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
                         featuresWithGeometry.Add((featureUri, wgs84Geometry, lazGeometry));
                     }

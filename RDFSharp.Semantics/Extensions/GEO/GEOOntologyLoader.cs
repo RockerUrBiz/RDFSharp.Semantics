@@ -14,43 +14,30 @@
    limitations under the License.
 */
 
-using NetTopologySuite.Geometries;
-using NetTopologySuite.IO;
-using NetTopologySuite.IO.GML2;
 using RDFSharp.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RDFSharp.Semantics.Extensions.GEO
 {
     /// <summary>
     /// GEOOntologyLoader is responsible for loading spatial ontologies from remote sources or alternative representations
     /// </summary>
-    internal static class GEOOntologyLoader
+    public static class GEOOntologyLoader
     {
         #region Methods
         /// <summary>
-        /// Gets a spatial ontology representation of the given graph
+        /// Gets an ontology representation of the given graph, with full support for GeoSPARQL T-BOX
         /// </summary>
-        internal static GEOOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
+        public static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get GEO ontology from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
             //Get OWL ontology with GEO extension points
-            OWLOntology ontology = OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
+            return OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
                classModelExtensionPoint: GEOClassModelExtensionPoint,
                propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
-
-            //Build GEO ontology from OWL ontology
-            GEOOntology geoOntology = new GEOOntology(ontology.ToString()) { 
-                Model = ontology.Model, 
-                Data = ontology.Data, 
-                OBoxGraph = ontology.OBoxGraph
-            };
-
-            return geoOntology;
         }
         #endregion
 
@@ -66,12 +53,6 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// </summary>
         internal static void GEOPropertyModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
             => BuildGEOPropertyModel(ontology.Model.PropertyModel);
-
-        /// <summary>
-        /// Builds a reference spatial model
-        /// </summary>
-        internal static OWLOntologyModel BuildGEOModel()
-            => new OWLOntologyModel() { ClassModel = BuildGEOClassModel(), PropertyModel = BuildGEOPropertyModel() };
 
         /// <summary>
         /// Builds a reference spatial class model
