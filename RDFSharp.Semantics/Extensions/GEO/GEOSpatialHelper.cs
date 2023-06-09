@@ -58,9 +58,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the distance, expressed in meters, between the given features
         /// </summary>
-        public static double? GetDistanceBetweenFeatures(this OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
+        public static double? GetDistanceBetweenFeatures(OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get distance between features because given \"ontology\" parameter is null");
             if (fromFeatureUri == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
             if (toFeatureUri == null)
@@ -96,9 +98,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the distance, expressed in meters, between the given feature and the given WKT feature
         /// </summary>
-        public static double? GetDistanceBetweenFeatures(this OWLOntology ontology, RDFResource fromFeatureUri, RDFTypedLiteral toFeatureWKT)
+        public static double? GetDistanceBetweenFeatures(OWLOntology ontology, RDFResource fromFeatureUri, RDFTypedLiteral toFeatureWKT)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get distance between features because given \"ontology\" parameter is null");
             if (fromFeatureUri == null)
                 throw new OWLSemanticsException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
             if (toFeatureWKT == null)
@@ -165,9 +169,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the length, expressed in meters, of the given feature (the perimeter in case of area)
         /// </summary>
-        public static double? GetLengthOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static double? GetLengthOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get length of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get length of feature because given \"featureUri\" parameter is null");
             #endregion
@@ -213,9 +219,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the area, expressed in square meters, of the given feature
         /// </summary>
-        public static double? GetAreaOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static double? GetAreaOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get area of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get area of feature because given \"featureUri\" parameter is null");
             #endregion
@@ -263,9 +271,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the centroid of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public static RDFTypedLiteral GetCentroidOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static RDFTypedLiteral GetCentroidOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get centroid of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get centroid of feature because given \"featureUri\" parameter is null");
             #endregion
@@ -322,9 +332,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the boundaries of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public static RDFTypedLiteral GetBoundaryOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static RDFTypedLiteral GetBoundaryOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get boundary of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get boundary of feature because given \"featureUri\" parameter is null");
             #endregion
@@ -384,9 +396,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates a buffer of the given meters on the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public static RDFTypedLiteral GetBufferAroundFeature(this OWLOntology ontology, RDFResource featureUri, double bufferMeters)
+        public static RDFTypedLiteral GetBufferAroundFeature(OWLOntology ontology, RDFResource featureUri, double bufferMeters)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get buffer around feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get buffer around feature because given \"featureUri\" parameter is null");
             #endregion
@@ -443,11 +457,13 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the ConvexHull (smallest convex polygon containing) of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public static RDFTypedLiteral GetConvexHullOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static RDFTypedLiteral GetConvexHullOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get convex hull of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
-                throw new OWLSemanticsException("Cannot get ConvexHull of feature because given \"featureUri\" parameter is null");
+                throw new OWLSemanticsException("Cannot get convex hull of feature because given \"featureUri\" parameter is null");
             #endregion
 
             //Analyze default geometry of feature
@@ -480,9 +496,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
         {
             #region Guards
             if (featureWKT == null)
-                throw new OWLSemanticsException("Cannot get ConvexHull of feature because given \"featureWKT\" parameter is null");
+                throw new OWLSemanticsException("Cannot get convex hull of feature because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
-                throw new OWLSemanticsException("Cannot get convexHull of feature because given \"featureWKT\" parameter is not a WKT literal");
+                throw new OWLSemanticsException("Cannot get convex hull of feature because given \"featureWKT\" parameter is not a WKT literal");
             #endregion
 
             //Transform feature into geometry
@@ -502,9 +518,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Calculates the envelope (bounding-box) of the given feature, giving a WGS84 Lon/Lat geometry expressed as WKT typed literal
         /// </summary>
-        public static RDFTypedLiteral GetEnvelopeOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static RDFTypedLiteral GetEnvelopeOfFeature(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get envelope of feature because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get envelope of feature because given \"featureUri\" parameter is null");
             #endregion
@@ -561,9 +579,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features near the given feature within a radius of given meters 
         /// </summary>
-        public static List<RDFResource> GetFeaturesNearBy(this OWLOntology ontology, RDFResource featureUri, double radiusMeters)
+        public static List<RDFResource> GetFeaturesNearBy(OWLOntology ontology, RDFResource featureUri, double radiusMeters)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features nearby because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features nearby because given \"featureUri\" parameter is null");
             #endregion
@@ -598,9 +618,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features near the given WGS84 Lon/Lat point within a radius of given meters 
         /// </summary>
-        public static List<RDFResource> GetFeaturesNearPoint(this OWLOntology ontology, (double,double) wgs84LonLat, double radiusMeters)
+        public static List<RDFResource> GetFeaturesNearPoint(OWLOntology ontology, (double,double) wgs84LonLat, double radiusMeters)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features near point because given \"ontology\" parameter is null");
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features near point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
@@ -632,9 +654,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located north of the given WGS84 Lon/Lat point
         /// </summary>
-        public static List<RDFResource> GetFeaturesNorthOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesNorthOfPoint(OWLOntology ontology, (double,double) wgs84LonLat)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features north of point because given \"ontology\" parameter is null");
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features north of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
@@ -661,9 +685,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located east of the given WGS84 Lon/Lat point
         /// </summary>
-        public static List<RDFResource> GetFeaturesEastOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesEastOfPoint(OWLOntology ontology, (double,double) wgs84LonLat)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features east of point because given \"ontology\" parameter is null");
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features east of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
@@ -690,9 +716,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located west of the given WGS84 Lon/Lat point
         /// </summary>
-        public static List<RDFResource> GetFeaturesWestOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesWestOfPoint(OWLOntology ontology, (double,double) wgs84LonLat)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features west of point because given \"ontology\" parameter is null");
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features west of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
@@ -719,9 +747,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features located south of the given WGS84 Lon/Lat point
         /// </summary>
-        public static List<RDFResource> GetFeaturesSouthOfPoint(this OWLOntology ontology, (double,double) wgs84LonLat)
+        public static List<RDFResource> GetFeaturesSouthOfPoint(OWLOntology ontology, (double,double) wgs84LonLat)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features south of point because given \"ontology\" parameter is null");
             if (wgs84LonLat.Item1 < -180 || wgs84LonLat.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features south of point because given \"wgs84LonLat\" parameter has not a valid longitude for WGS84");
             if (wgs84LonLat.Item2 < -90 || wgs84LonLat.Item2 > 90)
@@ -750,21 +780,23 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features inside the given box represented by WGS84 Lon/Lat (lower-left, upper-right) corner points
         /// </summary>
-        public static List<RDFResource> GetFeaturesInsideBox(this OWLOntology ontology, (double,double) wgs84LonLat_LowerLeft, (double,double) wgs84LonLat_UpperRight)
+        public static List<RDFResource> GetFeaturesInsideBox(OWLOntology ontology, (double,double) wgs84LonLat_LowerLeft, (double,double) wgs84LonLat_UpperRight)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features inside box because given \"ontology\" parameter is null");
             if (wgs84LonLat_LowerLeft.Item1 < -180 || wgs84LonLat_LowerLeft.Item1 > 180)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LonMin\" parameter is not a valid longitude for WGS84");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LonMin\" parameter is not a valid longitude for WGS84");
             if (wgs84LonLat_LowerLeft.Item2 < -90 || wgs84LonLat_LowerLeft.Item2 > 90)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LatMin\" parameter is not a valid latitude for WGS84");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LatMin\" parameter is not a valid latitude for WGS84");
             if (wgs84LonLat_UpperRight.Item1 < -180 || wgs84LonLat_UpperRight.Item1 > 180)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LonMax\" parameter is not a valid longitude for WGS84");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LonMax\" parameter is not a valid longitude for WGS84");
             if (wgs84LonLat_UpperRight.Item2 < -90 || wgs84LonLat_UpperRight.Item2 > 90)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LatMax\" parameter is not a valid latitude for WGS84");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LatMax\" parameter is not a valid latitude for WGS84");
             if (wgs84LonLat_LowerLeft.Item1 >= wgs84LonLat_UpperRight.Item1)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LonMin\" parameter must be lower than given \"wgs84LonMax\" parameter");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LonMin\" parameter must be lower than given \"wgs84LonMax\" parameter");
             if (wgs84LonLat_LowerLeft.Item2 >= wgs84LonLat_UpperRight.Item2)
-                throw new OWLSemanticsException("Cannot get features within box because given \"wgs84LatMin\" parameter must be lower than given \"wgs84LatMax\" parameter");
+                throw new OWLSemanticsException("Cannot get features inside box because given \"wgs84LatMin\" parameter must be lower than given \"wgs84LatMax\" parameter");
             #endregion
 
             //Create WGS84 geometry from given box corners
@@ -796,9 +828,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features outside the given box represented by WGS84 Lon/Lat (lower-left, upper-right) corner points
         /// </summary>
-        public static List<RDFResource> GetFeaturesOutsideBox(this OWLOntology ontology, (double, double) wgs84LonLat_LowerLeft, (double, double) wgs84LonLat_UpperRight)
+        public static List<RDFResource> GetFeaturesOutsideBox(OWLOntology ontology, (double, double) wgs84LonLat_LowerLeft, (double, double) wgs84LonLat_UpperRight)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features outside box because given \"ontology\" parameter is null");
             if (wgs84LonLat_LowerLeft.Item1 < -180 || wgs84LonLat_LowerLeft.Item1 > 180)
                 throw new OWLSemanticsException("Cannot get features outside box because given \"wgs84LonMin\" parameter is not a valid longitude for WGS84");
             if (wgs84LonLat_LowerLeft.Item2 < -90 || wgs84LonLat_LowerLeft.Item2 > 90)
@@ -844,11 +878,13 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features crossed by the given feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesCrossedBy(this OWLOntology ontology, RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesCrossedBy(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features crossedby because given \"ontology\" parameter is null");
             if (featureUri == null)
-                throw new OWLSemanticsException("Cannot get features crossed because given \"featureUri\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features crossedby because given \"featureUri\" parameter is null");
             #endregion
 
             //Collect geometries of feature
@@ -877,13 +913,15 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features crossed by the given WKT feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesCrossedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesCrossedBy(OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features crossedby because given \"ontology\" parameter is null");
             if (featureWKT == null)
-                throw new OWLSemanticsException("Cannot get features crossed because given \"featureWKT\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features crossedby because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
-                throw new OWLSemanticsException("Cannot get features crossed because given \"featureWKT\" parameter is not a WKT literal");
+                throw new OWLSemanticsException("Cannot get features crossedby because given \"featureWKT\" parameter is not a WKT literal");
             #endregion
 
             //Transform feature into geometry
@@ -908,11 +946,13 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features touched by the given feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesTouchedBy(this OWLOntology ontology, RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesTouchedBy(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features touchedby because given \"ontology\" parameter is null");
             if (featureUri == null)
-                throw new OWLSemanticsException("Cannot get features touched because given \"featureUri\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features touchedby because given \"featureUri\" parameter is null");
             #endregion
 
             //Collect geometries of feature
@@ -941,13 +981,15 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features touched by the given WKT feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesTouchedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesTouchedBy(OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features touchedby because given \"ontology\" parameter is null");
             if (featureWKT == null)
-                throw new OWLSemanticsException("Cannot get features touched because given \"featureWKT\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features touchedby because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
-                throw new OWLSemanticsException("Cannot get features touched because given \"featureWKT\" parameter is not a WKT literal");
+                throw new OWLSemanticsException("Cannot get features touchedby because given \"featureWKT\" parameter is not a WKT literal");
             #endregion
 
             //Transform feature into geometry
@@ -972,11 +1014,13 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features overlapped by the given feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesOverlappedBy(this OWLOntology ontology, RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesOverlappedBy(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features overlappedby because given \"ontology\" parameter is null");
             if (featureUri == null)
-                throw new OWLSemanticsException("Cannot get features overlapped because given \"featureUri\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features overlappedby because given \"featureUri\" parameter is null");
             #endregion
 
             //Collect geometries of feature
@@ -1005,13 +1049,15 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features overlapped by the given WKT feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesOverlappedBy(this OWLOntology ontology, RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesOverlappedBy(OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features overlappedby because given \"ontology\" parameter is null");
             if (featureWKT == null)
-                throw new OWLSemanticsException("Cannot get features overlapped because given \"featureWKT\" parameter is null");
+                throw new OWLSemanticsException("Cannot get features overlappedby because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))
-                throw new OWLSemanticsException("Cannot get features overlapped because given \"featureWKT\" parameter is not a WKT literal");
+                throw new OWLSemanticsException("Cannot get features overlappedby because given \"featureWKT\" parameter is not a WKT literal");
             #endregion
 
             //Transform feature into geometry
@@ -1036,9 +1082,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features within the given feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesWithin(this OWLOntology ontology, RDFResource featureUri)
+        public static List<RDFResource> GetFeaturesWithin(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features within because given \"ontology\" parameter is null");
             if (featureUri == null)
                 throw new OWLSemanticsException("Cannot get features within because given \"featureUri\" parameter is null");
             #endregion
@@ -1069,9 +1117,11 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Gets the features within the given WKT feature 
         /// </summary>
-        public static List<RDFResource> GetFeaturesWithin(this OWLOntology ontology, RDFTypedLiteral featureWKT)
+        public static List<RDFResource> GetFeaturesWithin(OWLOntology ontology, RDFTypedLiteral featureWKT)
         {
             #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot get features within because given \"ontology\" parameter is null");
             if (featureWKT == null)
                 throw new OWLSemanticsException("Cannot get features within because given \"featureWKT\" parameter is null");
             if (!featureWKT.Datatype.Equals(RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))

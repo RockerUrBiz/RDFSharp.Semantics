@@ -19,26 +19,18 @@ using RDFSharp.Model;
 namespace RDFSharp.Semantics.Extensions.GEO
 {
     /// <summary>
-    /// GEOOntologyLoader is responsible for loading spatial ontologies from remote sources or alternative representations
+    /// GEOOntologyLoader is responsible for loading GeoSPARQL ontologies from remote sources or alternative representations
     /// </summary>
     public static class GEOOntologyLoader
     {
         #region Methods
         /// <summary>
-        /// Gets an ontology representation of the given graph, with full support for GeoSPARQL T-BOX
+        /// Gets an ontology representation of the given graph and initializes support for GeoSPARQL
         /// </summary>
         public static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
-        {
-            #region Guards
-            if (graph == null)
-                throw new OWLSemanticsException("Cannot get GEO ontology from RDFGraph because given \"graph\" parameter is null");
-            #endregion
-
-            //Get OWL ontology with GEO extension points
-            return OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
-               classModelExtensionPoint: GEOClassModelExtensionPoint,
-               propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
-        }
+            => OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
+                   classModelExtensionPoint: GEOClassModelExtensionPoint,
+                   propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
         #endregion
 
         #region Utilities
