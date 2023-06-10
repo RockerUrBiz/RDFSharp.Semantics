@@ -24,7 +24,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalAfter the given bInterval
         /// </summary>
-        public static bool CheckAfter(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckAfter(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -53,7 +53,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalBefore the given bInterval
         /// </summary>
-        public static bool CheckBefore(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckBefore(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -82,7 +82,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalContains the given bInterval
         /// </summary>
-        public static bool CheckContains(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckContains(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -122,7 +122,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalDisjoint the given bInterval
         /// </summary>
-        public static bool CheckDisjoint(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckDisjoint(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
             => CheckBefore(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS)
                  || CheckAfter(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS);
@@ -130,7 +130,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalDuring the given bInterval
         /// </summary>
-        public static bool CheckDuring(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckDuring(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -170,7 +170,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalEquals the given bInterval
         /// </summary>
-        public static bool CheckEquals(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckEquals(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -210,7 +210,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalFinishedBy the given bInterval
         /// </summary>
-        public static bool CheckFinishedBy(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckFinishedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -250,7 +250,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalFinishes the given bInterval
         /// </summary>
-        public static bool CheckFinishes(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckFinishes(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -290,7 +290,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalIn the given bInterval
         /// </summary>
-        public static bool CheckIn(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckIn(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -331,7 +331,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalMeets the given bInterval
         /// </summary>
-        public static bool CheckMeets(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckMeets(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -360,7 +360,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalMetBy the given bInterval
         /// </summary>
-        public static bool CheckMetBy(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckMetBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -389,7 +389,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalOverlaps the given bInterval
         /// </summary>
-        public static bool CheckOverlaps(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckOverlaps(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -430,7 +430,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalOverlappedBy the given bInterval
         /// </summary>
-        public static bool CheckOverlappedBy(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckOverlappedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -471,7 +471,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalStarts the given bInterval
         /// </summary>
-        public static bool CheckStarts(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckStarts(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -511,7 +511,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInterval is time:intervalStartedBy the given bInterval
         /// </summary>
-        public static bool CheckStartedBy(TIMEOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
+        public static bool CheckStartedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS = null)
         {
             #region Guards

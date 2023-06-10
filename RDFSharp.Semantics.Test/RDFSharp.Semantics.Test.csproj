@@ -12,11 +12,11 @@
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Extensions\SKOS\**" />
-	  <Compile Remove="Extensions\TIME\**" />
 	  <EmbeddedResource Remove="Extensions\SKOS\**" />
-	  <EmbeddedResource Remove="Extensions\TIME\**" />
 	  <None Remove="Extensions\SKOS\**" />
-	  <None Remove="Extensions\TIME\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Extensions\TIME\Resources\GeologicTimeExample.ttl" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.2" />

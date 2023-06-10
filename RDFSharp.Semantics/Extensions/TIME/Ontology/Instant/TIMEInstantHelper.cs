@@ -24,7 +24,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given instant is time:inside the given interval (boundaries excluded)
         /// </summary>
-        public static bool CheckInsideInterval(TIMEOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
+        public static bool CheckInsideInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -59,7 +59,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInstant is time:after the given bInstant
         /// </summary>
-        public static bool CheckAfter(TIMEOntology timeOntology, RDFResource aTimeInstantURI, RDFResource bTimeInstantURI,
+        public static bool CheckAfter(OWLOntology timeOntology, RDFResource aTimeInstantURI, RDFResource bTimeInstantURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -88,7 +88,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given instant is time:after the given interval
         /// </summary>
-        public static bool CheckAfterInterval(TIMEOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI,
+        public static bool CheckAfterInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -117,7 +117,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given aInstant is time:before the given bInstant
         /// </summary>
-        public static bool CheckBefore(TIMEOntology timeOntology, RDFResource aTimeInstantURI, RDFResource bTimeInstantURI,
+        public static bool CheckBefore(OWLOntology timeOntology, RDFResource aTimeInstantURI, RDFResource bTimeInstantURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -146,7 +146,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Checks if the given instant is time:before the given interval
         /// </summary>
-        public static bool CheckBeforeInterval(TIMEOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
+        public static bool CheckBeforeInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards

@@ -30,7 +30,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Ontology describing the ordinal reference system with its components and relations
         /// </summary>
-        internal TIMEOntology Ontology { get; set; }
+        internal OWLOntology Ontology { get; set; }
         #endregion
 
         #region Ctors
@@ -40,7 +40,8 @@ namespace RDFSharp.Semantics.Extensions.TIME
         public TIMEOrdinalReferenceSystem(RDFResource trsUri)
             : base(trsUri)
         {
-            Ontology = new TIMEOntology(URI?.ToString());
+            Ontology = new OWLOntology(URI?.ToString());
+            Ontology.InitializeTIME();
 
             //Add knowledge to the A-BOX
             Ontology.Data.DeclareIndividual(trsUri);

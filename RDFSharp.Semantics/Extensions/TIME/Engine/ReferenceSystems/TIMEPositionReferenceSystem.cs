@@ -40,7 +40,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// TRS for expressing temporal extents encoded in GPS Time (seconds since midnight of 6st January 1980)
         /// </summary>
         public static readonly TIMEPositionReferenceSystem GlobalPositioningSystemTRS = new TIMEPositionReferenceSystem(
-            new RDFResource("https://en.wikipedia.org/wiki/Global_Positioning_System#Timekeeping"), TIMECoordinate.GPSTime, TIMEUnit.Second, false);
+            RDFVocabulary.TIME.TRS_GLOBAL_POSITIONING_SYSTEM, TIMECoordinate.GPSTime, TIMEUnit.Second, false);
         #endregion
 
         #region Properties
@@ -67,10 +67,12 @@ namespace RDFSharp.Semantics.Extensions.TIME
         public TIMEPositionReferenceSystem(RDFResource trsUri, TIMECoordinate trsOrigin, TIMEUnit trsUnit, bool isLargeScaleTRS)
             : base(trsUri)
         {
+            #region Guards
             if (trsOrigin == null)
                 throw new OWLSemanticsException("Cannot create TimeReferenceSystem because given \"trsOrigin\" parameter is null");
             if (trsUnit == null)
                 throw new OWLSemanticsException("Cannot create TimeReferenceSystem because given \"trsUnit\" parameter is null");
+            #endregion
 
             Origin = trsOrigin;
             Unit = trsUnit;

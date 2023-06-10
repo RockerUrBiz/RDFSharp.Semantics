@@ -31,7 +31,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal instant and makes it the temporal extent of the given A-BOX feature individual
         /// </summary>
-        public static TIMEOntology DeclareTimeInstant(this TIMEOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
+        public static OWLOntology DeclareTimeInstant(this OWLOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
         {
             #region Guards
             if (featureUri == null)
@@ -47,7 +47,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
 
             return timeOntology;
         }
-        internal static TIMEOntology DeclareTimeInstantInternal(this TIMEOntology timeOntology, TIMEInstant timeInstant)
+        internal static OWLOntology DeclareTimeInstantInternal(this OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(timeInstant);
@@ -112,7 +112,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal relation between the given instants
         /// </summary>
-        public static TIMEOntology DeclareTimeInstantRelation(this TIMEOntology timeOntology, TIMEInstant aTimeInstant, TIMEInstant bTimeInstant, TIMEEnums.TIMEInstantRelation timeInstantRelation)
+        public static OWLOntology DeclareTimeInstantRelation(this OWLOntology timeOntology, TIMEInstant aTimeInstant, TIMEInstant bTimeInstant, TIMEEnums.TIMEInstantRelation timeInstantRelation)
         {
             #region Guards
             if (aTimeInstant == null)
@@ -140,7 +140,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal interval and makes it the temporal extent of the given A-BOX feature individual
         /// </summary>
-        public static TIMEOntology DeclareTimeInterval(this TIMEOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
+        public static OWLOntology DeclareTimeInterval(this OWLOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
         {
             #region Guards
             if (featureUri == null)
@@ -156,7 +156,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
 
             return timeOntology;
         }
-        internal static TIMEOntology DeclareTimeIntervalInternal(this TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static OWLOntology DeclareTimeIntervalInternal(this OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(timeInterval);
@@ -219,7 +219,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal relation between the given intervals
         /// </summary>
-        public static TIMEOntology DeclareTimeIntervalRelation(this TIMEOntology timeOntology, TIMEInterval aTimeInterval, TIMEInterval bTimeInterval, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
+        public static OWLOntology DeclareTimeIntervalRelation(this OWLOntology timeOntology, TIMEInterval aTimeInterval, TIMEInterval bTimeInterval, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
         {
             #region Guards
             if (aTimeInterval == null)
@@ -288,7 +288,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Gets the temporal extent of the given A-BOX feature individual by analyzing its "time:hasTime" relations
         /// </summary>
-        public static List<TIMEEntity> GetTemporalExtentOfFeature(this TIMEOntology timeOntology, RDFResource featureUri)
+        public static List<TIMEEntity> GetTemporalExtentOfFeature(this OWLOntology timeOntology, RDFResource featureUri)
         {
             #region Guards
             if (featureUri == null)
@@ -341,7 +341,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
 
             return temporalExtentOfFeature;
         }
-        internal static void FillValueOfTimeInstant(TIMEOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillValueOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             //time:inXSDDateTimeStamp
             RDFPatternMember inXSDDateTimeStampLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, null, null]
@@ -390,7 +390,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
-        internal static void FillDescriptionOfTimeInstant(TIMEOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillDescriptionOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             #region Utilities
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
@@ -557,7 +557,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
             }
             timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillPositionOfTimeInstant(TIMEOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillPositionOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             #region Utilities
             RDFResource GetTRSOfPosition(RDFResource temporalExtentURI)
@@ -646,7 +646,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
             }
             timeInstant.Position = positionsOfTimeInstant.FirstOrDefault(); //We currently support one position, but this may evolve in future
         }
-        internal static void FillValueOfTimeInterval(TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillValueOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //time:hasXSDDuration
             RDFPatternMember hasXSDDurationLiteral = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
@@ -655,7 +655,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
                  && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
-        internal static void FillDescriptionOfTimeInterval(TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDescriptionOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             #region Utilities
             RDFResource GetTRSOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -759,7 +759,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
             }
             timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillDurationOfTimeInterval(TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDurationOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             #region Utilities
             RDFResource GetUnitTypeOfDuration(RDFResource temporalExtentURI)
@@ -809,7 +809,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
             }
             timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault(); //We currently support one duration, but this may evolve in future
         }
-        internal static void FillBeginningOfTimeInterval(TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillBeginningOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //We need first to determine assertions having "time:hasBeginning" compatible predicates for the given time interval
             List<RDFResource> hasBeginningProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
@@ -839,7 +839,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
             }
             timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault(); //We currently support one beginning instant, but this may evolve in future
         }
-        internal static void FillEndOfTimeInterval(TIMEOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillEndOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //We need first to determine assertions having "time:hasEnd" compatible predicates for the given time interval
             List<RDFResource> hasEndProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
@@ -911,7 +911,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Gets the temporal coordinate expressing the given instant, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)
         /// </summary>
-        public static TIMECoordinate GetInstantCoordinate(this TIMEOntology timeOntology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetInstantCoordinate(this OWLOntology timeOntology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeInstantURI == null)
@@ -971,7 +971,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Gets the temporal extent expressing the given interval, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)
         /// </summary>
-        public static TIMEExtent GetIntervalExtent(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMEExtent GetIntervalExtent(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1029,7 +1029,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// Gets the temporal coordinate expressing the beginning instant of the given interval, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)<br/>
         /// (It can leverage Allen interval relations to infer this information even in case this is not directly expressed on the given interval)
         /// </summary>
-        public static TIMECoordinate GetBeginningOfInterval(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetBeginningOfInterval(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1040,7 +1040,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
 
             return GetBeginningOfIntervalInternal(timeOntology, timeIntervalURI, calendarTRS, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetBeginningOfIntervalInternal(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS, Dictionary<long,RDFResource> visitContext)
+        internal static TIMECoordinate GetBeginningOfIntervalInternal(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext
             if (!visitContext.ContainsKey(timeIntervalURI.PatternMemberID))
@@ -1096,7 +1096,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// Gets the temporal coordinate expressing the end instant of the given interval, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)<br/>
         /// (It can leverage Allen interval relations to infer this information even in case this is not directly expressed on the given interval)
         /// </summary>
-        public static TIMECoordinate GetEndOfInterval(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetEndOfInterval(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1107,7 +1107,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
 
             return GetEndOfIntervalInternal(timeOntology, timeIntervalURI, calendarTRS, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetEndOfIntervalInternal(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS, Dictionary<long,RDFResource> visitContext)
+        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext
             if (!visitContext.ContainsKey(timeIntervalURI.PatternMemberID))
@@ -1162,7 +1162,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
         /// <summary>
         /// Gets the intervals having the given relation with the given interval 
         /// </summary>
-        public static List<RDFResource> GetRelatedIntervals(this TIMEOntology timeOntology, RDFResource timeIntervalURI, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
+        public static List<RDFResource> GetRelatedIntervals(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
         {
             #region Guards
             if (timeIntervalURI == null)

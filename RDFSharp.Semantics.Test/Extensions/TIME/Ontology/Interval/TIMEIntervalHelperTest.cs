@@ -28,16 +28,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckAfter(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckAfter(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckAfter()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -59,7 +60,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckAfterBecauseMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -81,7 +83,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckAfterBecauseMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -104,16 +107,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckBefore(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckBefore(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckBefore()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -135,7 +139,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckBeforeBecauseMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()),
@@ -157,7 +162,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckBeforeBecauseMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -180,16 +186,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalContainsIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckContains(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalContainsIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckContains(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalContainsInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -220,7 +227,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalContainsIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -251,7 +259,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalContainsIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -282,7 +291,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalContainsIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -313,7 +323,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalContainsIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -345,16 +356,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalIsDisjointWithIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDisjoint(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalIsDisjointWithIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDisjoint(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalIsDisjointWithInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2020-01-01T00:00:00Z").ToUniversalTime()),
@@ -386,16 +398,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalDuringIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDuring(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalDuringIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDuring(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalDuringInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -426,7 +439,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalDuringIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -457,7 +471,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalDuringIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -488,7 +503,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalDuringIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -519,7 +535,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalDuringIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -551,16 +568,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalEqualsIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckEquals(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalEqualsIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckEquals(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalEqualsInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -591,7 +609,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalEqualsIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -622,7 +641,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalEqualsIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -653,7 +673,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalEqualsIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -684,7 +705,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalEqualsIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -716,16 +738,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishedByIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishedBy(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishedByIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishedBy(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalFinishedByInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -756,7 +779,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishedByIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -787,7 +811,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishedByIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -818,7 +843,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishedByIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -849,7 +875,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishedByIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -882,16 +909,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishesIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishes(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishesIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishes(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalFinishesInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -922,7 +950,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishesIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -953,7 +982,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishesIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -985,7 +1015,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishesIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1016,7 +1047,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalFinishesIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1048,16 +1080,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalInIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckIn(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalInIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckIn(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalInInterval()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1088,7 +1121,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalInIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1119,7 +1153,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalInIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1150,7 +1185,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalInIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1181,7 +1217,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalInIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1213,16 +1250,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMeetsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMeets(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMeetsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMeets(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckMeets()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1244,7 +1282,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckMeetsBecauseMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()),
@@ -1266,7 +1305,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckMeetsBecauseMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -1289,16 +1329,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMetByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMetBy(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMetByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMetBy(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckMetBy()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()),
@@ -1320,7 +1361,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckMetByBecauseMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1342,7 +1384,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckMetByBecauseMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1365,16 +1408,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlapsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlaps(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlapsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlaps(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckOverlaps()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1396,7 +1440,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlapsIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1417,7 +1462,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlapsIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1438,7 +1484,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlapsIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1459,7 +1506,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlapsIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1481,16 +1529,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlappedByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlappedBy(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlappedByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlappedBy(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckOverlappedBy()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1512,7 +1561,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlappedByIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1533,7 +1583,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlappedByIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1554,7 +1605,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlappedByIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1575,7 +1627,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalOverlappedByIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1597,16 +1650,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStarts(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStarts(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckStarts()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1627,7 +1681,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartsIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1648,7 +1703,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartsIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                  new TIMEInterval(new RDFResource("ex:timeIntvA"),
                      new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1669,7 +1725,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartsIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1690,7 +1747,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartsIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1712,16 +1770,17 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartedByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStartedBy(new TIMEOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartedByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStartedBy(new TIMEOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckStartedBy()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1742,7 +1801,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartedByIntervalMissingLeftIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1763,7 +1823,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartedByIntervalMissingLeftIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                  new TIMEInterval(new RDFResource("ex:timeIntvA"),
                      new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1784,7 +1845,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartedByIntervalMissingRightIntervalBeginningInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1805,7 +1867,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [TestMethod]
         public void ShouldNotCheckIntervalStartedByIntervalMissingRightIntervalEndInformation()
         {
-            TIMEOntology timeOntology = new TIMEOntology("ex:timeOnt");
+            OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
+            timeOntology.InitializeTIME();
             timeOntology.DeclareTimeInterval(new RDFResource("ex:ft1"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),

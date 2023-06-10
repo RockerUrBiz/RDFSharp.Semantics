@@ -28,7 +28,7 @@ namespace RDFSharp.Semantics.Test
     {
         #region Initialize
         private OWLOntology Ontology { get; set; }
-        private OWLOntology OntologyWithGeoSPARQL { get; set; }
+        private OWLOntology OntologyWithExtensions { get; set; }
 
         [TestInitialize]
         public void Initialize()
@@ -225,7 +225,8 @@ namespace RDFSharp.Semantics.Test
 
             //Load
             Ontology = OWLOntology.FromRDFGraph(graph);
-            OntologyWithGeoSPARQL = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableGeoSPARQLSupport=true });
+            OntologyWithExtensions = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { 
+                EnableGeoSPARQLSupport=true, EnableOWLTimeSupport=true });
 
             Assert.IsNotNull(Ontology);
             Assert.IsNotNull(Ontology.Model);
@@ -233,13 +234,15 @@ namespace RDFSharp.Semantics.Test
             Assert.IsNotNull(Ontology.Model.PropertyModel);
             Assert.IsNotNull(Ontology.Data);
             Assert.IsFalse(Ontology.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            Assert.IsFalse(Ontology.Model.ClassModel.CheckHasClass(RDFVocabulary.TIME.INSTANT));
 
-            Assert.IsNotNull(OntologyWithGeoSPARQL);
-            Assert.IsNotNull(OntologyWithGeoSPARQL.Model);
-            Assert.IsNotNull(OntologyWithGeoSPARQL.Model.ClassModel);
-            Assert.IsNotNull(OntologyWithGeoSPARQL.Model.PropertyModel);
-            Assert.IsNotNull(OntologyWithGeoSPARQL.Data);
-            Assert.IsTrue(OntologyWithGeoSPARQL.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            Assert.IsNotNull(OntologyWithExtensions);
+            Assert.IsNotNull(OntologyWithExtensions.Model);
+            Assert.IsNotNull(OntologyWithExtensions.Model.ClassModel);
+            Assert.IsNotNull(OntologyWithExtensions.Model.PropertyModel);
+            Assert.IsNotNull(OntologyWithExtensions.Data);
+            Assert.IsTrue(OntologyWithExtensions.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            Assert.IsTrue(OntologyWithExtensions.Model.ClassModel.CheckHasClass(RDFVocabulary.TIME.INSTANT));
         }
         #endregion
 

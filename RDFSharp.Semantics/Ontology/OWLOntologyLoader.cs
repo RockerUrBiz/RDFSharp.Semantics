@@ -14,11 +14,11 @@
    limitations under the License.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
 using RDFSharp.Semantics.Extensions.GEO;
+using RDFSharp.Semantics.Extensions.TIME;
 
 namespace RDFSharp.Semantics
 {
@@ -48,6 +48,8 @@ namespace RDFSharp.Semantics
             //Extension points (GEO, TIME, SKOS)
             if (loaderOptions.EnableGeoSPARQLSupport)
                 ontology.InitializeGEO();
+            if (loaderOptions.EnableOWLTimeSupport)
+                ontology.InitializeTIME();
 
             //Ontology loading
             ontology.LoadModel(graph, loaderOptions);
@@ -122,6 +124,12 @@ namespace RDFSharp.Semantics
         /// [Default: False]
         /// </summary>
         public bool EnableGeoSPARQLSupport { get; set; } = false;
+
+        /// <summary>
+        /// Tells the ontology loader to inject OWL-TIME T-BOX and A-BOX<br/>
+        /// [Default: False]
+        /// </summary>
+        public bool EnableOWLTimeSupport { get; set; } = false;
         #endregion
     }
 }

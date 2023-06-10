@@ -26,55 +26,22 @@ namespace RDFSharp.Semantics.Extensions.TIME
     {
         #region Methods
         /// <summary>
-        /// Gets a temporal ontology representation of the given graph
+        /// Prepares the given ontology for OWL-TIME support, making it suitable for temporal analysis
         /// </summary>
-        internal static TIMEOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
+        public static void InitializeTIME(this OWLOntology ontology)
         {
-            if (graph == null)
-                throw new OWLSemanticsException("Cannot get TIME ontology from RDFGraph because given \"graph\" parameter is null");
+            #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot initialize temporal ontology because given \"ontology\" parameter is null");
+            #endregion
 
-            //Get OWL ontology with TIME extension points
-            OWLOntology ontology = OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
-               classModelExtensionPoint: TIMEClassModelExtensionPoint,
-               propertyModelExtensionPoint: TIMEPropertyModelExtensionPoint,
-               dataExtensionPoint: TIMEDataExtensionPoint);
-
-            //Build GEO ontology from OWL ontology
-            TIMEOntology geoOntology = new TIMEOntology(ontology.ToString()) { 
-                Model = ontology.Model, 
-                Data = ontology.Data, 
-                OBoxGraph = ontology.OBoxGraph
-            };
-
-            return geoOntology;
+            BuildTIMEClassModel(ontology.Model.ClassModel);
+            BuildTIMEPropertyModel(ontology.Model.PropertyModel);
+            BuildTIMEData(ontology.Data);
         }
         #endregion
 
         #region Utilities
-        /// <summary>
-        /// Extends OWL class model loading with support for temporal entities
-        /// </summary>
-        internal static void TIMEClassModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => BuildTIMEClassModel(ontology.Model.ClassModel);
-
-        /// <summary>
-        /// Extends OWL property model loading with support for temporal entities
-        /// </summary>
-        internal static void TIMEPropertyModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => BuildTIMEPropertyModel(ontology.Model.PropertyModel);
-
-        /// <summary>
-        /// Extends OWL data loading with support for temporal entities
-        /// </summary>
-        internal static void TIMEDataExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => BuildTIMEData(ontology.Data);
-
-        /// <summary>
-        /// Builds a reference temporal model
-        /// </summary>
-        internal static OWLOntologyModel BuildTIMEModel()
-            => new OWLOntologyModel() { ClassModel = BuildTIMEClassModel(), PropertyModel = BuildTIMEPropertyModel() };
-
         /// <summary>
         /// Builds a reference temporal class model
         /// </summary>
