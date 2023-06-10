@@ -75,7 +75,6 @@ namespace RDFSharp.Semantics.Extensions.GEO.Test
             graph.AddTriple(new RDFTriple(new RDFResource("ex:geometrycollection"), RDFVocabulary.GEOSPARQL.AS_WKT, new RDFTypedLiteral("GEOMETRYCOLLECTION (POINT (9.18854 45.464664), POINT (12.496365 41.902782), POINT (14.2681244 40.8517746), LINESTRING (9.18854 45.464664, 12.496365 41.902782), LINESTRING (14.2681244 40.8517746, 9.18854 45.464664), POLYGON ((9.18854 45.464664, 12.496365 41.902782, 14.2681244 40.8517746, 9.18854 45.464664)), POLYGON ((12.496365 41.902782, 14.2681244 40.8517746, 9.18854 45.464664, 12.496365 41.902782)))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:geometrycollection"), RDFVocabulary.GEOSPARQL.AS_GML, new RDFTypedLiteral("<gml:MultiGeometry xmlns:gml=\"http://www.opengis.net/gml/3.2\"><gml:geometryMember><gml:Point><gml:pos>9.18854 45.464664</gml:pos></gml:Point></gml:geometryMember><gml:geometryMember><gml:Point><gml:pos>12.496365 41.902782</gml:pos></gml:Point></gml:geometryMember><gml:geometryMember><gml:Point><gml:pos>14.2681244 40.8517746</gml:pos></gml:Point></gml:geometryMember><gml:geometryMember><gml:LineString><gml:posList>9.18854 45.464664 12.496365 41.902782</gml:posList></gml:LineString></gml:geometryMember><gml:geometryMember><gml:LineString><gml:posList>14.2681244 40.8517746 9.18854 45.464664</gml:posList></gml:LineString></gml:geometryMember><gml:geometryMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList>9.18854 45.464664 12.496365 41.902782 14.2681244 40.8517746 9.18854 45.464664</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:geometryMember><gml:geometryMember><gml:Polygon><gml:exterior><gml:LinearRing><gml:posList>12.496365 41.902782 14.2681244 40.8517746 9.18854 45.464664 12.496365 41.902782</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:geometryMember></gml:MultiGeometry>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)));
 
-
             //LOAD OWL+GEO
             OWLOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
 
@@ -92,52 +91,25 @@ namespace RDFSharp.Semantics.Extensions.GEO.Test
         }
 
         [TestMethod]
-        public void ShouldLoadFromGraphWithoutSpatialRepresentations()
+        public void ShouldInitializeGEO()
         {
-            RDFGraph graph = new RDFGraph();
+            OWLOntology ontology = new OWLOntology("ex:geoOnt");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:MyClass"));
 
-            //OWL knowledge
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:City"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:hasName"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:connectedToCity"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:connectedToCity"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.REFLEXIVE_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:connectedToCity"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("two cities are connected each other")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milan"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:City")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:rome"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:City")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:naples"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:City")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milan"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is the city of Milan,IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milan"), new RDFResource("ex:hasName"), new RDFPlainLiteral("Milano", "it-IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:rome"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is the city of Rome,IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:rome"), new RDFResource("ex:hasName"), new RDFPlainLiteral("Roma", "it-IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:naples"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is the city of Naples,IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:naples"), new RDFResource("ex:hasName"), new RDFPlainLiteral("Napoli", "it-IT")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milan"), new RDFResource("ex:connectedToCity"), new RDFResource("ex:rome")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:rome"), new RDFResource("ex:connectedToCity"), new RDFResource("ex:naples")));
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:MyClass")));
+            Assert.IsFalse(ontology.Model.ClassModel.CheckHasSimpleClass(RDFVocabulary.GEOSPARQL.SF.POINT));
 
-            //GEO knowledge
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milan"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.POINT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:rome"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.POINT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:naples"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.POINT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milanrome"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.LINESTRING));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milanromenaples"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.POLYGON));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milanrome_mpt"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.MULTI_POINT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milanromenaples_mls"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.MULTI_LINESTRING));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:milanromenaples_mpl"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.MULTI_POLYGON));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:geometrycollection"), RDFVocabulary.RDF.TYPE, RDFVocabulary.GEOSPARQL.SF.GEOMETRY_COLLECTION));
+            ontology.InitializeGEO();
 
-            //LOAD OWL+GEO
-            OWLOntology geoOntology = GEOOntologyLoader.FromRDFGraph(graph, null);
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:MyClass")));
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+        }
 
-            //Test persistence of OWL+GEO knowledge
-            Assert.IsNotNull(geoOntology);
-            Assert.IsTrue(geoOntology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
-            Assert.IsTrue(geoOntology.Model.ClassModel.ClassesCount == 22);
-            Assert.IsTrue(geoOntology.Model.PropertyModel.PropertiesCount == 39);
-            Assert.IsTrue(geoOntology.Data.IndividualsCount == 9);
-            Assert.IsTrue(geoOntology.Model.PropertyModel.CheckHasAnnotation(new RDFResource("ex:connectedToCity"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("two cities are connected each other")));
-            Assert.IsTrue(geoOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:milan"), new RDFResource("ex:connectedToCity"), new RDFResource("ex:rome")));
-            Assert.IsTrue(geoOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:milan"), new RDFResource("ex:hasName"), new RDFPlainLiteral("Milano", "it-IT")));
-            Assert.IsTrue(geoOntology.Data.CheckHasAnnotation(new RDFResource("ex:milan"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is the city of Milan,IT")));
+        [TestMethod]
+        public void ShouldThrowExceptionOnInitializingGEOBecauseNullOntology()
+        {
+            OWLOntology ontology = default;
+            Assert.ThrowsException<OWLSemanticsException>(() => ontology.InitializeGEO());
         }
         #endregion
     }

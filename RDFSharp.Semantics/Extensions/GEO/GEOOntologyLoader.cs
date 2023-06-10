@@ -25,12 +25,26 @@ namespace RDFSharp.Semantics.Extensions.GEO
     {
         #region Methods
         /// <summary>
-        /// Gets an ontology representation of the given graph and initializes support for GeoSPARQL
+        /// Prepares the given ontology for GeoSPARQL support, making it suitable for geospatial analysis
+        /// </summary>
+        public static void InitializeGEO(this OWLOntology ontology)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot initialize geospatial ontology because given \"ontology\" parameter is null");
+            #endregion
+
+            BuildGEOClassModel(ontology.Model.ClassModel);
+            BuildGEOPropertyModel(ontology.Model.PropertyModel);
+        }
+
+        /// <summary>
+        /// Gets an ontology representation of the given graph, also providing built-in support for GeoSPARQL
         /// </summary>
         public static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
             => OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
-                   classModelExtensionPoint: GEOClassModelExtensionPoint,
-                   propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
+                  classModelExtensionPoint: GEOClassModelExtensionPoint,
+                  propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
         #endregion
 
         #region Utilities
