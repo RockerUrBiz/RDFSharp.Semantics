@@ -15,7 +15,6 @@
 */
 
 using RDFSharp.Model;
-using System;
 
 namespace RDFSharp.Semantics
 {
@@ -28,14 +27,16 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology model representation of the given graph
         /// </summary>
-        internal static void LoadModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, Action<OWLOntology,RDFGraph> classModelExtensionPoint=null, Action<OWLOntology,RDFGraph> propertyModelExtensionPoint=null)
+        internal static void LoadModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get ontology model from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as Model...", graph.Context));
-            ontology.LoadPropertyModel(graph, loaderOptions, propertyModelExtensionPoint);
-            ontology.LoadClassModel(graph, loaderOptions, classModelExtensionPoint);
+            ontology.LoadPropertyModel(graph, loaderOptions);
+            ontology.LoadClassModel(graph, loaderOptions);
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Model", graph.Context));
         }
         #endregion

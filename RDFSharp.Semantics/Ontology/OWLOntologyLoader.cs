@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
+using RDFSharp.Semantics.Extensions.GEO;
 
 namespace RDFSharp.Semantics
 {
@@ -30,17 +31,26 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology representation of the given graph
         /// </summary>
-        internal static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, Action<OWLOntology,RDFGraph> classModelExtensionPoint=null, Action<OWLOntology,RDFGraph> propertyModelExtensionPoint=null, Action<OWLOntology,RDFGraph> dataExtensionPoint=null)
+        internal static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get ontology from RDFGraph because given \"graph\" parameter is null");
             if (loaderOptions == null)
                 loaderOptions = OWLOntologyLoaderOptions.DefaultOptions;
+            #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as Ontology...", graph.Context));
+            
+            //Ontology loading
             LoadOntology(graph, out OWLOntology ontology);
-            ontology.LoadModel(graph, loaderOptions, classModelExtensionPoint, propertyModelExtensionPoint);
-            ontology.LoadData(graph, loaderOptions, dataExtensionPoint);
+            ontology.LoadModel(graph, loaderOptions);
+            ontology.LoadData(graph, loaderOptions);
+
+            //Extension points
+            if (loaderOptions.EnableGeoSPARQLSupport)
+                ontology.InitializeGEO();
+
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Ontology", graph.Context));
 
             return ontology;
@@ -104,6 +114,12 @@ namespace RDFSharp.Semantics
         /// [Default: False]
         /// </summary>
         public bool EnableAutomaticEntityDeclaration { get; set; } = false;
+
+        /// <summary>
+        /// Tells the ontology loader to inject GeoSPARQL T-BOX<br/>
+        /// [Default: False]
+        /// </summary>
+        public bool EnableGeoSPARQLSupport { get; set; } = false;
         #endregion
     }
 }

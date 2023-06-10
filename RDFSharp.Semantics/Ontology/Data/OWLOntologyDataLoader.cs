@@ -20,6 +20,7 @@ using System.Data;
 using System.Linq;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using RDFSharp.Semantics.Extensions.GEO;
 
 namespace RDFSharp.Semantics
 {
@@ -32,10 +33,12 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology data representation of the given graph
         /// </summary>
-        internal static void LoadData(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, Action<OWLOntology,RDFGraph> dataExtensionPoint=null)
+        internal static void LoadData(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get ontology data from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as Data...", graph.Context));
 
@@ -98,9 +101,6 @@ namespace RDFSharp.Semantics
                         differentIndividuals.Add((RDFResource)differentIndividual);
                     ontology.Data.DeclareAllDifferentIndividuals(allDifferent, differentIndividuals, loaderOptions);
                 }
-
-            //Extension point (e.g.: SKOS, GEO)
-            dataExtensionPoint?.Invoke(ontology, graph);
             #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Data", graph.Context));

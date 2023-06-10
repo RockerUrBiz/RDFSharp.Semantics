@@ -37,33 +37,13 @@ namespace RDFSharp.Semantics.Extensions.GEO
             BuildGEOClassModel(ontology.Model.ClassModel);
             BuildGEOPropertyModel(ontology.Model.PropertyModel);
         }
-
-        /// <summary>
-        /// Gets an ontology representation of the given graph, also providing built-in support for GeoSPARQL
-        /// </summary>
-        public static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
-            => OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
-                  classModelExtensionPoint: GEOClassModelExtensionPoint,
-                  propertyModelExtensionPoint: GEOPropertyModelExtensionPoint);
         #endregion
 
         #region Utilities
         /// <summary>
-        /// Extends OWL class model loading with support for spatial entities
-        /// </summary>
-        internal static void GEOClassModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => BuildGEOClassModel(ontology.Model.ClassModel);
-
-        /// <summary>
-        /// Extends OWL property model loading with support for spatial entities
-        /// </summary>
-        internal static void GEOPropertyModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => BuildGEOPropertyModel(ontology.Model.PropertyModel);
-
-        /// <summary>
         /// Builds a reference spatial class model
         /// </summary>
-        internal static OWLOntologyClassModel BuildGEOClassModel(OWLOntologyClassModel existingClassModel = null)
+        internal static OWLOntologyClassModel BuildGEOClassModel(OWLOntologyClassModel existingClassModel=null)
         {
             OWLOntologyClassModel classModel = existingClassModel ?? new OWLOntologyClassModel();
 
@@ -132,7 +112,7 @@ namespace RDFSharp.Semantics.Extensions.GEO
         /// <summary>
         /// Builds a reference spatial property model
         /// </summary>
-        internal static OWLOntologyPropertyModel BuildGEOPropertyModel(OWLOntologyPropertyModel existingPropertyModel = null)
+        internal static OWLOntologyPropertyModel BuildGEOPropertyModel(OWLOntologyPropertyModel existingPropertyModel=null)
         {
             OWLOntologyPropertyModel propertyModel = existingPropertyModel ?? new OWLOntologyPropertyModel();
 

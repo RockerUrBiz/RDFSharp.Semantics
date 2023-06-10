@@ -31,10 +31,12 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology property model representation of the given graph
         /// </summary>
-        internal static void LoadPropertyModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, Action<OWLOntology,RDFGraph> propertyModelExtensionPoint=null)
+        internal static void LoadPropertyModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get ontology property model from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as PropertyModel...", graph.Context));
 
@@ -110,9 +112,6 @@ namespace RDFSharp.Semantics
                         disjointProperties.Add((RDFResource)disjointProperty);
                     ontology.Model.PropertyModel.DeclareAllDisjointProperties(allDisjointProperties, disjointProperties, loaderOptions);
                 }
-
-            //Extension point (e.g.: SKOS, GEO)
-            propertyModelExtensionPoint?.Invoke(ontology, graph);
             #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as PropertyModel", graph.Context));

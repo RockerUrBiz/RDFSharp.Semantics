@@ -32,10 +32,12 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology class model representation of the given graph
         /// </summary>
-        internal static void LoadClassModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, Action<OWLOntology,RDFGraph> classModelExtensionPoint=null)
+        internal static void LoadClassModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get ontology class model from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as ClassModel...", graph.Context));
 
@@ -124,9 +126,6 @@ namespace RDFSharp.Semantics
                         disjointClasses.Add((RDFResource)disjointClass);
                     ontology.Model.ClassModel.DeclareAllDisjointClasses(allDisjointClasses, disjointClasses, loaderOptions);
                 }
-
-            //Extension point (e.g.: SKOS, GEO)
-            classModelExtensionPoint?.Invoke(ontology, graph);
             #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as ClassModel", graph.Context));
