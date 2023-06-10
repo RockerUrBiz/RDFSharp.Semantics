@@ -42,14 +42,16 @@ namespace RDFSharp.Semantics
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as Ontology...", graph.Context));
             
-            //Ontology loading
+            //Ontology creation
             LoadOntology(graph, out OWLOntology ontology);
-            ontology.LoadModel(graph, loaderOptions);
-            ontology.LoadData(graph, loaderOptions);
 
-            //Extension points
+            //Extension points (GEO, TIME, SKOS)
             if (loaderOptions.EnableGeoSPARQLSupport)
                 ontology.InitializeGEO();
+
+            //Ontology loading
+            ontology.LoadModel(graph, loaderOptions);
+            ontology.LoadData(graph, loaderOptions);
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Ontology", graph.Context));
 
