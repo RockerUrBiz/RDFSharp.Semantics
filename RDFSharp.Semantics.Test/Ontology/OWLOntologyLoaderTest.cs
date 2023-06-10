@@ -28,6 +28,7 @@ namespace RDFSharp.Semantics.Test
     {
         #region Initialize
         private OWLOntology Ontology { get; set; }
+        private OWLOntology OntologyWithGeoSPARQL { get; set; }
 
         [TestInitialize]
         public void Initialize()
@@ -224,12 +225,21 @@ namespace RDFSharp.Semantics.Test
 
             //Load
             Ontology = OWLOntology.FromRDFGraph(graph);
+            OntologyWithGeoSPARQL = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableGeoSPARQLSupport=true });
 
             Assert.IsNotNull(Ontology);
             Assert.IsNotNull(Ontology.Model);
             Assert.IsNotNull(Ontology.Model.ClassModel);
             Assert.IsNotNull(Ontology.Model.PropertyModel);
             Assert.IsNotNull(Ontology.Data);
+            Assert.IsFalse(Ontology.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+
+            Assert.IsNotNull(OntologyWithGeoSPARQL);
+            Assert.IsNotNull(OntologyWithGeoSPARQL.Model);
+            Assert.IsNotNull(OntologyWithGeoSPARQL.Model.ClassModel);
+            Assert.IsNotNull(OntologyWithGeoSPARQL.Model.PropertyModel);
+            Assert.IsNotNull(OntologyWithGeoSPARQL.Data);
+            Assert.IsTrue(OntologyWithGeoSPARQL.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
         }
         #endregion
 
