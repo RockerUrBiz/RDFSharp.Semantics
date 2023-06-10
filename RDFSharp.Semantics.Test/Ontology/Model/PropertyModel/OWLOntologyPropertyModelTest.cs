@@ -633,47 +633,6 @@ namespace RDFSharp.Semantics.Test
         }
 
         [TestMethod]
-        public void ShouldDeclareAllDisjointPropertiesWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") },
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
-
-            Assert.IsTrue(propertyModel.PropertiesCount == 2);
-            Assert.IsTrue(propertyModel.AllDisjointPropertiesCount == 1);
-            Assert.IsTrue(propertyModel.AnnotationPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.AsymmetricPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
-            Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
-            Assert.IsTrue(propertyModel.ObjectPropertiesCount == 2);
-            Assert.IsTrue(propertyModel.ReflexivePropertiesCount == 0);
-            Assert.IsTrue(propertyModel.SymmetricPropertiesCount == 0);
-            Assert.IsTrue(propertyModel.TransitivePropertiesCount == 0);
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 10);
-            Assert.IsTrue(propertyModel.TBoxGraph[new RDFResource("ex:allDisjointProperties"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[new RDFResource("ex:allDisjointProperties"), RDFVocabulary.OWL.MEMBERS, null, null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:objprop1"), null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:objprop2"), null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-            Assert.IsTrue(propertyModel.TBoxGraph[new RDFResource("ex:objprop1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[new RDFResource("ex:objprop2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-
-            int adjp = 0;
-            IEnumerator<RDFResource> allDisjointPropertiesEnumerator = propertyModel.AllDisjointPropertiesEnumerator;
-            while (allDisjointPropertiesEnumerator.MoveNext())
-            {
-                Assert.IsTrue(allDisjointPropertiesEnumerator.Current.Equals(new RDFResource("ex:allDisjointProperties")));
-                adjp++;
-            }
-            Assert.IsTrue(adjp == 1);
-        }
-
-        [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointPropertiesBecauseNullProperty()
             => Assert.ThrowsException<OWLSemanticsException>(() => new OWLOntologyPropertyModel().DeclareAllDisjointProperties(null, new List<RDFResource>() { new RDFResource("ex:objprop1") }));
 
@@ -894,20 +853,6 @@ namespace RDFSharp.Semantics.Test
         }
 
         [TestMethod]
-        public void ShouldDeclareSubPropertiesWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
-
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 3);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
         public void ShouldEmitWarningOnDeclaringSubPropertiesBecauseIncompatibleProperties()
         {
             string warningMsg = null;
@@ -924,26 +869,6 @@ namespace RDFSharp.Semantics.Test
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyA"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
-        public void ShouldAcceptDeclaringIncompatibleSubPropertiesBecauseDisabledTaxonomyProtection()
-        {
-            string warningMsg = null;
-            OWLSemanticsEvents.OnSemanticsWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });  //OWL-DL contraddiction
-
-            Assert.IsNull(warningMsg);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyA"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
             Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
         }
 
@@ -984,21 +909,6 @@ namespace RDFSharp.Semantics.Test
         }
 
         [TestMethod]
-        public void ShouldDeclareEquivalentPropertiesWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
-
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 4);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.EQUIVALENT_PROPERTY, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.EQUIVALENT_PROPERTY, new RDFResource("ex:propertyA"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
         public void ShouldEmitWarningOnDeclaringEquivalentPropertiesBecauseIncompatibleProperties()
         {
             string warningMsg = null;
@@ -1015,27 +925,6 @@ namespace RDFSharp.Semantics.Test
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
-        public void ShouldAcceptDeclaringIncompatibleEquivalentPropertiesBecauseDisabledTaxonomyProtection()
-        {
-            string warningMsg = null;
-            OWLSemanticsEvents.OnSemanticsWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });
-            propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });  //OWL-DL contraddiction
-
-            Assert.IsNull(warningMsg);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.EQUIVALENT_PROPERTY, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.EQUIVALENT_PROPERTY, new RDFResource("ex:propertyA"))));
             Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
         }
 
@@ -1076,21 +965,6 @@ namespace RDFSharp.Semantics.Test
         }
 
         [TestMethod]
-        public void ShouldDeclareDisjointPropertiesWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
-
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 4);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, new RDFResource("ex:propertyA"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
         public void ShouldEmitWarningOnDeclaringDisjointPropertiesBecauseIncompatibleProperties()
         {
             string warningMsg = null;
@@ -1107,27 +981,6 @@ namespace RDFSharp.Semantics.Test
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
-        public void ShouldAcceptDeclaringIncompatibleDisjointPropertiesBecauseDisabledTaxonomyProtection()
-        {
-            string warningMsg = null;
-            OWLSemanticsEvents.OnSemanticsWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });
-            propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });  //OWL-DL contraddiction
-
-            Assert.IsNull(warningMsg);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, new RDFResource("ex:propertyA"))));
             Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
         }
 
@@ -1168,21 +1021,6 @@ namespace RDFSharp.Semantics.Test
         }
 
         [TestMethod]
-        public void ShouldDeclareInversePropertiesWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareInverseProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
-
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 4);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:propertyA"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
         public void ShouldEmitWarningOnDeclaringInversePropertiesBecauseIncompatibleProperties()
         {
             string warningMsg = null;
@@ -1199,27 +1037,6 @@ namespace RDFSharp.Semantics.Test
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
             Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
-        public void ShouldAcceptDeclaringIncompatibleInversePropertiesBecauseDisabledTaxonomyProtection()
-        {
-            string warningMsg = null;
-            OWLSemanticsEvents.OnSemanticsWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });
-            propertyModel.DeclareInverseProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB"),
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true, EnableTaxonomyProtection = false });  //OWL-DL contraddiction
-
-            Assert.IsNull(warningMsg);
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY)));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyA"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:propertyB"))));
-            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:propertyB"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:propertyA"))));
             Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
         }
 
@@ -1250,23 +1067,6 @@ namespace RDFSharp.Semantics.Test
             propertyModel.DeclareObjectProperty(new RDFResource("ex:objprop1"));
             propertyModel.DeclareObjectProperty(new RDFResource("ex:objprop2"));
             propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") });
-
-            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 10);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 3);
-            Assert.IsTrue(propertyModel.TBoxGraph[new RDFResource("ex:propertyChainAxiom"), RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:objprop1"), null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:objprop2"), null].TriplesCount == 1);
-            Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
-        }
-
-        [TestMethod]
-        public void ShouldDeclarePropertyChainAxiomWithAutomaticDeclaration()
-        {
-            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") },
-                new OWLOntologyLoaderOptions() { EnableAutomaticEntityDeclaration = true });
 
             Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 10);
             Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 3);

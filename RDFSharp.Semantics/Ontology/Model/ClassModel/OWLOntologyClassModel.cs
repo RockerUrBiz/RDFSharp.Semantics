@@ -342,10 +342,6 @@ namespace RDFSharp.Semantics
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(allValuesFromClass);
-
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.ALL_VALUES_FROM, allValuesFromClass));
 
@@ -364,10 +360,6 @@ namespace RDFSharp.Semantics
 
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(someValuesFromClass);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, someValuesFromClass));
@@ -515,10 +507,6 @@ namespace RDFSharp.Semantics
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(onClass);
-
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, new RDFTypedLiteral(cardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.ON_CLASS, onClass));
@@ -539,10 +527,6 @@ namespace RDFSharp.Semantics
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(onClass);
-
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, new RDFTypedLiteral(minCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.ON_CLASS, onClass));
@@ -562,10 +546,6 @@ namespace RDFSharp.Semantics
 
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(onClass);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, new RDFTypedLiteral(maxCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -588,10 +568,6 @@ namespace RDFSharp.Semantics
 
             //Declare restriction to the model
             DeclareRestriction(owlRestriction, onProperty, loaderOptions);
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(onClass);
 
             //Add knowledge to the T-BOX
             if (minCardinality == maxCardinality)
@@ -655,10 +631,6 @@ namespace RDFSharp.Semantics
             //Add class to the model
             DeclareClass(owlClass);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                unionClasses.ForEach(cls => DeclareClass(cls));
-
             //Add knowledge to the T-BOX
             RDFCollection classesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             unionClasses.ForEach(cls => classesCollection.AddItem(cls));
@@ -687,10 +659,6 @@ namespace RDFSharp.Semantics
             //Declare class to the model
             DeclareClass(owlClass);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                intersectionClasses.ForEach(cls => DeclareClass(cls));
-
             //Add knowledge to the T-BOX
             RDFCollection classesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             intersectionClasses.ForEach(cls => classesCollection.AddItem(cls));
@@ -717,10 +685,6 @@ namespace RDFSharp.Semantics
             //Declare class to the model
             DeclareClass(owlClass);
 
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(complementClass);
-
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlClass, RDFVocabulary.OWL.COMPLEMENT_OF, complementClass));
 
@@ -745,10 +709,6 @@ namespace RDFSharp.Semantics
 
             //Add class to the model
             DeclareClass(owlClass);
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                disjointClasses.ForEach(cls => DeclareClass(cls));
 
             //Add knowledge to the T-BOX
             RDFCollection disjointClassesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
@@ -775,10 +735,6 @@ namespace RDFSharp.Semantics
 
             //Declare class to the model
             DeclareClass(owlClass);
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                disjointClasses.ForEach(cls => DeclareClass(cls));
 
             //Add knowledge to the T-BOX
             RDFCollection allDisjointClassesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
@@ -845,7 +801,7 @@ namespace RDFSharp.Semantics
             bool OWLDLIntegrityChecks()
                 => !childClass.CheckReservedClass()
                       && !motherClass.CheckReservedClass()
-                        && (!loaderOptions.EnableTaxonomyProtection || this.CheckSubClassCompatibility(childClass, motherClass));
+                        && this.CheckSubClassCompatibility(childClass, motherClass);
             #endregion
 
             if (childClass == null)
@@ -857,16 +813,7 @@ namespace RDFSharp.Semantics
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
-            {
-                //If instructed, we have to automatically declare entities
-                if (loaderOptions.EnableAutomaticEntityDeclaration)
-                {
-                    DeclareClass(childClass);
-                    DeclareClass(motherClass);
-                }
-
                 TBoxGraph.AddTriple(new RDFTriple(childClass, RDFVocabulary.RDFS.SUB_CLASS_OF, motherClass));
-            }   
             else
                 OWLSemanticsEvents.RaiseSemanticsWarning(string.Format("SubClass relation between class '{0}' and class '{1}' cannot be declared to the model because it would violate OWL-DL integrity", childClass, motherClass));
 
@@ -884,7 +831,7 @@ namespace RDFSharp.Semantics
             bool OWLDLIntegrityChecks()
                 => !leftClass.CheckReservedClass()
                       && !rightClass.CheckReservedClass()
-                        && (!loaderOptions.EnableTaxonomyProtection || this.CheckEquivalentClassCompatibility(leftClass, rightClass));
+                        && this.CheckEquivalentClassCompatibility(leftClass, rightClass);
             #endregion
 
             if (leftClass == null)
@@ -897,13 +844,6 @@ namespace RDFSharp.Semantics
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
             {
-                //If instructed, we have to automatically declare entities
-                if (loaderOptions.EnableAutomaticEntityDeclaration)
-                {
-                    DeclareClass(leftClass);
-                    DeclareClass(rightClass);
-                }
-
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:equivalentClass relation
@@ -926,7 +866,7 @@ namespace RDFSharp.Semantics
             bool OWLDLIntegrityChecks()
                 => !leftClass.CheckReservedClass()
                       && !rightClass.CheckReservedClass()
-                        && (!loaderOptions.EnableTaxonomyProtection || this.CheckDisjointWithCompatibility(leftClass, rightClass));
+                        && this.CheckDisjointWithCompatibility(leftClass, rightClass);
             #endregion
 
             if (leftClass == null)
@@ -939,13 +879,6 @@ namespace RDFSharp.Semantics
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
             {
-                //If instructed, we have to automatically declare entities
-                if (loaderOptions.EnableAutomaticEntityDeclaration)
-                {
-                    DeclareClass(leftClass);
-                    DeclareClass(rightClass);
-                }
-
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.DISJOINT_WITH, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:disjointWith relation
@@ -970,10 +903,6 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare owl:hasKey relation to the model because given \"keyProperties\" parameter is null");
             if (keyProperties.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:hasKey relation to the model because given \"keyProperties\" parameter is an empty list");
-
-            //If instructed, we have to automatically declare entities
-            if (loaderOptions.EnableAutomaticEntityDeclaration)
-                DeclareClass(owlClass);
 
             //Add knowledge to the T-BOX
             RDFCollection keyPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);

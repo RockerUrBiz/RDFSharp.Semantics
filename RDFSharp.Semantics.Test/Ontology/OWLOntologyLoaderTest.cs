@@ -226,7 +226,7 @@ namespace RDFSharp.Semantics.Test
             //Load
             Ontology = OWLOntology.FromRDFGraph(graph);
             OntologyWithExtensions = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { 
-                EnableGeoSPARQLSupport=true, EnableOWLTimeSupport=true });
+                EnableGEOSupport=true, EnableTIMESupport=true });
 
             Assert.IsNotNull(Ontology);
             Assert.IsNotNull(Ontology.Model);

@@ -46,9 +46,9 @@ namespace RDFSharp.Semantics
             LoadOntology(graph, out OWLOntology ontology);
 
             //Extension points (GEO, TIME, SKOS)
-            if (loaderOptions.EnableGeoSPARQLSupport)
+            if (loaderOptions.EnableGEOSupport)
                 ontology.InitializeGEO();
-            if (loaderOptions.EnableOWLTimeSupport)
+            if (loaderOptions.EnableTIMESupport)
                 ontology.InitializeTIME();
 
             //Ontology loading
@@ -108,28 +108,16 @@ namespace RDFSharp.Semantics
         internal static OWLOntologyLoaderOptions DefaultOptions => new OWLOntologyLoaderOptions();
 
         /// <summary>
-        /// Tells the ontology loader to do its best for preserving ontology taxonomies from modeling errors, inconsistencies and contraddictions<br/>
-        /// [Default: True]
-        /// </summary>
-        public bool EnableTaxonomyProtection { get; set; } = true;
-
-        /// <summary>
-        /// Tells the ontology loader to try declaring entities (classes as simple classes, properties as object properties, individuals) when not explicitly declared<br/>
+        /// Tells the ontology loader to inject GeoSPARQL T-BOX during the loading process<br/>
         /// [Default: False]
         /// </summary>
-        public bool EnableAutomaticEntityDeclaration { get; set; } = false;
+        public bool EnableGEOSupport { get; set; } = false;
 
         /// <summary>
-        /// Tells the ontology loader to inject GeoSPARQL T-BOX<br/>
+        /// Tells the ontology loader to inject OWL-TIME T-BOX and A-BOX during the loading process<br/>
         /// [Default: False]
         /// </summary>
-        public bool EnableGeoSPARQLSupport { get; set; } = false;
-
-        /// <summary>
-        /// Tells the ontology loader to inject OWL-TIME T-BOX and A-BOX<br/>
-        /// [Default: False]
-        /// </summary>
-        public bool EnableOWLTimeSupport { get; set; } = false;
+        public bool EnableTIMESupport { get; set; } = false;
         #endregion
     }
 }
