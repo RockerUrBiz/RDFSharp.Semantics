@@ -165,8 +165,10 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareConcept(RDFResource skosConcept)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:Concept instance to the concept scheme because given \"skosConcept\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.DeclareIndividual(skosConcept);
@@ -181,12 +183,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareCollection(RDFResource skosCollection, List<RDFResource> skosConcepts)
         {
+            #region Guards
             if (skosCollection == null)
                 throw new OWLSemanticsException("Cannot declare skos:Collection instance to the concept scheme because given \"skosCollection\" parameter is null");
             if (skosConcepts == null)
                 throw new OWLSemanticsException("Cannot declare skos:Collection instance to the concept scheme because given \"skosConcepts\" parameter is null");
             if (skosConcepts.Count == 0)
                 throw new OWLSemanticsException("Cannot declare skos:Collection instance to the concept scheme because given \"skosConcepts\" parameter is an empty list");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.DeclareIndividual(skosCollection);
@@ -203,12 +207,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareOrderedCollection(RDFResource skosOrderedCollection, List<RDFResource> skosConcepts)
         {
+            #region Guards
             if (skosOrderedCollection == null)
                 throw new OWLSemanticsException("Cannot declare skos:OrderedCollection instance to the concept scheme because given \"skosOrderedCollection\" parameter is null");
             if (skosConcepts == null)
                 throw new OWLSemanticsException("Cannot declare skos:OrderedCollection instance to the concept scheme because given \"skosConcepts\" parameter is null");
             if (skosConcepts.Count == 0)
                 throw new OWLSemanticsException("Cannot declare skos:OrderedCollection instance to the concept scheme because given \"skosConcepts\" parameter is an empty list");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.DeclareIndividual(skosOrderedCollection);
@@ -230,12 +236,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme Annotate(RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (annotationProperty == null)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(this, annotationProperty, annotationValue));
@@ -248,12 +256,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme Annotate(RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (annotationProperty == null)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate concept scheme because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(this, annotationProperty, annotationValue));
@@ -266,6 +276,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateConcept(RDFResource skosConcept, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot annotate concept because given \"skosConcept\" parameter is null");
             if (annotationProperty == null)
@@ -274,6 +285,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate concept because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate concept because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, annotationProperty, annotationValue));
@@ -286,6 +298,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateConcept(RDFResource skosConcept, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot annotate concept because given \"skosConcept\" parameter is null");
             if (annotationProperty == null)
@@ -294,6 +307,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate concept because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate concept because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, annotationProperty, annotationValue));
@@ -306,6 +320,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateCollection(RDFResource skosCollection, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (skosCollection == null)
                 throw new OWLSemanticsException("Cannot annotate collection because given \"skosCollection\" parameter is null");
             if (annotationProperty == null)
@@ -314,6 +329,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate collection because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate collection because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosCollection, annotationProperty, annotationValue));
@@ -326,6 +342,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateCollection(RDFResource skosCollection, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (skosCollection == null)
                 throw new OWLSemanticsException("Cannot annotate collection because given \"skosCollection\" parameter is null");
             if (annotationProperty == null)
@@ -334,6 +351,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate collection because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate collection because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosCollection, annotationProperty, annotationValue));
@@ -346,6 +364,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateOrderedCollection(RDFResource skosOrderedCollection, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (skosOrderedCollection == null)
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"skosOrderedCollection\" parameter is null");
             if (annotationProperty == null)
@@ -354,6 +373,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosOrderedCollection, annotationProperty, annotationValue));
@@ -366,6 +386,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme AnnotateOrderedCollection(RDFResource skosOrderedCollection, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (skosOrderedCollection == null)
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"skosOrderedCollection\" parameter is null");
             if (annotationProperty == null)
@@ -374,6 +395,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate ordered collection because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosOrderedCollection, annotationProperty, annotationValue));
@@ -386,10 +408,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithNote(RDFResource skosConcept, RDFLiteral noteValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:note annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (noteValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:note annotation to the concept scheme because given \"noteValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.NOTE, noteValue));
@@ -402,10 +426,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithChangeNote(RDFResource skosConcept, RDFLiteral changeNoteValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:changeNote annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (changeNoteValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:changeNote annotation to the concept scheme because given \"changeNoteValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.CHANGE_NOTE, changeNoteValue));
@@ -418,10 +444,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithEditorialNote(RDFResource skosConcept, RDFLiteral editorialNoteValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:editorialNote annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (editorialNoteValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:editorialNote annotation to the concept scheme because given \"editorialNoteValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EDITORIAL_NOTE, editorialNoteValue));
@@ -434,10 +462,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithHistoryNote(RDFResource skosConcept, RDFLiteral historyNoteValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:historyNote annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (historyNoteValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:historyNote annotation to the concept scheme because given \"historyNoteValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.HISTORY_NOTE, historyNoteValue));
@@ -450,10 +480,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithScopeNote(RDFResource skosConcept, RDFLiteral scopeNoteValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:scopeNote annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (scopeNoteValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:scopeNote annotation to the concept scheme because given \"scopeNoteValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.SCOPE_NOTE, scopeNoteValue));
@@ -466,10 +498,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithDefinition(RDFResource skosConcept, RDFLiteral definitionValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:definition annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (definitionValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:definition annotation to the concept scheme because given \"definitionValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.DEFINITION, definitionValue));
@@ -482,10 +516,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DocumentConceptWithExample(RDFResource skosConcept, RDFLiteral exampleValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:example annotation to the concept scheme because given \"skosConcept\" parameter is null");
             if (exampleValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:example annotation to the concept scheme because given \"exampleValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EXAMPLE, exampleValue));
@@ -503,10 +539,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckPreferredLabelCompatibility(skosConcept, preferredLabelValue);
             #endregion
 
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:prefLabel relation to the concept scheme because given \"skosConcept\" parameter is null");
             if (preferredLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:prefLabel relation to the concept scheme because given \"preferredLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -530,10 +568,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckAlternativeLabelCompatibility(skosConcept, alternativeLabelValue);
             #endregion
 
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:altLabel relation to the concept scheme because given \"skosConcept\" parameter is null");
             if (alternativeLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:altLabel relation to the concept scheme because given \"alternativeLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -557,10 +597,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckHiddenLabelCompatibility(skosConcept, hiddenLabelValue);
             #endregion
 
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:hiddenLabel relation to the concept scheme because given \"skosConcept\" parameter is null");
             if (hiddenLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:hiddenLabel relation to the concept scheme because given \"hiddenLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -581,8 +623,10 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareTopConcept(RDFResource skosConcept)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:topConceptOf relation to the concept scheme because given \"skosConcept\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.TOP_CONCEPT_OF, this));
@@ -598,10 +642,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareSemanticRelatedConcepts(RDFResource leftConcept, RDFResource rightConcept)
         {
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:semanticRelation relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:semanticRelation relation to the concept scheme because given \"rightConcept\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(leftConcept, RDFVocabulary.SKOS.SEMANTIC_RELATION, rightConcept));
@@ -614,10 +660,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareMappingRelatedConcepts(RDFResource leftConcept, RDFResource rightConcept)
         {
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:mappingRelation relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:mappingRelation relation to the concept scheme because given \"rightConcept\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(leftConcept, RDFVocabulary.SKOS.MAPPING_RELATION, rightConcept));
@@ -630,10 +678,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareRelatedConcepts(RDFResource leftConcept, RDFResource rightConcept)
         {
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:related relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:related relation to the concept scheme because given \"rightConcept\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(leftConcept, RDFVocabulary.SKOS.RELATED, rightConcept));
@@ -654,12 +704,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckBroaderCompatibility(childConcept, motherConcept);
             #endregion
 
+            #region Guards
             if (childConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broader relation to the concept scheme because given \"childConcept\" parameter is null");
             if (motherConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broader relation to the concept scheme because given \"motherConcept\" parameter is null");
             if (childConcept.Equals(motherConcept))
                 throw new OWLSemanticsException("Cannot declare skos:broader relation to the concept scheme because given \"childConcept\" parameter refers to the same concept as the given \"motherConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -686,12 +738,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckBroaderCompatibility(childConcept, motherConcept);
             #endregion
 
+            #region Guards
             if (childConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broaderTransitive relation to the concept scheme because given \"childConcept\" parameter is null");
             if (motherConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broaderTransitive relation to the concept scheme because given \"motherConcept\" parameter is null");
             if (childConcept.Equals(motherConcept))
                 throw new OWLSemanticsException("Cannot declare skos:broaderTransitive relation to the concept scheme because given \"childConcept\" parameter refers to the same concept as the given \"motherConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -718,12 +772,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckNarrowerCompatibility(motherConcept, childConcept);
             #endregion
 
+            #region Guards
             if (childConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrower relation to the concept scheme because given \"childConcept\" parameter is null");
             if (motherConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrower relation to the concept scheme because given \"motherConcept\" parameter is null");
             if (childConcept.Equals(motherConcept))
                 throw new OWLSemanticsException("Cannot declare skos:narrower relation to the concept scheme because given \"childConcept\" parameter refers to the same concept as the given \"motherConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -750,12 +806,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckNarrowerCompatibility(motherConcept, childConcept);
             #endregion
 
+            #region Guards
             if (childConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrowerTransitive relation to the concept scheme because given \"childConcept\" parameter is null");
             if (motherConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrowerTransitive relation to the concept scheme because given \"motherConcept\" parameter is null");
             if (childConcept.Equals(motherConcept))
                 throw new OWLSemanticsException("Cannot declare skos:narrowerTransitive relation to the concept scheme because given \"childConcept\" parameter refers to the same concept as the given \"motherConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -782,12 +840,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckCloseOrExactMatchCompatibility(leftConcept, rightConcept);
             #endregion
 
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:closeMatch relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:closeMatch relation to the concept scheme because given \"rightConcept\" parameter is null");
             if (leftConcept.Equals(rightConcept))
                 throw new OWLSemanticsException("Cannot declare skos:closeMatch relation to the concept scheme because given \"leftConcept\" parameter refers to the same concept as the given \"rightConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -814,12 +874,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckCloseOrExactMatchCompatibility(leftConcept, rightConcept);
             #endregion
 
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:exactMatch relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:exactMatch relation to the concept scheme because given \"rightConcept\" parameter is null");
             if (leftConcept.Equals(rightConcept))
                 throw new OWLSemanticsException("Cannot declare skos:exactMatch relation to the concept scheme because given \"leftConcept\" parameter refers to the same concept as the given \"rightConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -846,12 +908,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckBroaderCompatibility(leftConcept, rightConcept);
             #endregion
 
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broadMatch relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:broadMatch relation to the concept scheme because given \"rightConcept\" parameter is null");
             if (leftConcept.Equals(rightConcept))
                 throw new OWLSemanticsException("Cannot declare skos:broadMatch relation to the concept scheme because given \"leftConcept\" parameter refers to the same concept as the given \"rightConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -878,12 +942,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckNarrowerCompatibility(leftConcept, rightConcept);
             #endregion
 
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrowMatch relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:narrowMatch relation to the concept scheme because given \"rightConcept\" parameter is null");
             if (leftConcept.Equals(rightConcept))
                 throw new OWLSemanticsException("Cannot declare skos:narrowMatch relation to the concept scheme because given \"leftConcept\" parameter refers to the same concept as the given \"rightConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -910,12 +976,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => this.CheckRelatedCompatibility(leftConcept, rightConcept);
             #endregion
 
+            #region Guards
             if (leftConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:relatedMatch relation to the concept scheme because given \"leftConcept\" parameter is null");
             if (rightConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:relatedMatch relation to the concept scheme because given \"rightConcept\" parameter is null");
             if (leftConcept.Equals(rightConcept))
                 throw new OWLSemanticsException("Cannot declare skos:relatedMatch relation to the concept scheme because given \"leftConcept\" parameter refers to the same concept as the given \"rightConcept\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -937,10 +1005,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme DeclareNotation(RDFResource skosConcept, RDFLiteral notationValue)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLSemanticsException("Cannot declare skos:notation relation to the concept scheme because given \"skosConcept\" parameter is null");
             if (notationValue == null)
                 throw new OWLSemanticsException("Cannot declare skos:notation relation to the concept scheme because given \"notationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.NOTATION, notationValue));

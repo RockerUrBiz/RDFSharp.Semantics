@@ -53,10 +53,12 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public static SKOSConceptScheme DeclareLabel(this SKOSConceptScheme conceptScheme, RDFResource skosLabel)
         {
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:Label instance to the concept scheme because given \"conceptScheme\" parameter is null");
             if (skosLabel == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:Label instance to the concept scheme because given \"skosLabel\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             conceptScheme.Ontology.Data.DeclareIndividual(skosLabel);
@@ -73,6 +75,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public static SKOSConceptScheme AnnotateLabel(this SKOSConceptScheme conceptScheme, RDFResource skosxlLabel, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot annotate label because given \"conceptScheme\" parameter is null");
             if (skosxlLabel == null)
@@ -83,6 +86,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate label because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate label because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             conceptScheme.Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosxlLabel, annotationProperty, annotationValue));
@@ -95,6 +99,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public static SKOSConceptScheme AnnotateLabel(this SKOSConceptScheme conceptScheme, RDFResource skosxlLabel, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot annotate label because given \"conceptScheme\" parameter is null");
             if (skosxlLabel == null)
@@ -105,6 +110,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot annotate label because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate label because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             conceptScheme.Ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosxlLabel, annotationProperty, annotationValue));
@@ -124,6 +130,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => conceptScheme.CheckPreferredLabelCompatibility(skosConcept, preferredLabelValue);
             #endregion
 
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:prefLabel relation to the concept scheme because given \"conceptScheme\" parameter is null");
             if (skosConcept == null)
@@ -132,6 +139,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot declare skosxl:prefLabel relation to the concept scheme because given \"skosxlLabel\" parameter is null");
             if (preferredLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:prefLabel relation to the concept scheme because given \"preferredLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -156,6 +164,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => conceptScheme.CheckAlternativeLabelCompatibility(skosConcept, alternativeLabelValue);
             #endregion
 
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:altLabel relation to the concept scheme because given \"conceptScheme\" parameter is null");
             if (skosConcept == null)
@@ -164,6 +173,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot declare skosxl:altLabel relation to the concept scheme because given \"skosxlLabel\" parameter is null");
             if (alternativeLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:altLabel relation to the concept scheme because given \"alternativeLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -188,6 +198,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 => conceptScheme.CheckHiddenLabelCompatibility(skosConcept, hiddenLabelValue);
             #endregion
 
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:hiddenLabel relation to the concept scheme because given \"conceptScheme\" parameter is null");
             if (skosConcept == null)
@@ -196,6 +207,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot declare skosxl:hiddenLabel relation to the concept scheme because given \"skosxlLabel\" parameter is null");
             if (hiddenLabelValue == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:hiddenLabel relation to the concept scheme because given \"hiddenLabelValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (SKOSIntegrityChecks())
@@ -215,6 +227,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public static SKOSConceptScheme DeclareRelatedLabels(this SKOSConceptScheme conceptScheme, RDFResource leftLabel, RDFResource rightLabel)
         {
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:labelRelation relation to the concept scheme because given \"conceptScheme\" parameter is null");
             if (leftLabel == null)
@@ -223,6 +236,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot declare skosxl:labelRelation relation to the concept scheme because given \"rightLabel\" parameter is null");
             if (leftLabel.Equals(rightLabel))
                 throw new OWLSemanticsException("Cannot declare skosxl:labelRelation relation to the concept scheme because given \"leftLabel\" parameter refers to the same label as the given \"rightLabel\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX
             conceptScheme.Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(leftLabel, RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, rightLabel));
@@ -238,12 +252,14 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public static SKOSConceptScheme DeclareLiteralFormOfLabel(this SKOSConceptScheme conceptScheme, RDFResource skosxlLabel, RDFLiteral literalFormValue)
         {
+            #region Guards
             if (conceptScheme == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:literalForm relation to the concept scheme because given \"conceptScheme\" parameter is null");
             if (skosxlLabel == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:literalForm relation to the concept scheme because given \"skosxlLabel\" parameter is null");
             if (literalFormValue == null)
                 throw new OWLSemanticsException("Cannot declare skosxl:literalForm relation to the concept scheme because given \"literalFormValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX
             conceptScheme.Ontology.Data.ABoxGraph.AddTriple(new RDFTriple(skosxlLabel, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, literalFormValue));
