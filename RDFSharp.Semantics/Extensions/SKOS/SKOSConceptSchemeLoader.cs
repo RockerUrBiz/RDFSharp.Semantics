@@ -83,12 +83,6 @@ namespace RDFSharp.Semantics.Extensions.SKOS
 
         #region Utilities
         /// <summary>
-        /// Builds a reference SKOS model
-        /// </summary>
-        internal static OWLOntologyModel BuildSKOSModel()
-            => new OWLOntologyModel() { ClassModel = BuildSKOSClassModel(), PropertyModel = BuildSKOSPropertyModel() };
-
-        /// <summary>
         /// Builds a reference SKOS class model
         /// </summary>
         internal static OWLOntologyClassModel BuildSKOSClassModel(OWLOntologyClassModel existingClassModel=null)
