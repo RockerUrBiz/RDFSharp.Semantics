@@ -136,8 +136,8 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         /// </summary>
         public SKOSConceptScheme(string conceptSchemeURI) : base(conceptSchemeURI)
         {
-            Ontology = new OWLOntology(conceptSchemeURI) { Model = new OWLOntologyModel() { 
-                ClassModel = SKOSConceptSchemeLoader.BuildSKOSClassModel(), PropertyModel = SKOSConceptSchemeLoader.BuildSKOSPropertyModel() } };
+            Ontology = new OWLOntology(conceptSchemeURI);
+            Ontology.InitializeSKOS();
 
             //Declare concept scheme to the data
             Ontology.Data.DeclareIndividual(this);
