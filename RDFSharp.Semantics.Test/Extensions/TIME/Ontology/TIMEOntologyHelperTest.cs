@@ -500,7 +500,6 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.In);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Meets);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.MetBy);
-            timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.NotDisjoint);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.OverlappedBy);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Overlaps);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.StartedBy);
@@ -530,7 +529,6 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_OVERLAPS, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_STARTED_BY, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_STARTS, new RDFResource("ex:timeIntv2")));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.NOT_DISJOINT, new RDFResource("ex:timeIntv2")));
             Assert.ThrowsException<OWLSemanticsException>(() => timeOntology.DeclareTimeIntervalRelation(null, timeInterval2, TIMEEnums.TIMEIntervalRelation.After));
             Assert.ThrowsException<OWLSemanticsException>(() => timeOntology.DeclareTimeIntervalRelation(timeInterval1, null, TIMEEnums.TIMEIntervalRelation.Before));
         }

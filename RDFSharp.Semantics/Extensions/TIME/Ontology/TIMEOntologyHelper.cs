@@ -269,9 +269,6 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 case TIMEEnums.TIMEIntervalRelation.MetBy:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_MET_BY, bTimeInterval);
                     break;
-                case TIMEEnums.TIMEIntervalRelation.NotDisjoint:
-                    timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.NOT_DISJOINT, bTimeInterval);
-                    break;
                 case TIMEEnums.TIMEIntervalRelation.OverlappedBy:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY, bTimeInterval);
                     break;
