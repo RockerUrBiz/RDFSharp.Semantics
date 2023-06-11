@@ -106,34 +106,44 @@ namespace RDFSharp.Semantics.Extensions.TIME
             /// </summary>
             FinishedBy = 8,
             /// <summary>
+            /// The beginning of T1 is coincident with or before the beginning of T2, and the end of T1 is concident with or after the end of T2,<br/>
+            /// except that end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident with the beginning of T2
+            /// </summary>
+            HasInside = 9,
+            /// <summary>
             /// The beginning of T1 is after or coincident with the beginning of T2, and the end of T1 is before or coincident with the end of T2<br/>
             /// (the intervals cannot be equal: end of T1 may not be coincident with the end of T2 if the beginning of T1 is coincident with the beginning of T2)
             /// </summary>
-            In = 9,
+            In = 10,
             /// <summary>
             /// The end of T1 is coincident with the beginning of T2
             /// </summary>
-            Meets = 10,
+            Meets = 11,
             /// <summary>
             /// The beginning of T1 is coincident with the end of T2
             /// </summary>
-            MetBy = 11,
+            MetBy = 12,
+            /// <summary>
+            /// If a temporal entity T1 is notDisjoint with another temporal entity T2, then the the two entities overlap or coincide in some way, but their ordering relationship is not known.<br/>
+            /// This relation is the complement of disjoint and is the union of equals, hasInside, in, meets, metBy, overlaps, overlappedBy
+            /// </summary>
+            NotDisjoint = 13,
             /// <summary>
             /// The beginning of T1 is before the beginning of T2, the end of T1 is after the beginning of T2, and the end of T1 is before the end of T2
             /// </summary>
-            Overlaps = 12,
+            Overlaps = 14,
             /// <summary>
             /// The beginning of T1 is after the beginning of T2, the beginning of T1 is before the end of T2, and the end of T1 is after the end of T2
             /// </summary>
-            OverlappedBy = 13,
+            OverlappedBy = 15,
             /// <summary>
             /// The beginning of T1 is coincident with the beginning of T2, and the end of T1 is before the end of T2
             /// </summary>
-            Starts = 14,
+            Starts = 16,
             /// <summary>
             /// The beginning of T1 is coincident with the beginning of T2, and the end of T1 is after the end of T2
             /// </summary>
-            StartedBy = 15
+            StartedBy = 17
         }
     }
 }

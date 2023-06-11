@@ -496,9 +496,11 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Equals);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.FinishedBy);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Finishes);
+            timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.HasInside);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.In);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Meets);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.MetBy);
+            timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.NotDisjoint);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.OverlappedBy);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.Overlaps);
             timeOntology.DeclareTimeIntervalRelation(timeInterval1, timeInterval2, TIMEEnums.TIMEIntervalRelation.StartedBy);
@@ -512,6 +514,8 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 35);
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntv1")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntv2")));
+            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.DISJOINT, new RDFResource("ex:timeIntv2")));
+            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.HAS_INSIDE, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_AFTER, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_BEFORE, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_CONTAINS, new RDFResource("ex:timeIntv2")));
@@ -1827,9 +1831,11 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
         [DataRow(TIMEEnums.TIMEIntervalRelation.Equals)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.FinishedBy)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.Finishes)]
+        [DataRow(TIMEEnums.TIMEIntervalRelation.HasInside)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.In)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.Meets)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.MetBy)]
+        [DataRow(TIMEEnums.TIMEIntervalRelation.NotDisjoint)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.OverlappedBy)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.Overlaps)]
         [DataRow(TIMEEnums.TIMEIntervalRelation.StartedBy)]
@@ -1863,6 +1869,9 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
                 case TIMEEnums.TIMEIntervalRelation.Finishes:
                     tiRelation = RDFVocabulary.TIME.INTERVAL_FINISHES;
                     break;
+                case TIMEEnums.TIMEIntervalRelation.HasInside:
+                    tiRelation = RDFVocabulary.TIME.HAS_INSIDE;
+                    break;
                 case TIMEEnums.TIMEIntervalRelation.In:
                     tiRelation = RDFVocabulary.TIME.INTERVAL_IN;
                     break;
@@ -1871,6 +1880,9 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
                     break;
                 case TIMEEnums.TIMEIntervalRelation.MetBy:
                     tiRelation = RDFVocabulary.TIME.INTERVAL_MET_BY;
+                    break;
+                case TIMEEnums.TIMEIntervalRelation.NotDisjoint:
+                    tiRelation = RDFVocabulary.TIME.NOT_DISJOINT;
                     break;
                 case TIMEEnums.TIMEIntervalRelation.OverlappedBy:
                     tiRelation = RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY;

@@ -257,6 +257,9 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 case TIMEEnums.TIMEIntervalRelation.Finishes:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_FINISHES, bTimeInterval);
                     break;
+                case TIMEEnums.TIMEIntervalRelation.HasInside:
+                    timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.HAS_INSIDE, bTimeInterval);
+                    break;
                 case TIMEEnums.TIMEIntervalRelation.In:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_IN, bTimeInterval);
                     break;
@@ -265,6 +268,9 @@ namespace RDFSharp.Semantics.Extensions.TIME
                     break;
                 case TIMEEnums.TIMEIntervalRelation.MetBy:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_MET_BY, bTimeInterval);
+                    break;
+                case TIMEEnums.TIMEIntervalRelation.NotDisjoint:
+                    timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.NOT_DISJOINT, bTimeInterval);
                     break;
                 case TIMEEnums.TIMEIntervalRelation.OverlappedBy:
                     timeOntology.Data.DeclareObjectAssertion(aTimeInterval, RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY, bTimeInterval);
@@ -1213,6 +1219,11 @@ namespace RDFSharp.Semantics.Extensions.TIME
                         .Select(t => t.Object)
                         .OfType<RDFResource>());
                     break;
+                case TIMEEnums.TIMEIntervalRelation.HasInside:
+                    relatedIntervals.AddRange(timeOntology.Data.ABoxGraph[timeIntervalURI, RDFVocabulary.TIME.HAS_INSIDE, null, null]
+                        .Select(t => t.Object)
+                        .OfType<RDFResource>());
+                    break;
                 case TIMEEnums.TIMEIntervalRelation.In:
                     relatedIntervals.AddRange(timeOntology.Data.ABoxGraph[timeIntervalURI, RDFVocabulary.TIME.INTERVAL_IN, null, null]
                         .Select(t => t.Object)
@@ -1225,6 +1236,11 @@ namespace RDFSharp.Semantics.Extensions.TIME
                     break;
                 case TIMEEnums.TIMEIntervalRelation.MetBy:
                     relatedIntervals.AddRange(timeOntology.Data.ABoxGraph[timeIntervalURI, RDFVocabulary.TIME.INTERVAL_MET_BY, null, null]
+                        .Select(t => t.Object)
+                        .OfType<RDFResource>());
+                    break;
+                case TIMEEnums.TIMEIntervalRelation.NotDisjoint:
+                    relatedIntervals.AddRange(timeOntology.Data.ABoxGraph[timeIntervalURI, RDFVocabulary.TIME.NOT_DISJOINT, null, null]
                         .Select(t => t.Object)
                         .OfType<RDFResource>());
                     break;

@@ -272,6 +272,10 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 Domain = RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION, Range = RDFVocabulary.XSD.NON_NEGATIVE_INTEGER });
             propertyModel.DeclareDatatypeProperty(RDFVocabulary.TIME.DAYS, new OWLOntologyDatatypePropertyBehavior() {
                 Domain = RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION, Range = RDFVocabulary.XSD.DECIMAL });
+            propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.DISJOINT, new OWLOntologyObjectPropertyBehavior() {
+                Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.TEMPORAL_ENTITY });
+            propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.EQUALS, new OWLOntologyObjectPropertyBehavior() {
+                Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.TEMPORAL_ENTITY });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING, new OWLOntologyObjectPropertyBehavior() { 
                 Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.INSTANT });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_DATETIME_DESCRIPTION, new OWLOntologyObjectPropertyBehavior() { 
@@ -282,6 +286,8 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 Range = RDFVocabulary.TIME.DURATION_DESCRIPTION });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_END, new OWLOntologyObjectPropertyBehavior() { 
                 Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.INSTANT });
+            propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_INSIDE, new OWLOntologyObjectPropertyBehavior() {
+                Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.TEMPORAL_ENTITY });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_TEMPORAL_DURATION, new OWLOntologyObjectPropertyBehavior() { 
                 Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.TEMPORAL_DURATION });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.HAS_TIME, new OWLOntologyObjectPropertyBehavior() { 
@@ -354,6 +360,8 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 Domain = RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION, Range = RDFVocabulary.XSD.DECIMAL });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.NOMINAL_POSITION, new OWLOntologyObjectPropertyBehavior() {
                 Domain = RDFVocabulary.TIME.TIME_POSITION, Range = RDFVocabulary.TIME.INTERVAL });
+            propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT, new OWLOntologyObjectPropertyBehavior() {
+                Domain = RDFVocabulary.TIME.TEMPORAL_ENTITY, Range = RDFVocabulary.TIME.TEMPORAL_ENTITY });
             propertyModel.DeclareDatatypeProperty(RDFVocabulary.TIME.NUMERIC_DURATION, new OWLOntologyDatatypePropertyBehavior() {
                 Domain = RDFVocabulary.TIME.DURATION, Range = RDFVocabulary.XSD.DECIMAL });
             propertyModel.DeclareDatatypeProperty(RDFVocabulary.TIME.NUMERIC_POSITION, new OWLOntologyDatatypePropertyBehavior() {
@@ -376,27 +384,39 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 Domain = RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION });
             propertyModel.DeclareDatatypeProperty(RDFVocabulary.TIME.YEARS, new OWLOntologyDatatypePropertyBehavior() {
                 Domain = RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION, Range = RDFVocabulary.XSD.DECIMAL });
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.AFTER, RDFVocabulary.TIME.DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.BEFORE, RDFVocabulary.TIME.DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.EQUALS, RDFVocabulary.TIME.NOT_DISJOINT);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.HAS_DURATION, RDFVocabulary.TIME.HAS_TEMPORAL_DURATION);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, RDFVocabulary.TIME.HAS_TEMPORAL_DURATION);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.HAS_INSIDE, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INSIDE, RDFVocabulary.TIME.HAS_INSIDE);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.IN_DATETIME, RDFVocabulary.TIME.IN_TEMPORAL_POSITION);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_AFTER, RDFVocabulary.TIME.AFTER);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_AFTER, RDFVocabulary.TIME.INTERVAL_DISJOINT);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_BEFORE, RDFVocabulary.TIME.BEFORE);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_BEFORE, RDFVocabulary.TIME.INTERVAL_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_CONTAINS, RDFVocabulary.TIME.HAS_INSIDE);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_DISJOINT, RDFVocabulary.TIME.DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_EQUALS, RDFVocabulary.TIME.EQUALS);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_FINISHED_BY, RDFVocabulary.TIME.HAS_INSIDE);
             propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_FINISHES, RDFVocabulary.TIME.INTERVAL_IN);
-            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.IN_TIME_POSITION, RDFVocabulary.TIME.IN_TEMPORAL_POSITION);
-            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.THORS.BEGIN, RDFVocabulary.TIME.HAS_BEGINNING);
-            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.THORS.END, RDFVocabulary.TIME.HAS_END);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_IN, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_MEETS, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_MET_BY, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_OVERLAPS, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.INTERVAL_STARTED_BY, RDFVocabulary.TIME.HAS_INSIDE);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.IN_TIME_POSITION, RDFVocabulary.TIME.IN_TEMPORAL_POSITION);            
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.AFTER, RDFVocabulary.TIME.BEFORE);
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_AFTER, RDFVocabulary.TIME.INTERVAL_BEFORE);
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_CONTAINS, RDFVocabulary.TIME.INTERVAL_DURING);
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_FINISHES, RDFVocabulary.TIME.INTERVAL_FINISHED_BY);
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_MEETS, RDFVocabulary.TIME.INTERVAL_MET_BY);
             propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_OVERLAPS, RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY);
-            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_STARTS, RDFVocabulary.TIME.INTERVAL_STARTED_BY);
-            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.COMPONENT, RDFVocabulary.TIME.THORS.SYSTEM);
-            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.BEGIN, RDFVocabulary.TIME.THORS.NEXT_ERA);
-            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.END, RDFVocabulary.TIME.THORS.PREVIOUS_ERA);
+            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.INTERVAL_STARTS, RDFVocabulary.TIME.INTERVAL_STARTED_BY);            
+            propertyModel.DeclareDisjointProperties(RDFVocabulary.TIME.DISJOINT, RDFVocabulary.TIME.NOT_DISJOINT);
+            propertyModel.DeclareDisjointProperties(RDFVocabulary.TIME.HAS_INSIDE, RDFVocabulary.TIME.EQUALS);
             propertyModel.DeclareDisjointProperties(RDFVocabulary.TIME.INTERVAL_EQUALS, RDFVocabulary.TIME.INTERVAL_IN);
 
             //THORS
@@ -418,6 +438,11 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 Domain = RDFVocabulary.TIME.THORS.REFERENCE_SYSTEM, Range = RDFVocabulary.TIME.THORS.ERA_BOUNDARY });
             propertyModel.DeclareObjectProperty(RDFVocabulary.TIME.THORS.SYSTEM, new OWLOntologyObjectPropertyBehavior() {
                 Domain = RDFVocabulary.TIME.THORS.ERA, Range = RDFVocabulary.TIME.THORS.REFERENCE_SYSTEM });
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.THORS.BEGIN, RDFVocabulary.TIME.HAS_BEGINNING);
+            propertyModel.DeclareSubProperties(RDFVocabulary.TIME.THORS.END, RDFVocabulary.TIME.HAS_END);
+            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.COMPONENT, RDFVocabulary.TIME.THORS.SYSTEM);
+            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.BEGIN, RDFVocabulary.TIME.THORS.NEXT_ERA);
+            propertyModel.DeclareInverseProperties(RDFVocabulary.TIME.THORS.END, RDFVocabulary.TIME.THORS.PREVIOUS_ERA);
 
             return propertyModel;
         }
