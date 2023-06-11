@@ -37,7 +37,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
             //Test initialization of TIME+THORS knowledge
             Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 34);
             Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:Thors")));
             Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:Thors"), RDFVocabulary.TIME.THORS.REFERENCE_SYSTEM));
@@ -59,7 +59,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
             //Test evolution of TIME+THORS knowledge
             Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 39);
             Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:era")));
             Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:eraBeginning")));
@@ -124,7 +124,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
             //Test evolution of TIME+THORS knowledge
             Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 44);
             Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:era"), RDFVocabulary.TIME.THORS.MEMBER, new RDFResource("ex:subEra")));
             Assert.ThrowsException<OWLSemanticsException>(() => thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era")));
@@ -151,7 +151,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
 
             //Test evolution of TIME+THORS knowledge
             Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 36);
             Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:massExtinctionEvent")));
             Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:massExtinctionEventPosition")));

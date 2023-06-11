@@ -43,7 +43,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 35);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -73,7 +73,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -111,7 +111,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -149,7 +149,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -181,7 +181,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 37);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -216,7 +216,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
@@ -255,7 +255,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst1")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst2")));
@@ -279,7 +279,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 35);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -303,7 +303,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -338,7 +338,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -369,7 +369,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -397,7 +397,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -424,7 +424,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -452,7 +452,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 37);
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
@@ -510,11 +510,10 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.URI.Equals(new Uri("ex:timeOnt")));
             Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 67);
+            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
             Assert.IsTrue(timeOntology.Data.IndividualsCount == 35);
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntv1")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntv2")));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.DISJOINT, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.HAS_INSIDE, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_AFTER, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_BEFORE, new RDFResource("ex:timeIntv2")));
@@ -531,6 +530,7 @@ namespace RDFSharp.Semantics.Extensions.TIME.Test
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_OVERLAPS, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_STARTED_BY, new RDFResource("ex:timeIntv2")));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.INTERVAL_STARTS, new RDFResource("ex:timeIntv2")));
+            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntv1"), RDFVocabulary.TIME.NOT_DISJOINT, new RDFResource("ex:timeIntv2")));
             Assert.ThrowsException<OWLSemanticsException>(() => timeOntology.DeclareTimeIntervalRelation(null, timeInterval2, TIMEEnums.TIMEIntervalRelation.After));
             Assert.ThrowsException<OWLSemanticsException>(() => timeOntology.DeclareTimeIntervalRelation(timeInterval1, null, TIMEEnums.TIMEIntervalRelation.Before));
         }
