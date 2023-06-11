@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
 using RDFSharp.Semantics.Extensions.GEO;
+using RDFSharp.Semantics.Extensions.SKOS;
 using RDFSharp.Semantics.Extensions.TIME;
 
 namespace RDFSharp.Semantics
@@ -50,6 +51,8 @@ namespace RDFSharp.Semantics
                 ontology.InitializeGEO();
             if (loaderOptions.EnableTIMESupport)
                 ontology.InitializeTIME();
+            if (loaderOptions.EnableSKOSSupport)
+                ontology.InitializeSKOS();
 
             //Ontology loading
             ontology.LoadModel(graph, loaderOptions);
@@ -118,6 +121,12 @@ namespace RDFSharp.Semantics
         /// [Default: False]
         /// </summary>
         public bool EnableTIMESupport { get; set; } = false;
+
+        /// <summary>
+        /// Tells the ontology loader to inject SKOS T-BOX and A-BOX during the loading process<br/>
+        /// [Default: False]
+        /// </summary>
+        public bool EnableSKOSSupport { get; set; } = false;
         #endregion
     }
 }

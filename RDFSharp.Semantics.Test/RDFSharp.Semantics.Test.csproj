@@ -11,11 +11,6 @@
 		<Product>RDFSharp.Semantics</Product>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Extensions\SKOS\**" />
-	  <EmbeddedResource Remove="Extensions\SKOS\**" />
-	  <None Remove="Extensions\SKOS\**" />
-	</ItemGroup>
-	<ItemGroup>
 	  <EmbeddedResource Include="Extensions\TIME\Resources\GeologicTimeExample.ttl" />
 	</ItemGroup>
 	<ItemGroup>

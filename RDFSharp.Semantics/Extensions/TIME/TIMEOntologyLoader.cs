@@ -22,7 +22,7 @@ namespace RDFSharp.Semantics.Extensions.TIME
     /// <summary>
     /// TIMEOntologyLoader is responsible for loading temporal ontologies from remote sources or alternative representations
     /// </summary>
-    internal static class TIMEOntologyLoader
+    public static class TIMEOntologyLoader
     {
         #region Methods
         /// <summary>

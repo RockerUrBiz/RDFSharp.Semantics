@@ -23,22 +23,52 @@ namespace RDFSharp.Semantics.Extensions.SKOS
     /// <summary>
     /// SKOSConceptSchemeLoader is responsible for loading SKOS concept schemes from remote sources or alternative representations
     /// </summary>
-    internal static class SKOSConceptSchemeLoader
+    public static class SKOSConceptSchemeLoader
     {
         #region Methods
+        /// <summary>
+        /// Prepares the given ontology for SKOS support, making it suitable for conceptual modeling
+        /// </summary>
+        public static void InitializeSKOS(this OWLOntology ontology)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLSemanticsException("Cannot initialize SKOS ontology because given \"ontology\" parameter is null");
+            #endregion
+
+            BuildSKOSClassModel(ontology.Model.ClassModel);
+            BuildSKOSPropertyModel(ontology.Model.PropertyModel);
+        }
+
         /// <summary>
         /// Gets a concept scheme representation of the given graph
         /// </summary>
         internal static SKOSConceptScheme FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (graph == null)
                 throw new OWLSemanticsException("Cannot get concept scheme from RDFGraph because given \"graph\" parameter is null");
+            #endregion
 
-            //Get OWL ontology with SKOS extension points
-            OWLOntology ontology = OWLOntologyLoader.FromRDFGraph(graph, loaderOptions,
-               classModelExtensionPoint: SKOSClassModelExtensionPoint,
-               propertyModelExtensionPoint: SKOSPropertyModelExtensionPoint,
-               dataExtensionPoint: SKOSDataExtensionPoint);
+            //Get OWL ontology
+            OWLOntology ontology = OWLOntologyLoader.FromRDFGraph(graph, loaderOptions);
+
+            //Extend skos:Collection individuals to A-BOX
+            foreach (RDFTriple typeCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null])
+                foreach (RDFTriple memberRelation in graph[(RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, null, null])
+                    ontology.Data.DeclareObjectAssertion((RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, (RDFResource)memberRelation.Object);
+
+            //Extend skos:OrderedCollection individuals to A-BOX
+            foreach (RDFTriple typeOrderedCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION, null])
+                foreach (RDFTriple memberListRelation in graph[(RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
+                {
+                    RDFCollection skosOrderedCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)memberListRelation.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+                    if (skosOrderedCollection.ItemsCount > 0)
+                    {
+                        ontology.Data.ABoxGraph.AddCollection(skosOrderedCollection);
+                        ontology.Data.DeclareObjectAssertion((RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, skosOrderedCollection.ReificationSubject);
+                    }
+                }
 
             //Build SKOS concept scheme from OWL ontology
             RDFResource conceptSchemeURI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT_SCHEME, null]
@@ -52,41 +82,6 @@ namespace RDFSharp.Semantics.Extensions.SKOS
         #endregion
 
         #region Utilities
-        /// <summary>
-        /// Extends OWL class model loading with support for SKOS artifacts
-        /// </summary>
-        internal static void SKOSClassModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => ontology.Model.ClassModel = BuildSKOSClassModel(ontology.Model.ClassModel);
-
-        /// <summary>
-        /// Extends OWL property model loading with support for SKOS artifacts
-        /// </summary>
-        internal static void SKOSPropertyModelExtensionPoint(OWLOntology ontology, RDFGraph graph)
-            => ontology.Model.PropertyModel = BuildSKOSPropertyModel(ontology.Model.PropertyModel);
-
-        /// <summary>
-        /// Extends OWL data loading with support for SKOS artifacts
-        /// </summary>
-        internal static void SKOSDataExtensionPoint(OWLOntology ontology, RDFGraph graph)
-        {
-            //skos:Collection
-            foreach (RDFTriple typeCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null])
-                foreach (RDFTriple memberRelation in graph[(RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, null, null])
-                    ontology.Data.DeclareObjectAssertion((RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, (RDFResource)memberRelation.Object);
-
-            //skos:OrderedCollection
-            foreach (RDFTriple typeOrderedCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION, null])
-                foreach (RDFTriple memberListRelation in graph[(RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
-                {
-                    RDFCollection skosOrderedCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)memberListRelation.Object, RDFModelEnums.RDFTripleFlavors.SPO);
-                    if (skosOrderedCollection.ItemsCount > 0)
-                    {
-                        ontology.Data.ABoxGraph.AddCollection(skosOrderedCollection);
-                        ontology.Data.DeclareObjectAssertion((RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, skosOrderedCollection.ReificationSubject);
-                    }
-                }
-        }
-
         /// <summary>
         /// Builds a reference SKOS model
         /// </summary>

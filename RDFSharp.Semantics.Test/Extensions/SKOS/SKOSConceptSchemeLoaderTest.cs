@@ -72,7 +72,7 @@ namespace RDFSharp.Semantics.Extensions.SKOS.Test
             graph.AddTriple(new RDFTriple(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label1")));
 
             //LOAD OWL+SKOS
-            SKOSConceptScheme conceptScheme = SKOSConceptSchemeLoader.FromRDFGraph(graph, null);
+            SKOSConceptScheme conceptScheme = SKOSConceptSchemeLoader.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableSKOSSupport=true });
 
             //Test persistence of OWL+SKOS knowledge
             Assert.IsNotNull(conceptScheme);
