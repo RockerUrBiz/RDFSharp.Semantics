@@ -1193,7 +1193,7 @@ namespace RDFSharp.Semantics.Test
         public void ShouldDeclareRestriction()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onProp"), null);
+            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onProp"));
 
             Assert.IsTrue(classModel.ClassesCount == 1);
             Assert.IsTrue(classModel.AllDisjointClassesCount == 0);
@@ -1219,11 +1219,11 @@ namespace RDFSharp.Semantics.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringRestrictionBecauseNullRestriction()
-            => Assert.ThrowsException<OWLSemanticsException>(() => new OWLOntologyClassModel().DeclareRestriction(null, new RDFResource("ex:onProp"), null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => new OWLOntologyClassModel().DeclareRestriction(null, new RDFResource("ex:onProp")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringRestrictionBecauseNullProperty()
-            => Assert.ThrowsException<OWLSemanticsException>(() => new OWLOntologyClassModel().DeclareRestriction(new RDFResource("ex:restr"), null, null));
+            => Assert.ThrowsException<OWLSemanticsException>(() => new OWLOntologyClassModel().DeclareRestriction(new RDFResource("ex:restr"), null));
 
         [TestMethod]
         public void ShouldExportToGraph()

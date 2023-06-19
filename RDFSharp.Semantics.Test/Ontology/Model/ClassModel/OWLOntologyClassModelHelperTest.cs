@@ -30,7 +30,7 @@ namespace RDFSharp.Semantics.Test
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
             classModel.DeclareClass(new RDFResource("ex:clsA"));
-            classModel.DeclareRestriction(new RDFResource("ex:rstB"), new RDFResource("ex:objPrp"), new OWLOntologyLoaderOptions());
+            classModel.DeclareRestriction(new RDFResource("ex:rstB"), new RDFResource("ex:objPrp"));
             List<RDFResource> enlistedClasses = classModel.EnlistClasses();
 
             Assert.IsNotNull(enlistedClasses);
@@ -86,7 +86,7 @@ namespace RDFSharp.Semantics.Test
         public void ShouldCheckHasRestrictionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onprop"), null);
+            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onprop"));
 
             Assert.IsTrue(classModel.CheckHasRestrictionClass(new RDFResource("ex:restr")));
         }
@@ -95,7 +95,7 @@ namespace RDFSharp.Semantics.Test
         public void ShouldCheckHasNotRestrictionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onprop"), null);
+            classModel.DeclareRestriction(new RDFResource("ex:restr"), new RDFResource("ex:onprop"));
 
             Assert.IsFalse(classModel.CheckHasRestrictionClass(new RDFResource("ex:restr2")));
             Assert.IsFalse(classModel.CheckHasRestrictionClass(null));
@@ -547,7 +547,7 @@ namespace RDFSharp.Semantics.Test
         public void ShouldCheckHasNotSimpleClassBecauseRestriction()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareRestriction(new RDFResource("ex:classA"), new RDFResource("ex:onprop"), null);
+            classModel.DeclareRestriction(new RDFResource("ex:classA"), new RDFResource("ex:onprop"));
 
             Assert.IsFalse(classModel.CheckHasSimpleClass(new RDFResource("ex:classA")));
         }

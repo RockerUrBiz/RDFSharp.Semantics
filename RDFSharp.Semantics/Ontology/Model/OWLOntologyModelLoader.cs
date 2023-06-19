@@ -27,7 +27,7 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Gets an ontology model representation of the given graph
         /// </summary>
-        internal static void LoadModel(this OWLOntology ontology, RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
+        internal static void LoadModel(this OWLOntology ontology, RDFGraph graph)
         {
             #region Guards
             if (graph == null)
@@ -35,8 +35,8 @@ namespace RDFSharp.Semantics
             #endregion
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' is going to be parsed as Model...", graph.Context));
-            ontology.LoadPropertyModel(graph, loaderOptions);
-            ontology.LoadClassModel(graph, loaderOptions);
+            ontology.LoadPropertyModel(graph);
+            ontology.LoadClassModel(graph);
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Model", graph.Context));
         }
         #endregion

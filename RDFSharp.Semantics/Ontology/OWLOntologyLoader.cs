@@ -55,8 +55,8 @@ namespace RDFSharp.Semantics
                 ontology.InitializeSKOS();
 
             //Ontology loading
-            ontology.LoadModel(graph, loaderOptions);
-            ontology.LoadData(graph, loaderOptions);
+            ontology.LoadModel(graph);
+            ontology.LoadData(graph);
 
             OWLSemanticsEvents.RaiseSemanticsInfo(string.Format("Graph '{0}' has been parsed as Ontology", graph.Context));
 

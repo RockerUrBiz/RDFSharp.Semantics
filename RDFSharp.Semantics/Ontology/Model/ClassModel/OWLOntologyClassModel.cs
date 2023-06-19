@@ -310,10 +310,12 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyClassModel DeclareClass(RDFResource owlClass, OWLOntologyClassBehavior owlClassBehavior=null)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:Class to the model because given \"owlClass\" parameter is null");
             if (owlClassBehavior == null)
                 owlClassBehavior = new OWLOntologyClassBehavior();
+            #endregion
 
             //Declare class to the model
             if (!Classes.ContainsKey(owlClass.PatternMemberID))
@@ -333,14 +335,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:allValuesFrom restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareAllValuesFromRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource allValuesFromClass)
-            => DeclareAllValuesFromRestriction(owlRestriction, onProperty, allValuesFromClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareAllValuesFromRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource allValuesFromClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (allValuesFromClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:allValuesFrom restriction to the model because given \"allValuesFromClass\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.ALL_VALUES_FROM, allValuesFromClass));
@@ -352,14 +354,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:someValuesFrom restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareSomeValuesFromRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource someValuesFromClass)
-            => DeclareSomeValuesFromRestriction(owlRestriction, onProperty, someValuesFromClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareSomeValuesFromRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource someValuesFromClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (someValuesFromClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:someValuesFrom restriction to the model because given \"someValuesFromClass\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, someValuesFromClass));
@@ -371,11 +373,9 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:hasSelf restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareHasSelfRestriction(RDFResource owlRestriction, RDFResource onProperty, bool hasSelf)
-            => DeclareHasSelfRestriction(owlRestriction, onProperty, hasSelf, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareHasSelfRestriction(RDFResource owlRestriction, RDFResource onProperty, bool hasSelf, OWLOntologyLoaderOptions loaderOptions)
         {
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_SELF, hasSelf ? RDFTypedLiteral.True : RDFTypedLiteral.False));
@@ -387,14 +387,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:hasValue restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareHasValueRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource value)
-            => DeclareHasValueRestriction(owlRestriction, onProperty, value, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareHasValueRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFResource value, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (value == null)
                 throw new OWLSemanticsException("Cannot declare owl:hasValue restriction to the model because given \"value\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_VALUE, value));
@@ -406,14 +406,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:hasValue restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareHasValueRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFLiteral value)
-            => DeclareHasValueRestriction(owlRestriction, onProperty, value, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareHasValueRestriction(RDFResource owlRestriction, RDFResource onProperty, RDFLiteral value, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (value == null)
                 throw new OWLSemanticsException("Cannot declare owl:hasValue restriction to the model because given \"value\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_VALUE, value));
@@ -425,11 +425,9 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:cardinality restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint cardinality)
-            => DeclareCardinalityRestriction(owlRestriction, onProperty, cardinality, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint cardinality, OWLOntologyLoaderOptions loaderOptions)
         {
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.CARDINALITY, new RDFTypedLiteral(cardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -441,11 +439,9 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:minCardinality restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareMinCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality)
-            => DeclareMinCardinalityRestriction(owlRestriction, onProperty, minCardinality, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMinCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, OWLOntologyLoaderOptions loaderOptions)
         {
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MIN_CARDINALITY, new RDFTypedLiteral(minCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -457,11 +453,9 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:maxCardinality restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareMaxCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint maxCardinality)
-            => DeclareMaxCardinalityRestriction(owlRestriction, onProperty, maxCardinality, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMaxCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint maxCardinality, OWLOntologyLoaderOptions loaderOptions)
         {
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, new RDFTypedLiteral(maxCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -473,14 +467,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:minCardinality and owl:maxCardinality restriction to the model
         /// </summary>
         public OWLOntologyClassModel DeclareMinMaxCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, uint maxCardinality)
-            => DeclareMinMaxCardinalityRestriction(owlRestriction, onProperty, minCardinality, maxCardinality, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMinMaxCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, uint maxCardinality, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (maxCardinality < minCardinality)
                 throw new OWLSemanticsException("Cannot declare owl:minCardinality and owl:maxCardinality restriction to the model because given \"maxCardinality\" value must be greater or equal than given \"minCardinality\" value");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             if (minCardinality == maxCardinality)
@@ -498,14 +492,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:qualifiedCardinality restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint cardinality, RDFResource onClass)
-            => DeclareQualifiedCardinalityRestriction(owlRestriction, onProperty, cardinality, onClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint cardinality, RDFResource onClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (onClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:qualifiedCardinality restriction to the model because given \"onClass\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, new RDFTypedLiteral(cardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -518,14 +512,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:minQUalifiedCardinality restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareMinQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, RDFResource onClass)
-            => DeclareMinQualifiedCardinalityRestriction(owlRestriction, onProperty, minCardinality, onClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMinQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, RDFResource onClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (onClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:minQualifiedCardinality restriction to the model because given \"onClass\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, new RDFTypedLiteral(minCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -538,14 +532,14 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:maxQualifiedCardinality restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareMaxQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint maxCardinality, RDFResource onClass)
-            => DeclareMaxQualifiedCardinalityRestriction(owlRestriction, onProperty, maxCardinality, onClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMaxQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint maxCardinality, RDFResource onClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (onClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:maxQualifiedCardinality restriction to the model because given \"onClass\" parameter is null");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             TBoxGraph.AddTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, new RDFTypedLiteral(maxCardinality.ToString(), RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
@@ -558,16 +552,16 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:minQualifiedCardinality and owl:maxQualifiedCardinality restriction to the model, working on the given property [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareMinMaxQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, uint maxCardinality, RDFResource onClass)
-            => DeclareMinMaxQualifiedCardinalityRestriction(owlRestriction, onProperty, minCardinality, maxCardinality, onClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareMinMaxQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, uint maxCardinality, RDFResource onClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (onClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:minQualifiedCardinality and owl:maxQualifiedCardinality restriction to the model because given \"onClass\" parameter is null");
             if (maxCardinality < minCardinality)
                 throw new OWLSemanticsException("Cannot declare owl:minQualifiedCardinality and owl:maxQualifiedCardinality restriction to the model because given \"maxCardinality\" value must be greater or equal than given \"minCardinality\" value");
+            #endregion
 
             //Declare restriction to the model
-            DeclareRestriction(owlRestriction, onProperty, loaderOptions);
+            DeclareRestriction(owlRestriction, onProperty);
 
             //Add knowledge to the T-BOX
             if (minCardinality == maxCardinality)
@@ -588,15 +582,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:oneOf enumerate class to the model
         /// </summary>
         public OWLOntologyClassModel DeclareEnumerateClass(RDFResource owlClass, List<RDFResource> individuals)
-            => DeclareEnumerateClass(owlClass, individuals, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareEnumerateClass(RDFResource owlClass, List<RDFResource> individuals, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:oneOf class to the model because given \"owlClass\" parameter is null");
             if (individuals == null)
                 throw new OWLSemanticsException("Cannot declare owl:oneOf class to the model because given \"individuals\" parameter is null");
             if (individuals.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:oneOf class to the model because given \"individuals\" parameter is an empty list");
+            #endregion
 
             //Declare class to the model
             DeclareClass(owlClass);
@@ -616,9 +610,8 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:unionOf class to the model
         /// </summary>
         public OWLOntologyClassModel DeclareUnionClass(RDFResource owlClass, List<RDFResource> unionClasses)
-            => DeclareUnionClass(owlClass, unionClasses, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareUnionClass(RDFResource owlClass, List<RDFResource> unionClasses, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:unionOf class to the model because given \"owlClass\" parameter is null");
             if (unionClasses == null)
@@ -627,6 +620,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare owl:unionOf class to the model because given \"unionClasses\" parameter is an empty list");
             if (unionClasses.Any(cls => cls.Equals(owlClass)))
                 throw new OWLSemanticsException("Cannot declare owl:unionOf class to the model because given \"unionClasses\" parameter contains given \"owlClass\" element, which is not allowed");
+            #endregion
 
             //Add class to the model
             DeclareClass(owlClass);
@@ -644,9 +638,8 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:intersectionOf class to the model
         /// </summary>
         public OWLOntologyClassModel DeclareIntersectionClass(RDFResource owlClass, List<RDFResource> intersectionClasses)
-            => DeclareIntersectionClass(owlClass, intersectionClasses, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareIntersectionClass(RDFResource owlClass, List<RDFResource> intersectionClasses, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:intersectionOf class to the model because given \"owlClass\" parameter is null");
             if (intersectionClasses == null)
@@ -655,6 +648,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare owl:intersectionOf class to the model because given \"intersectionClasses\" parameter is an empty list");
             if (intersectionClasses.Any(cls => cls.Equals(owlClass)))
                 throw new OWLSemanticsException("Cannot declare owl:intersectionOf class to the model because given \"intersectionClasses\" parameter contains given \"owlClass\" element, which is not allowed");
+            #endregion
 
             //Declare class to the model
             DeclareClass(owlClass);
@@ -672,15 +666,15 @@ namespace RDFSharp.Semantics
         /// Declares the exostence of the given owl:complementOf class to the model
         /// </summary>
         public OWLOntologyClassModel DeclareComplementClass(RDFResource owlClass, RDFResource complementClass)
-            => DeclareComplementClass(owlClass, complementClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareComplementClass(RDFResource owlClass, RDFResource complementClass, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:complementOf class to the model because given \"owlClass\" parameter is null");
             if (complementClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:complementOf class to the model because given \"complementClass\" parameter is null");
             if (owlClass.Equals(complementClass))
                 throw new OWLSemanticsException("Cannot declare owl:complementOf class to the model because given \"owlClass\" parameter corresponds to given \"complementClass\" parameter, which is not allowed");
+            #endregion
 
             //Declare class to the model
             DeclareClass(owlClass);
@@ -697,15 +691,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:disjointUnionOf class to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareDisjointUnionClass(RDFResource owlClass, List<RDFResource> disjointClasses)
-            => DeclareDisjointUnionClass(owlClass, disjointClasses, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareDisjointUnionClass(RDFResource owlClass, List<RDFResource> disjointClasses, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:disjointUnionOf class to the model because given \"owlClass\" parameter is null");
             if (disjointClasses == null)
                 throw new OWLSemanticsException("Cannot declare owl:disjointUnionOf class to the model because given \"disjointClasses\" parameter is null");
             if (disjointClasses.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:disjointUnionOf class to the model because given \"disjointClasses\" parameter is an empty list");
+            #endregion
 
             //Add class to the model
             DeclareClass(owlClass);
@@ -723,15 +717,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:AllDisjointClasses class to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareAllDisjointClasses(RDFResource owlClass, List<RDFResource> disjointClasses)
-            => DeclareAllDisjointClasses(owlClass, disjointClasses, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareAllDisjointClasses(RDFResource owlClass, List<RDFResource> disjointClasses, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointClasses class to the model because given \"owlClass\" parameter is null");
             if (disjointClasses == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointClasses class to the model because given \"disjointClasses\" parameter is null");
             if (disjointClasses.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointClasses class to the model because given \"disjointClasses\" parameter is an empty list");
+            #endregion
 
             //Declare class to the model
             DeclareClass(owlClass);
@@ -753,6 +747,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyClassModel AnnotateClass(RDFResource owlClass, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot annotate class because given \"owlClass\" parameter is null");
             if (annotationProperty == null)
@@ -761,6 +756,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate class because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate class because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlClass, annotationProperty, annotationValue));
@@ -773,6 +769,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyClassModel AnnotateClass(RDFResource owlClass, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot annotate class because given \"owlClass\" parameter is null");
             if (annotationProperty == null)
@@ -781,6 +778,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate class because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate class because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlClass, annotationProperty, annotationValue));
@@ -794,8 +792,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "SubClass(childClass,motherClass)" relation to the model
         /// </summary>
         public OWLOntologyClassModel DeclareSubClasses(RDFResource childClass, RDFResource motherClass)
-            => DeclareSubClasses(childClass, motherClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareSubClasses(RDFResource childClass, RDFResource motherClass, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -804,12 +800,14 @@ namespace RDFSharp.Semantics
                         && this.CheckSubClassCompatibility(childClass, motherClass);
             #endregion
 
+            #region Guards
             if (childClass == null)
                 throw new OWLSemanticsException("Cannot declare rdfs:subClassOf relation to the model because given \"childClass\" parameter is null");
             if (motherClass == null)
                 throw new OWLSemanticsException("Cannot declare rdfs:subClassOf relation to the model because given \"motherClass\" parameter is null");
             if (childClass.Equals(motherClass))
                 throw new OWLSemanticsException("Cannot declare rdfs:subClassOf relation to the model because given \"childClass\" parameter refers to the same class as the given \"motherClass\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -824,8 +822,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "EquivalentClass(leftClass,rightClass)" relation to the model
         /// </summary>
         public OWLOntologyClassModel DeclareEquivalentClasses(RDFResource leftClass, RDFResource rightClass)
-            => DeclareEquivalentClasses(leftClass, rightClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareEquivalentClasses(RDFResource leftClass, RDFResource rightClass, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -834,12 +830,14 @@ namespace RDFSharp.Semantics
                         && this.CheckEquivalentClassCompatibility(leftClass, rightClass);
             #endregion
 
+            #region Guards
             if (leftClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:equivalentClass relation to the model because given \"leftClass\" parameter is null");
             if (rightClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:equivalentClass relation to the model because given \"rightClass\" parameter is null");
             if (leftClass.Equals(rightClass))
                 throw new OWLSemanticsException("Cannot declare owl:equivalentClass relation to the model because given \"leftClass\" parameter refers to the same class as the given \"rightClass\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -859,8 +857,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "DisjointWith(leftClass,rightClass)" relation to the model
         /// </summary>
         public OWLOntologyClassModel DeclareDisjointClasses(RDFResource leftClass, RDFResource rightClass)
-            => DeclareDisjointClasses(leftClass, rightClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareDisjointClasses(RDFResource leftClass, RDFResource rightClass, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -869,12 +865,14 @@ namespace RDFSharp.Semantics
                         && this.CheckDisjointWithCompatibility(leftClass, rightClass);
             #endregion
 
+            #region Guards
             if (leftClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:disjointWith relation to the model because given \"leftClass\" parameter is null");
             if (rightClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:disjointWith relation to the model because given \"rightClass\" parameter is null");
             if (leftClass.Equals(rightClass))
                 throw new OWLSemanticsException("Cannot declare owl:disjointWith relation to the model because given \"leftClass\" parameter refers to the same class as the given \"rightClass\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -894,15 +892,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "HasKey(owlClass,keyProperties)" relation to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareHasKey(RDFResource owlClass, List<RDFResource> keyProperties)
-            => DeclareHasKey(owlClass, keyProperties, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyClassModel DeclareHasKey(RDFResource owlClass, List<RDFResource> keyProperties, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:hasKey relation to the model because given \"owlClass\" parameter is null");
             if (keyProperties == null)
                 throw new OWLSemanticsException("Cannot declare owl:hasKey relation to the model because given \"keyProperties\" parameter is null");
             if (keyProperties.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:hasKey relation to the model because given \"keyProperties\" parameter is an empty list");
+            #endregion
 
             //Add knowledge to the T-BOX
             RDFCollection keyPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
@@ -916,12 +914,14 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Declares the given owl:Restriction to the model
         /// </summary>
-        internal OWLOntologyClassModel DeclareRestriction(RDFResource owlRestriction, RDFResource onProperty, OWLOntologyLoaderOptions loaderOptions)
+        internal OWLOntologyClassModel DeclareRestriction(RDFResource owlRestriction, RDFResource onProperty)
         {
+            #region Guards
             if (owlRestriction == null)
                 throw new OWLSemanticsException("Cannot declare owl:Restriction to the model because given \"owlRestriction\" parameter is null");
             if (onProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:Restriction to the model because given \"onProperty\" parameter is null");
+            #endregion
 
             //Add class to the model
             DeclareClass(owlRestriction);

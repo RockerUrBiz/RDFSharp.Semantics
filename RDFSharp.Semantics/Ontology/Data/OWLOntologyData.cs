@@ -153,8 +153,10 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyData DeclareIndividual(RDFResource owlIndividual)
         {
+            #region Guards
             if (owlIndividual == null)
                 throw new OWLSemanticsException("Cannot declare owl:Individual instance to the data because given \"owlIndividual\" parameter is null");
+            #endregion
 
             //Declare individual to the data
             if (!Individuals.ContainsKey(owlIndividual.PatternMemberID))
@@ -173,6 +175,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyData AnnotateIndividual(RDFResource owlIndividual, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (owlIndividual == null)
                 throw new OWLSemanticsException("Cannot annotate individual because given \"owlIndividual\" parameter is null");
             if (annotationProperty == null)
@@ -181,6 +184,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate individual because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate individual because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlIndividual, annotationProperty, annotationValue));
@@ -193,6 +197,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyData AnnotateIndividual(RDFResource owlIndividual, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (owlIndividual == null)
                 throw new OWLSemanticsException("Cannot annotate individual because given \"owlIndividual\" parameter is null");
             if (annotationProperty == null)
@@ -201,6 +206,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate individual because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate individual because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlIndividual, annotationProperty, annotationValue));
@@ -214,18 +220,18 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "Type(owlIndividual,owlClass)" relation to the data
         /// </summary>
         public OWLOntologyData DeclareIndividualType(RDFResource owlIndividual, RDFResource owlClass)
-            => DeclareIndividualType(owlIndividual, owlClass, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareIndividualType(RDFResource owlIndividual, RDFResource owlClass, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
                 => !owlClass.CheckReservedClass();
             #endregion
 
+            #region Guards
             if (owlIndividual == null)
                 throw new OWLSemanticsException("Cannot declare rdf:type relation to the data because given \"owlIndividual\" parameter is null");
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare rdf:type relation to the data because given \"owlClass\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -240,20 +246,20 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "SameAs(leftIndividual,rightIndividual)" relation to the data
         /// </summary>
         public OWLOntologyData DeclareSameIndividuals(RDFResource leftIndividual, RDFResource rightIndividual)
-            => DeclareSameIndividuals(leftIndividual, rightIndividual, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareSameIndividuals(RDFResource leftIndividual, RDFResource rightIndividual, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
                 => this.CheckSameAsCompatibility(leftIndividual, rightIndividual);
             #endregion
 
+            #region Guards
             if (leftIndividual == null)
                 throw new OWLSemanticsException("Cannot declare owl:sameAs relation to the data because given \"leftIndividual\" parameter is null");
             if (rightIndividual == null)
                 throw new OWLSemanticsException("Cannot declare owl:sameAs relation to the data because given \"rightIndividual\" parameter is null");
             if (leftIndividual.Equals(rightIndividual))
                 throw new OWLSemanticsException("Cannot declare owl:sameAs relation to the data because given \"leftIndividual\" parameter refers to the same individual as the given \"rightIndividual\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -273,20 +279,20 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "DifferentFrom(leftIndividual,rightIndividual)" relation to the data
         /// </summary>
         public OWLOntologyData DeclareDifferentIndividuals(RDFResource leftIndividual, RDFResource rightIndividual)
-            => DeclareDifferentIndividuals(leftIndividual, rightIndividual, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareDifferentIndividuals(RDFResource leftIndividual, RDFResource rightIndividual, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
                 => this.CheckDifferentFromCompatibility(leftIndividual, rightIndividual);
             #endregion
 
+            #region Guards
             if (leftIndividual == null)
                 throw new OWLSemanticsException("Cannot declare owl:differentFrom relation to the data because given \"leftIndividual\" parameter is null");
             if (rightIndividual == null)
                 throw new OWLSemanticsException("Cannot declare owl:differentFrom relation to the data because given \"rightIndividual\" parameter is null");
             if (leftIndividual.Equals(rightIndividual))
                 throw new OWLSemanticsException("Cannot declare owl:differentFrom relation to the data because given \"leftIndividual\" parameter refers to the same individual as the given \"rightIndividual\" parameter");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -306,15 +312,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:AllDifferent individuals to the data [OWL2]
         /// </summary>
         public OWLOntologyData DeclareAllDifferentIndividuals(RDFResource owlClass, List<RDFResource> differentIndividuals)
-            => DeclareAllDifferentIndividuals(owlClass, differentIndividuals, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareAllDifferentIndividuals(RDFResource owlClass, List<RDFResource> differentIndividuals, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDifferent class to the data because given \"owlClass\" parameter is null");
             if (differentIndividuals == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDifferent class to the data because given \"differentIndividuals\" parameter is null");
             if (differentIndividuals.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:AllDifferent class to the data because given \"differentIndividuals\" parameter is an empty list");
+            #endregion
 
             //Add knowledge to the A-BOX
             RDFCollection allDifferentIndividualsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
@@ -330,8 +336,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "ObjectProperty(leftIndividual,rightIndividual)" assertion to the data
         /// </summary>
         public OWLOntologyData DeclareObjectAssertion(RDFResource leftIndividual, RDFResource objectProperty, RDFResource rightIndividual)
-            => DeclareObjectAssertion(leftIndividual, objectProperty, rightIndividual, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareObjectAssertion(RDFResource leftIndividual, RDFResource objectProperty, RDFResource rightIndividual, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -339,6 +343,7 @@ namespace RDFSharp.Semantics
                      && this.CheckObjectAssertionCompatibility(leftIndividual, objectProperty, rightIndividual);
             #endregion
 
+            #region Guards
             if (leftIndividual == null)
                 throw new OWLSemanticsException("Cannot declare object assertion relation to the data because given \"leftIndividual\" parameter is null");
             if (objectProperty == null)
@@ -347,6 +352,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare object assertion relation to the data because given \"objectProperty\" parameter is a blank predicate");
             if (rightIndividual == null)
                 throw new OWLSemanticsException("Cannot declare object assertion relation to the data because given \"rightIndividual\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -361,8 +367,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "DatatypeProperty(individual,value)" assertion to the data
         /// </summary>
         public OWLOntologyData DeclareDatatypeAssertion(RDFResource individual, RDFResource datatypeProperty, RDFLiteral value)
-            => DeclareDatatypeAssertion(individual, datatypeProperty, value, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareDatatypeAssertion(RDFResource individual, RDFResource datatypeProperty, RDFLiteral value, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -370,6 +374,7 @@ namespace RDFSharp.Semantics
                      && this.CheckDatatypeAssertionCompatibility(individual, datatypeProperty, value);
             #endregion
 
+            #region Guards
             if (individual == null)
                 throw new OWLSemanticsException("Cannot declare datatype assertion relation to the data because given \"individual\" parameter is null");
             if (datatypeProperty == null)
@@ -378,6 +383,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare datatype assertion relation to the data because given \"datatypeProperty\" parameter is a blank predicate");
             if (value == null)
                 throw new OWLSemanticsException("Cannot declare datatype assertion relation to the data because given \"value\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -392,8 +398,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "ObjectProperty(leftIndividual,rightIndividual)" negative assertion to the data [OWL2]
         /// </summary>
         public OWLOntologyData DeclareNegativeObjectAssertion(RDFResource leftIndividual, RDFResource objectProperty, RDFResource rightIndividual)
-            => DeclareNegativeObjectAssertion(leftIndividual, objectProperty, rightIndividual, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareNegativeObjectAssertion(RDFResource leftIndividual, RDFResource objectProperty, RDFResource rightIndividual, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -401,6 +405,7 @@ namespace RDFSharp.Semantics
                      && this.CheckNegativeObjectAssertionCompatibility(leftIndividual, objectProperty, rightIndividual);
             #endregion
 
+            #region Guards
             if (leftIndividual == null)
                 throw new OWLSemanticsException("Cannot declare negative object assertion relation to the data because given \"leftIndividual\" parameter is null");
             if (objectProperty == null)
@@ -409,6 +414,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare negative object assertion relation to the data because given \"objectProperty\" parameter is a blank predicate");
             if (rightIndividual == null)
                 throw new OWLSemanticsException("Cannot declare negative object assertion relation to the data because given \"rightIndividual\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -429,8 +435,6 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "DatatypeProperty(individual,value)" negative assertion to the data [OWL2]
         /// </summary>
         public OWLOntologyData DeclareNegativeDatatypeAssertion(RDFResource individual, RDFResource datatypeProperty, RDFLiteral value)
-            => DeclareNegativeDatatypeAssertion(individual, datatypeProperty, value, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyData DeclareNegativeDatatypeAssertion(RDFResource individual, RDFResource datatypeProperty, RDFLiteral value, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -438,6 +442,7 @@ namespace RDFSharp.Semantics
                      && this.CheckNegativeDatatypeAssertionCompatibility(individual, datatypeProperty, value);
             #endregion
 
+            #region Guards
             if (individual == null)
                 throw new OWLSemanticsException("Cannot declare negative datatype assertion relation to the data because given \"individual\" parameter is null");
             if (datatypeProperty == null)
@@ -446,6 +451,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare negative datatype assertion relation to the data because given \"datatypeProperty\" parameter is a blank predicate");
             if (value == null)
                 throw new OWLSemanticsException("Cannot declare negative datatype assertion relation to the data because given \"value\" parameter is null");
+            #endregion
 
             //Add knowledge to the A-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())

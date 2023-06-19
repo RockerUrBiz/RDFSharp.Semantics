@@ -494,10 +494,12 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyPropertyModel DeclareAnnotationProperty(RDFResource owlAnnotationProperty, OWLOntologyAnnotationPropertyBehavior owlAnnotationPropertyBehavior=null)
         {
+            #region Guards
             if (owlAnnotationProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:AnnotationProperty to the model because given \"owlAnnotationProperty\" parameter is null");
             if (owlAnnotationPropertyBehavior == null)
                 owlAnnotationPropertyBehavior = new OWLOntologyAnnotationPropertyBehavior();
+            #endregion
 
             //Declare property to the model
             if (!Properties.ContainsKey(owlAnnotationProperty.PatternMemberID))
@@ -516,10 +518,12 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyPropertyModel DeclareObjectProperty(RDFResource owlObjectProperty, OWLOntologyObjectPropertyBehavior owlObjectPropertyBehavior=null)
         {
+            #region Guards
             if (owlObjectProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:ObjectProperty to the model because given \"owlObjectProperty\" parameter is null");
             if (owlObjectPropertyBehavior == null)
                 owlObjectPropertyBehavior = new OWLOntologyObjectPropertyBehavior();
+            #endregion
 
             //Validate property behavior
             owlObjectPropertyBehavior.Validate(owlObjectProperty);
@@ -559,10 +563,12 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyPropertyModel DeclareDatatypeProperty(RDFResource owlDatatypeProperty, OWLOntologyDatatypePropertyBehavior owlDatatypePropertyBehavior=null)
         {
+            #region Guards
             if (owlDatatypeProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:DatatypeProperty to the model because given \"owlDatatypeProperty\" parameter is null");
             if (owlDatatypePropertyBehavior == null)
                 owlDatatypePropertyBehavior = new OWLOntologyDatatypePropertyBehavior();
+            #endregion
 
             //Declare property to the model
             if (!Properties.ContainsKey(owlDatatypeProperty.PatternMemberID))
@@ -589,6 +595,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyPropertyModel AnnotateProperty(RDFResource owlProperty, RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (owlProperty == null)
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"owlProperty\" parameter is null");
             if (annotationProperty == null)
@@ -597,6 +604,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlProperty, annotationProperty, annotationValue));
@@ -609,6 +617,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntologyPropertyModel AnnotateProperty(RDFResource owlProperty, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (owlProperty == null)
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"owlProperty\" parameter is null");
             if (annotationProperty == null)
@@ -617,6 +626,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate owl property because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(owlProperty, annotationProperty, annotationValue));
@@ -630,8 +640,6 @@ namespace RDFSharp.Semantics
         /// Declares the given "SubProperty(childProperty,motherProperty)" relation to the model
         /// </summary>
         public OWLOntologyPropertyModel DeclareSubProperties(RDFResource childProperty, RDFResource motherProperty)
-            => DeclareSubProperties(childProperty, motherProperty, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclareSubProperties(RDFResource childProperty, RDFResource motherProperty, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -640,12 +648,14 @@ namespace RDFSharp.Semantics
                         && this.CheckSubPropertyCompatibility(childProperty, motherProperty);
             #endregion
 
+            #region Guards
             if (childProperty == null)
                 throw new OWLSemanticsException("Cannot declare rdfs:subPropertyOf relation to the model because given \"childProperty\" parameter is null");
             if (motherProperty == null)
                 throw new OWLSemanticsException("Cannot declare rdfs:subPropertyOf relation to the model because given \"motherProperty\" parameter is null");
             if (childProperty.Equals(motherProperty))
                 throw new OWLSemanticsException("Cannot declare rdfs:subPropertyOf relation to the model because given \"childProperty\" parameter refers to the same property as the given \"motherProperty\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -660,8 +670,6 @@ namespace RDFSharp.Semantics
         /// Declares the given "EquivalentProperty(leftProperty,rightProperty)" relation to the model
         /// </summary>
         public OWLOntologyPropertyModel DeclareEquivalentProperties(RDFResource leftProperty, RDFResource rightProperty)
-            => DeclareEquivalentProperties(leftProperty, rightProperty, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclareEquivalentProperties(RDFResource leftProperty, RDFResource rightProperty, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -670,12 +678,14 @@ namespace RDFSharp.Semantics
                         && this.CheckEquivalentPropertyCompatibility(leftProperty, rightProperty);
             #endregion
 
+            #region Guards
             if (leftProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:equivalentProperty relation to the model because given \"leftProperty\" parameter is null");
             if (rightProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:equivalentProperty relation to the model because given \"rightProperty\" parameter is null");
             if (leftProperty.Equals(rightProperty))
                 throw new OWLSemanticsException("Cannot declare owl:equivalentProperty relation to the model because given \"leftProperty\" parameter refers to the same property as the given \"rightProperty\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -695,8 +705,6 @@ namespace RDFSharp.Semantics
         /// Declares the given "PropertyDisjointWith(leftProperty,rightProperty)" relation to the model [OWL2]
         /// </summary>
         public OWLOntologyPropertyModel DeclareDisjointProperties(RDFResource leftProperty, RDFResource rightProperty)
-            => DeclareDisjointProperties(leftProperty, rightProperty, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclareDisjointProperties(RDFResource leftProperty, RDFResource rightProperty, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -705,12 +713,14 @@ namespace RDFSharp.Semantics
                         && this.CheckDisjointPropertyCompatibility(leftProperty, rightProperty);
             #endregion
 
+            #region Guards
             if (leftProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:propertyDisjointWith relation to the model because given \"leftProperty\" parameter is null");
             if (rightProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:propertyDisjointWith relation to the model because given \"rightProperty\" parameter is null");
             if (leftProperty.Equals(rightProperty))
                 throw new OWLSemanticsException("Cannot declare owl:propertyDisjointWith relation to the model because given \"leftProperty\" parameter refers to the same property as the given \"rightProperty\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -730,15 +740,15 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given owl:AllDisjointProperties class to the model [OWL2]
         /// </summary>
         public OWLOntologyPropertyModel DeclareAllDisjointProperties(RDFResource owlClass, List<RDFResource> disjointProperties)
-            => DeclareAllDisjointProperties(owlClass, disjointProperties, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclareAllDisjointProperties(RDFResource owlClass, List<RDFResource> disjointProperties, OWLOntologyLoaderOptions loaderOptions)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointProperties class to the model because given \"owlClass\" parameter is null");
             if (disjointProperties == null)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointProperties class to the model because given \"disjointProperties\" parameter is null");
             if (disjointProperties.Count == 0)
                 throw new OWLSemanticsException("Cannot declare owl:AllDisjointProperties class to the model because given \"disjointProperties\" parameter is an empty list");
+            #endregion
 
             //Add knowledge to the T-BOX
             RDFCollection allDisjointPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
@@ -754,8 +764,6 @@ namespace RDFSharp.Semantics
         /// Declares the given "Inverse(leftProperty,rightProperty)" relation to the model
         /// </summary>
         public OWLOntologyPropertyModel DeclareInverseProperties(RDFResource leftProperty, RDFResource rightProperty)
-            => DeclareInverseProperties(leftProperty, rightProperty, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclareInverseProperties(RDFResource leftProperty, RDFResource rightProperty, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
@@ -764,12 +772,14 @@ namespace RDFSharp.Semantics
                         && this.CheckInversePropertyCompatibility(leftProperty, rightProperty);
             #endregion
 
+            #region Guards
             if (leftProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:inverseOf relation to the model because given \"leftProperty\" parameter is null");
             if (rightProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:inverseOf relation to the model because given \"rightProperty\" parameter is null");
             if (leftProperty.Equals(rightProperty))
                 throw new OWLSemanticsException("Cannot declare owl:inverseOf relation to the model because given \"leftProperty\" parameter refers to the same property as the given \"rightProperty\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
@@ -789,14 +799,13 @@ namespace RDFSharp.Semantics
         /// Declares the existence of the given "PropertyChainAxiom(owlProperty,chainProperties)" relation to the model [OWL2]
         /// </summary>
         public OWLOntologyPropertyModel DeclarePropertyChainAxiom(RDFResource owlProperty, List<RDFResource> chainProperties)
-            => DeclarePropertyChainAxiom(owlProperty, chainProperties, OWLOntologyLoaderOptions.DefaultOptions);
-        internal OWLOntologyPropertyModel DeclarePropertyChainAxiom(RDFResource owlProperty, List<RDFResource> chainProperties, OWLOntologyLoaderOptions loaderOptions)
         {
             #region OWL-DL Integrity Checks
             bool OWLDLIntegrityChecks()
                 => !owlProperty.CheckReservedProperty();
             #endregion
 
+            #region Guards
             if (owlProperty == null)
                 throw new OWLSemanticsException("Cannot declare owl:propertyChainAxiom relation to the model because given \"owlProperty\" parameter is null");
             if (chainProperties == null)
@@ -805,6 +814,7 @@ namespace RDFSharp.Semantics
                 throw new OWLSemanticsException("Cannot declare owl:propertyChainAxiom relation to the model because given \"chainProperties\" parameter is an empty list");
             if (chainProperties.Any(chainAxiomPropertyStep => chainAxiomPropertyStep.Equals(owlProperty)))
                 throw new OWLSemanticsException("Cannot declare owl:propertyChainAxiom relation to the model because given \"owlProperty\" parameter is contained in the given \"chainProperties\" parameter");
+            #endregion
 
             //Add knowledge to the T-BOX (or raise warning if violations are detected)
             if (OWLDLIntegrityChecks())
