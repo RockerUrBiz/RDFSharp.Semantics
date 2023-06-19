@@ -29,6 +29,12 @@ namespace RDFSharp.Semantics
     {
         #region Declarer
         /// <summary>
+        /// Enlists the properties of the model
+        /// </summary>
+        public static List<RDFResource> EnlistIndividuals(this OWLOntologyData data)
+            => data?.Individuals.Values.ToList() ?? new List<RDFResource>();
+
+        /// <summary>
         /// Checks for the existence of the given owl:NamedIndividual declaration within the data
         /// </summary>
         public static bool CheckHasIndividual(this OWLOntologyData data, RDFResource owlIndividual)

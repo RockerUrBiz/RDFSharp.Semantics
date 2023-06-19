@@ -26,6 +26,24 @@ namespace RDFSharp.Semantics.Test
     {
         #region Declarer
         [TestMethod]
+        public void ShouldEnlistProperties()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:objPrp"));
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtPrp"));
+            propertyModel.DeclareAnnotationProperty(new RDFResource("ex:annPrp"));
+            List<RDFResource> enlistedProperties = propertyModel.EnlistProperties();
+
+            Assert.IsNotNull(enlistedProperties);
+            Assert.IsTrue(enlistedProperties.Count == 3);
+            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:objPrp"))));
+            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:dtPrp"))));
+            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:annPrp"))));
+            Assert.IsTrue(new OWLOntologyPropertyModel().EnlistProperties().Count == 0);
+            Assert.IsTrue(default(OWLOntologyPropertyModel).EnlistProperties().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldCheckHasAnnotationProperty()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();

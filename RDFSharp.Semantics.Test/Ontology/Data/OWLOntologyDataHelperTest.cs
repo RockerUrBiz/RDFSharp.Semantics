@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
@@ -24,6 +25,22 @@ namespace RDFSharp.Semantics.Test
     public class OWLOntologyDataHelperTest
     {
         #region Declarer
+        [TestMethod]
+        public void ShouldEnlistIndividuals()
+        {
+            OWLOntologyData data = new OWLOntologyData();
+            data.DeclareIndividual(new RDFResource("ex:indivA"));
+            data.DeclareIndividual(new RDFResource("ex:indivB"));
+            List<RDFResource> enlistedIndividuals = data.EnlistIndividuals();
+
+            Assert.IsNotNull(enlistedIndividuals);
+            Assert.IsTrue(enlistedIndividuals.Count == 2);
+            Assert.IsTrue(enlistedIndividuals.Any(idv => idv.Equals(new RDFResource("ex:indivA"))));
+            Assert.IsTrue(enlistedIndividuals.Any(idv => idv.Equals(new RDFResource("ex:indivB"))));
+            Assert.IsTrue(new OWLOntologyData().EnlistIndividuals().Count == 0);
+            Assert.IsTrue(default(OWLOntologyData).EnlistIndividuals().Count == 0);
+        }
+
         [TestMethod]
         public void ShouldCheckHasIndividual()
         {

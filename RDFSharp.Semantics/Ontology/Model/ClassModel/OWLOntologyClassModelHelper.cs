@@ -28,6 +28,12 @@ namespace RDFSharp.Semantics
     {
         #region Declarer
         /// <summary>
+        /// Enlists the classes of the model
+        /// </summary>
+        public static List<RDFResource> EnlistClasses(this OWLOntologyClassModel classModel)
+            => classModel?.Classes.Values.ToList() ?? new List<RDFResource>();
+
+        /// <summary>
         /// Checks for the existence of the given owl:Class declaration within the model
         /// </summary>
         public static bool CheckHasClass(this OWLOntologyClassModel classModel, RDFResource owlClass)

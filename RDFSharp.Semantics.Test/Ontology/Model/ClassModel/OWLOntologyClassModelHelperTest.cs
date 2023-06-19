@@ -26,6 +26,22 @@ namespace RDFSharp.Semantics.Test
     {
         #region Declarer
         [TestMethod]
+        public void ShouldEnlistClasses()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareClass(new RDFResource("ex:clsA"));
+            classModel.DeclareRestriction(new RDFResource("ex:rstB"), new RDFResource("ex:objPrp"), new OWLOntologyLoaderOptions());
+            List<RDFResource> enlistedClasses = classModel.EnlistClasses();
+
+            Assert.IsNotNull(enlistedClasses);
+            Assert.IsTrue(enlistedClasses.Count == 2);
+            Assert.IsTrue(enlistedClasses.Any(cls => cls.Equals(new RDFResource("ex:clsA"))));
+            Assert.IsTrue(enlistedClasses.Any(cls => cls.Equals(new RDFResource("ex:rstB"))));
+            Assert.IsTrue(new OWLOntologyClassModel().EnlistClasses().Count == 0);
+            Assert.IsTrue(default(OWLOntologyClassModel).EnlistClasses().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldCheckHasClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
