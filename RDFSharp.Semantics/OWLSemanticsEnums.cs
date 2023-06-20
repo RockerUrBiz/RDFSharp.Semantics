@@ -220,5 +220,24 @@ namespace RDFSharp.Semantics
             /// </summary>
             PropertyChainEntailment = 21
         };
+
+        /// <summary>
+        /// Represents an enumeration for supported types of ontology property
+        /// </summary>
+        public enum OWLPropertyType
+        {
+            /// <summary>
+            /// owl:AnnotationProperty
+            /// </summary>
+            Annotation = 1,
+            /// <summary>
+            /// owl:DatatypeProperty
+            /// </summary>
+            Datatype = 2,
+            /// <summary>
+            /// owl:ObjectProperty
+            /// </summary>
+            Object = 3
+        }
     }
 }

@@ -26,21 +26,51 @@ namespace RDFSharp.Semantics.Test
     {
         #region Declarer
         [TestMethod]
-        public void ShouldEnlistProperties()
+        public void ShouldEnlistAnnotationProperties()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
             propertyModel.DeclareObjectProperty(new RDFResource("ex:objPrp"));
             propertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtPrp"));
             propertyModel.DeclareAnnotationProperty(new RDFResource("ex:annPrp"));
-            List<RDFResource> enlistedProperties = propertyModel.EnlistProperties();
+            List<RDFResource> enlistedProperties = propertyModel.EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Annotation);
 
             Assert.IsNotNull(enlistedProperties);
-            Assert.IsTrue(enlistedProperties.Count == 3);
-            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:objPrp"))));
-            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:dtPrp"))));
+            Assert.IsTrue(enlistedProperties.Count == 1);
             Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:annPrp"))));
-            Assert.IsTrue(new OWLOntologyPropertyModel().EnlistProperties().Count == 0);
-            Assert.IsTrue(default(OWLOntologyPropertyModel).EnlistProperties().Count == 0);
+            Assert.IsTrue(new OWLOntologyPropertyModel().EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Annotation).Count == 0);
+            Assert.IsTrue(default(OWLOntologyPropertyModel).EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Annotation).Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldEnlistDatatypeProperties()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:objPrp"));
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtPrp"));
+            propertyModel.DeclareAnnotationProperty(new RDFResource("ex:annPrp"));
+            List<RDFResource> enlistedProperties = propertyModel.EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Datatype);
+
+            Assert.IsNotNull(enlistedProperties);
+            Assert.IsTrue(enlistedProperties.Count == 1);
+            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:dtPrp"))));
+            Assert.IsTrue(new OWLOntologyPropertyModel().EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Datatype).Count == 0);
+            Assert.IsTrue(default(OWLOntologyPropertyModel).EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Datatype).Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldEnlistObjectProperties()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:objPrp"));
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtPrp"));
+            propertyModel.DeclareAnnotationProperty(new RDFResource("ex:annPrp"));
+            List<RDFResource> enlistedProperties = propertyModel.EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Object);
+
+            Assert.IsNotNull(enlistedProperties);
+            Assert.IsTrue(enlistedProperties.Count == 1);
+            Assert.IsTrue(enlistedProperties.Any(prp => prp.Equals(new RDFResource("ex:objPrp"))));
+            Assert.IsTrue(new OWLOntologyPropertyModel().EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Object).Count == 0);
+            Assert.IsTrue(default(OWLOntologyPropertyModel).EnlistProperties(OWLSemanticsEnums.OWLPropertyType.Object).Count == 0);
         }
 
         [TestMethod]

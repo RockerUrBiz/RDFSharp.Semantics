@@ -28,10 +28,25 @@ namespace RDFSharp.Semantics
     {
         #region Declarer
         /// <summary>
-        /// Enlists the properties of the model
+        /// Enlists the properties of the model, according to the specified typology
         /// </summary>
-        public static List<RDFResource> EnlistProperties(this OWLOntologyPropertyModel propertyModel)
-            => propertyModel?.Properties.Values.ToList() ?? new List<RDFResource>();
+        public static List<RDFResource> EnlistProperties(this OWLOntologyPropertyModel propertyModel, OWLSemanticsEnums.OWLPropertyType enlistPropertyType)
+        {
+            List<RDFResource> enlistedProperties = new List<RDFResource>();
+            switch (enlistPropertyType)
+            {
+                case OWLSemanticsEnums.OWLPropertyType.Annotation:
+                    enlistedProperties.AddRange(propertyModel?.Properties.Values.Where(p => propertyModel.CheckHasAnnotationProperty(p)) ?? Enumerable.Empty<RDFResource>());
+                    break;
+                case OWLSemanticsEnums.OWLPropertyType.Datatype:
+                    enlistedProperties.AddRange(propertyModel?.Properties.Values.Where(p => propertyModel.CheckHasDatatypeProperty(p)) ?? Enumerable.Empty<RDFResource>());
+                    break;
+                case OWLSemanticsEnums.OWLPropertyType.Object:
+                    enlistedProperties.AddRange(propertyModel?.Properties.Values.Where(p => propertyModel.CheckHasObjectProperty(p)) ?? Enumerable.Empty<RDFResource>());
+                    break;
+            }
+            return enlistedProperties;
+        }
 
         /// <summary>
         /// Checks for the existence of the given owl:Property declaration within the model
