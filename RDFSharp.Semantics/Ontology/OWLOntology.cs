@@ -115,12 +115,14 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntology Annotate(RDFResource annotationProperty, RDFResource annotationValue)
         {
+            #region Guards
             if (annotationProperty == null)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(this, annotationProperty, annotationValue));
@@ -133,12 +135,14 @@ namespace RDFSharp.Semantics
         /// </summary>
         public OWLOntology Annotate(RDFResource annotationProperty, RDFLiteral annotationValue)
         {
+            #region Guards
             if (annotationProperty == null)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationProperty\" parameter is a blank predicate");
             if (annotationValue == null)
                 throw new OWLSemanticsException("Cannot annotate ontology because given \"annotationValue\" parameter is null");
+            #endregion
 
             //Add knowledge to the O-BOX
             OBoxGraph.AddTriple(new RDFTriple(this, annotationProperty, annotationValue));
