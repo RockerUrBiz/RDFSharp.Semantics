@@ -35,6 +35,8 @@ namespace RDFSharp.Semantics.Extensions.TIME
                 throw new OWLSemanticsException("Cannot initialize temporal ontology because given \"ontology\" parameter is null");
             #endregion
 
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI));
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.THORS.BASE_URI));
             BuildTIMEClassModel(ontology.Model.ClassModel);
             BuildTIMEPropertyModel(ontology.Model.PropertyModel);
             BuildTIMEData(ontology.Data);

@@ -36,6 +36,8 @@ namespace RDFSharp.Semantics.Extensions.SKOS
                 throw new OWLSemanticsException("Cannot initialize SKOS ontology because given \"ontology\" parameter is null");
             #endregion
 
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI));
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.SKOSXL.BASE_URI));
             BuildSKOSClassModel(ontology.Model.ClassModel);
             BuildSKOSPropertyModel(ontology.Model.PropertyModel);
         }

@@ -34,6 +34,9 @@ namespace RDFSharp.Semantics.Extensions.GEO
                 throw new OWLSemanticsException("Cannot initialize geospatial ontology because given \"ontology\" parameter is null");
             #endregion
 
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI));
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.GEOF.BASE_URI));
+            ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.SF.BASE_URI));
             BuildGEOClassModel(ontology.Model.ClassModel);
             BuildGEOPropertyModel(ontology.Model.PropertyModel);
         }
