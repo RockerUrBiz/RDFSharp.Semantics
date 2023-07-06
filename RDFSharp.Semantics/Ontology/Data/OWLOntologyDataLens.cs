@@ -84,7 +84,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Enlists the classes to which the lens individual belongs
         /// </summary>
-        public List<RDFResource> ClassTypes(bool requireDeepDiscovery=true)
+        public List<RDFResource> ClassTypes(bool requireDeepDiscovery=true, 
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             List<RDFResource> result = new List<RDFResource>();
 
@@ -92,7 +93,7 @@ namespace RDFSharp.Semantics
             if (requireDeepDiscovery)
                 foreach (RDFResource owlClass in Ontology.Model.ClassModel)
                 {
-                    if (Ontology.Data.CheckIsIndividualOf(Ontology.Model, Individual, owlClass))
+                    if (Ontology.Data.CheckIsIndividualOf(Ontology.Model, Individual, owlClass, owlKnowledgeAbsumption))
                         result.Add(owlClass);
                 }
 
@@ -112,8 +113,9 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Asynchronously enlists the classes to which the lens individual belongs
         /// </summary>
-        public Task<List<RDFResource>> ClassTypesAsync(bool requireDeepDiscovery=true)
-            => Task.Run(() => ClassTypes(requireDeepDiscovery));
+        public Task<List<RDFResource>> ClassTypesAsync(bool requireDeepDiscovery=true,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
+            => Task.Run(() => ClassTypes(requireDeepDiscovery, owlKnowledgeAbsumption));
 
         /// <summary>
         /// Enlists the object assertions to which the lens individual is related as subject or object
