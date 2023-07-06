@@ -50,7 +50,7 @@ namespace RDFSharp.Semantics
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
 
             //Calculate individuals of the atom predicate
-            List<RDFResource> atomClassIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, Predicate);
+            List<RDFResource> atomClassIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, Predicate, owlKnowledgeAbsumption);
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();

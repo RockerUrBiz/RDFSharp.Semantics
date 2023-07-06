@@ -70,7 +70,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Applies the validator on the given ontology
         /// </summary>
-        public OWLValidatorReport ApplyToOntology(OWLOntology ontology)
+        public OWLValidatorReport ApplyToOntology(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLValidatorReport validatorReport = new OWLValidatorReport();
 
@@ -94,55 +95,55 @@ namespace RDFSharp.Semantics
                         switch (standardRule)
                         {
                             case OWLSemanticsEnums.OWLValidatorStandardRules.TermDisjointness:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDisjointness.ToString()] = OWLTermDisjointnessRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDisjointness.ToString()] = OWLTermDisjointnessRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.TermDeclaration:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDeclaration.ToString()] = OWLTermDeclarationRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDeclaration.ToString()] = OWLTermDeclarationRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.TermDeprecation:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDeprecation.ToString()] = OWLTermDeprecationRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.TermDeprecation.ToString()] = OWLTermDeprecationRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.DomainRange:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.DomainRange.ToString()] = OWLDomainRangeRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.DomainRange.ToString()] = OWLDomainRangeRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.InverseOf:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.InverseOf.ToString()] = OWLInverseOfRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.InverseOf.ToString()] = OWLInverseOfRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.SymmetricProperty:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.SymmetricProperty.ToString()] = OWLSymmetricPropertyRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.SymmetricProperty.ToString()] = OWLSymmetricPropertyRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.AsymmetricProperty:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.AsymmetricProperty.ToString()] = OWLAsymmetricPropertyRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.AsymmetricProperty.ToString()] = OWLAsymmetricPropertyRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.IrreflexiveProperty:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.IrreflexiveProperty.ToString()] = OWLIrreflexivePropertyRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.IrreflexiveProperty.ToString()] = OWLIrreflexivePropertyRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.PropertyDisjoint:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyDisjoint.ToString()] = OWLPropertyDisjointRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyDisjoint.ToString()] = OWLPropertyDisjointRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.ClassKey:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.ClassKey.ToString()] = OWLClassKeyRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.ClassKey.ToString()] = OWLClassKeyRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.PropertyChainAxiom:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyChainAxiom.ToString()] = OWLPropertyChainAxiomRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyChainAxiom.ToString()] = OWLPropertyChainAxiomRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.ClassType:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.ClassType.ToString()] = OWLClassTypeRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.ClassType.ToString()] = OWLClassTypeRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.NegativeAssertions:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.NegativeAssertions.ToString()] = OWLNegativeAssertionsRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.NegativeAssertions.ToString()] = OWLNegativeAssertionsRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.GlobalCardinality:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.GlobalCardinality.ToString()] = OWLGlobalCardinalityRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.GlobalCardinality.ToString()] = OWLGlobalCardinalityRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.LocalCardinality:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.LocalCardinality.ToString()] = OWLLocalCardinalityRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.LocalCardinality.ToString()] = OWLLocalCardinalityRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.PropertyConsistency:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyConsistency.ToString()] = OWLPropertyConsistencyRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.PropertyConsistency.ToString()] = OWLPropertyConsistencyRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                             case OWLSemanticsEnums.OWLValidatorStandardRules.DisjointUnion:
-                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.DisjointUnion.ToString()] = OWLDisjointUnionRule.ExecuteRule(ontology);
+                                validatorRegistry[OWLSemanticsEnums.OWLValidatorStandardRules.DisjointUnion.ToString()] = OWLDisjointUnionRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
                                 break;
                         }
 
@@ -155,7 +156,7 @@ namespace RDFSharp.Semantics
                     {
                         OWLSemanticsEvents.RaiseSemanticsInfo($"Launching custom validator rule '{customRule.RuleName}'");
 
-                        validatorRegistry[customRule.RuleName] = customRule.ExecuteRule(ontology);
+                        validatorRegistry[customRule.RuleName] = customRule.ExecuteRule(ontology, owlKnowledgeAbsumption);
 
                         OWLSemanticsEvents.RaiseSemanticsInfo($"Completed custom validator rule '{customRule.RuleName}': found {validatorRegistry[customRule.RuleName].EvidencesCount} evidences");
                     });
@@ -173,8 +174,9 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Asynchronously applies the validator on the given ontology
         /// </summary>
-        public Task<OWLValidatorReport> ApplyToOntologyAsync(OWLOntology ontology)
-            => Task.Run(() => ApplyToOntology(ontology));
+        public Task<OWLValidatorReport> ApplyToOntologyAsync(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
+            => Task.Run(() => ApplyToOntology(ontology, owlKnowledgeAbsumption));
         #endregion
     }
 }

@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static RDFSharp.Semantics.OWLSemanticsEnums;
 
 namespace RDFSharp.Semantics.Validator.Test
 {
@@ -26,7 +27,7 @@ namespace RDFSharp.Semantics.Validator.Test
         public void ShouldCreateValidatorRule()
         {
             #region RuleDelegate
-            OWLValidatorReport TestRuleBody(OWLOntology ontology) 
+            OWLValidatorReport TestRuleBody(OWLOntology ontology, OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld) 
                 => new OWLValidatorReport();
             #endregion
 
@@ -43,7 +44,8 @@ namespace RDFSharp.Semantics.Validator.Test
         public void ShouldThrowExceptionOnCreatingvalidatorRuleBecauseNullOrEmptyName()
         {
             #region RuleDelegate
-            OWLValidatorReport TestRuleBody(OWLOntology ontology)
+            OWLValidatorReport TestRuleBody(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport();
             #endregion
 

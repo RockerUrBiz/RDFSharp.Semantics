@@ -24,7 +24,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal class OWLTermDeclarationRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<string, long> hashContext = new Dictionary<string, long>();

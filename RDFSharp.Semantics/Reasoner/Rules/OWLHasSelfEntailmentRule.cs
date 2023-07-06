@@ -39,7 +39,7 @@ namespace RDFSharp.Semantics
                     foreach (RDFResource subClassOfHSRestriction in subClassesOfHSRestriction)
                     {
                         //Calculate individuals of the current subclass
-                        List<RDFResource> subClassOfHSRestrictionMembers = ontology.Data.GetIndividualsOf(ontology.Model, subClassOfHSRestriction);
+                        List<RDFResource> subClassOfHSRestrictionMembers = ontology.Data.GetIndividualsOf(ontology.Model, subClassOfHSRestriction, owlKnowledgeAbsumption);
                         foreach (RDFResource subClassOfHVRestrictionMember in subClassOfHSRestrictionMembers)
                         {
                             //Create the inference

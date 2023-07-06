@@ -23,7 +23,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLClassTypeRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<long, HashSet<long>> disjointWithCache = new Dictionary<long, HashSet<long>>();

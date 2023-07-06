@@ -22,7 +22,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLInverseOfRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             #region CheckClassCompatibility
             bool CheckClassCompatibility(RDFResource leftClass, RDFResource rightClass)

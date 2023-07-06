@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 using System.Threading.Tasks;
+using static RDFSharp.Semantics.OWLSemanticsEnums;
 
 namespace RDFSharp.Semantics.Validator.Test
 {
@@ -53,7 +54,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public void ShouldAddCustomValidatorRule()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology, 
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLValidator validator = new OWLValidator();
@@ -116,7 +118,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public void ShouldValidateWithCustomRule()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");
@@ -135,7 +138,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public void ShouldValidateWithStandardAndCustomRules()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");
@@ -158,7 +162,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public void ShouldValidateWithStandardAndCustomRulesAndSubscribedEvents()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");
@@ -229,7 +234,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public async Task ShouldValidateWithCustomRuleAsync()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");
@@ -248,7 +254,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public async Task ShouldValidateWithStandardAndCustomRulesAsync()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");
@@ -271,7 +278,8 @@ namespace RDFSharp.Semantics.Validator.Test
         [TestMethod]
         public async Task ShouldValidateWithStandardAndCustomRulesAndSubscribedEventsAsync()
         {
-            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology,
+                OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLKnowledgeAbsumption.ClosedWorld)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLSemanticsEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLOntology ontology = new OWLOntology("ex:ont");

@@ -23,7 +23,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLDisjointUnionRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<long, HashSet<long>> individualsCache = new Dictionary<long, HashSet<long>>();
@@ -44,7 +45,7 @@ namespace RDFSharp.Semantics
                     //Materialize individuals of each member class
                     foreach (RDFResource disjointUnionMember in disjointUnionMembers)
                     {
-                        List<RDFResource> disointUnionMemberIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, disjointUnionMember);
+                        List<RDFResource> disointUnionMemberIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, disjointUnionMember, owlKnowledgeAbsumption);
                         foreach (RDFResource disointUnionMemberIndividual in disointUnionMemberIndividuals)
                         {
                             if (!individualsCache.ContainsKey(disointUnionMemberIndividual.PatternMemberID))

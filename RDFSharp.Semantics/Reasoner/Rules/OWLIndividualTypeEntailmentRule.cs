@@ -27,7 +27,7 @@ namespace RDFSharp.Semantics
             #region RuleBody
             void InferClassIndividuals(RDFResource currentClass, OWLReasonerReport report)
             {
-                List<RDFResource> classIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, currentClass);
+                List<RDFResource> classIndividuals = ontology.Data.GetIndividualsOf(ontology.Model, currentClass, owlKnowledgeAbsumption);
                 foreach (RDFResource classIndividual in classIndividuals)
                 {
                     //Create the inferences

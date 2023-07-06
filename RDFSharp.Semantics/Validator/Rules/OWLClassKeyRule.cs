@@ -15,6 +15,7 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static RDFSharp.Semantics.OWLSemanticsEnums;
 
 namespace RDFSharp.Semantics
 {
@@ -23,7 +24,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLClassKeyRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             #region CheckAreDifferentIndividuals
             bool CheckAreDifferentIndividuals(RDFResource outerIndividual, RDFResource innerIndividual)
@@ -40,9 +42,9 @@ namespace RDFSharp.Semantics
                 List<RDFResource> keyProperties = ontology.Model.ClassModel.GetKeyPropertiesOf(classesEnumerator.Current);
                 if (keyProperties.Count == 0)
                     continue;
-                
+
                 //Get individuals being members of the current class
-                List<RDFResource> classMembers = ontology.Data.GetIndividualsOf(ontology.Model, classesEnumerator.Current);
+                List<RDFResource> classMembers = ontology.Data.GetIndividualsOf(ontology.Model, classesEnumerator.Current, owlKnowledgeAbsumption);
                 if (classMembers.Count == 0)
                     continue;
 

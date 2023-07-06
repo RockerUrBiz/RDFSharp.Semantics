@@ -16,7 +16,8 @@ namespace RDFSharp.Semantics
     /// <summary>
     /// Signature of any function which can be executed as body of a validator rule
     /// </summary>
-    public delegate OWLValidatorReport ValidatorRuleDelegate(OWLOntology ontology);
+    public delegate OWLValidatorReport ValidatorRuleDelegate(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld);
 
     /// <summary>
     /// OWLValidatorRule represents a rule which analyzes a specific syntactic/semantic aspect of a given ontology

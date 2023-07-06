@@ -22,7 +22,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLDomainRangeRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<long, HashSet<long>> individualsCache = new Dictionary<long, HashSet<long>>();
@@ -39,12 +40,12 @@ namespace RDFSharp.Semantics
                     foreach (RDFResource domainClass in domainClasses)
                     { 
                         if (!individualsCache.ContainsKey(domainClass.PatternMemberID))
-                            individualsCache.Add(domainClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, domainClass).Select(idv => idv.PatternMemberID)));
+                            individualsCache.Add(domainClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, domainClass, owlKnowledgeAbsumption).Select(idv => idv.PatternMemberID)));
                     }
                     foreach (RDFResource rangeClass in rangeClasses)
                     { 
                         if (!individualsCache.ContainsKey(rangeClass.PatternMemberID))
-                            individualsCache.Add(rangeClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, rangeClass).Select(idv => idv.PatternMemberID)));
+                            individualsCache.Add(rangeClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, rangeClass, owlKnowledgeAbsumption).Select(idv => idv.PatternMemberID)));
                     }
 
                     //Analyze A-BOX object assertions using the current object property
@@ -81,7 +82,7 @@ namespace RDFSharp.Semantics
                     foreach (RDFResource domainClass in domainClasses)
                     { 
                         if (!individualsCache.ContainsKey(domainClass.PatternMemberID))
-                            individualsCache.Add(domainClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, domainClass).Select(idv => idv.PatternMemberID)));
+                            individualsCache.Add(domainClass.PatternMemberID, new HashSet<long>(ontology.Data.GetIndividualsOf(ontology.Model, domainClass, owlKnowledgeAbsumption).Select(idv => idv.PatternMemberID)));
                     }
 
                     //Analyze A-BOX datatype assertions using the current datatype property

@@ -32,7 +32,7 @@ namespace RDFSharp.Semantics
                 Dictionary<string, List<RDFResource>> keyValueRegister = new Dictionary<string, List<RDFResource>>();
 
                 //Iterate individuals of the current class in order to calculate their key values
-                foreach (RDFResource classIndividual in ontology.Data.GetIndividualsOf(ontology.Model, currentClass))
+                foreach (RDFResource classIndividual in ontology.Data.GetIndividualsOf(ontology.Model, currentClass, owlKnowledgeAbsumption))
                 {
                     //Calculate the key values of the current individual
                     StringBuilder sb = new StringBuilder();
