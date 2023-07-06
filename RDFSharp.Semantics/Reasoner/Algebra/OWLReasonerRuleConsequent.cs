@@ -63,12 +63,14 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the consequent in the context of the given antecedent results
         /// </summary>
-        internal OWLReasonerReport Evaluate(DataTable antecedentResults, OWLOntology ontology)
+        internal OWLReasonerReport Evaluate(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLReasonerReport report = new OWLReasonerReport();
 
             //Execute the consequent atoms
-            Atoms.ForEach(atom => report.MergeEvidences(atom.EvaluateOnConsequent(antecedentResults, ontology)));
+            Atoms.ForEach(atom => report.MergeEvidences(
+                atom.EvaluateOnConsequent(antecedentResults, ontology, owlKnowledgeAbsumption)));
 
             //Return the consequent result
             return report;

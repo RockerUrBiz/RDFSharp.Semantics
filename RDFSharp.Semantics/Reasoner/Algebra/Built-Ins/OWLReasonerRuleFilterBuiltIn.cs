@@ -45,7 +45,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the SWRL built-in in the context of the given antecedent results
         /// </summary>
-        internal override DataTable Evaluate(DataTable antecedentResults, OWLOntology ontology)
+        internal override DataTable Evaluate(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             DataTable filteredTable = antecedentResults.Clone();
             IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();

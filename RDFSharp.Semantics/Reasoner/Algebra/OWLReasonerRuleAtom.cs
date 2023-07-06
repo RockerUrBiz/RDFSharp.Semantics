@@ -98,12 +98,14 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the atom in the context of an antecedent
         /// </summary>
-        internal abstract DataTable EvaluateOnAntecedent(OWLOntology ontology);
+        internal abstract DataTable EvaluateOnAntecedent(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld);
 
         /// <summary>
         /// Evaluates the atom in the context of a consequent
         /// </summary>
-        internal abstract OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology);
+        internal abstract OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld);
         #endregion
     }
 }

@@ -79,21 +79,23 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Applies the rule to the given ontology
         /// </summary>
-        public OWLReasonerReport ApplyToOntology(OWLOntology ontology)
+        public OWLReasonerReport ApplyToOntology(OWLOntology ontology, 
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             //Materialize results of the rule's antecedent
-            DataTable antecedentResults = Antecedent.Evaluate(ontology);
+            DataTable antecedentResults = Antecedent.Evaluate(ontology, owlKnowledgeAbsumption);
 
             //Materialize results of the rule's consequent
-            OWLReasonerReport consequentResults = Consequent.Evaluate(antecedentResults, ontology);
+            OWLReasonerReport consequentResults = Consequent.Evaluate(antecedentResults, ontology, owlKnowledgeAbsumption);
             return consequentResults;
         }
 
         /// <summary>
         /// Asynchronously applies the rule to the given ontology
         /// </summary>
-        public Task<OWLReasonerReport> ApplyToOntologyAsync(OWLOntology ontology)
-            => Task.Run(() => ApplyToOntology(ontology));
+        public Task<OWLReasonerReport> ApplyToOntologyAsync(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
+            => Task.Run(() => ApplyToOntology(ontology, owlKnowledgeAbsumption));
         #endregion
     }
 }

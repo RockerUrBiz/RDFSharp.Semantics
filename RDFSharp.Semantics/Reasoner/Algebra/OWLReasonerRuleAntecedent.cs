@@ -70,13 +70,14 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the antecedent in the context of the given ontology
         /// </summary>
-        internal DataTable Evaluate(OWLOntology ontology)
+        internal DataTable Evaluate(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             //Execute the antecedent atoms
             List<DataTable> atomResults = new List<DataTable>();
             Atoms.Where(atom => !atom.IsBuiltIn)
                  .ToList()
-                 .ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
+                 .ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology, owlKnowledgeAbsumption)));
 
             //Join results of antecedent atoms
             DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults, false);
@@ -85,7 +86,7 @@ namespace RDFSharp.Semantics
             Atoms.Where(atom => atom.IsBuiltIn)
                  .OfType<OWLReasonerRuleBuiltIn>()
                  .ToList()
-                 .ForEach(builtin => antecedentResult = builtin.Evaluate(antecedentResult, ontology));
+                 .ForEach(builtin => antecedentResult = builtin.Evaluate(antecedentResult, ontology, owlKnowledgeAbsumption));
 
             //Return the antecedent result
             return antecedentResult;

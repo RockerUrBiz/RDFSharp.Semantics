@@ -21,7 +21,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLEquivalentClassTransitivityRule
     {
-        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
+        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             #region RuleBody
             void InferEquivalentClasses(RDFResource currentClass, OWLReasonerReport report)

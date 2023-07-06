@@ -37,10 +37,13 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the built-in in the context of the given antecedent results
         /// </summary>
-        internal abstract DataTable Evaluate(DataTable antecedentResults, OWLOntology ontology);
+        internal abstract DataTable Evaluate(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld);
 
-        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology) => null;
-        internal override OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology) => null;
+        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld) => null;
+        internal override OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld) => null;
         #endregion
     }
 }

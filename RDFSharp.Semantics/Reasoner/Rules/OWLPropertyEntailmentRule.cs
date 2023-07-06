@@ -22,7 +22,8 @@ namespace RDFSharp.Semantics
     /// </summary>
     internal static class OWLPropertyEntailmentRule
     {
-        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
+        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             #region RuleBody
             void InferAssertionsFromPropertyHierarchy(RDFResource currentProperty, OWLReasonerReport report)

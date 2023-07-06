@@ -41,10 +41,10 @@ namespace RDFSharp.Semantics
         }
         #endregion
 
-            #region Interfaces
-            /// <summary>
-            /// Gives the string representation of the built-in
-            /// </summary>
+        #region Interfaces
+        /// <summary>
+        /// Gives the string representation of the built-in
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

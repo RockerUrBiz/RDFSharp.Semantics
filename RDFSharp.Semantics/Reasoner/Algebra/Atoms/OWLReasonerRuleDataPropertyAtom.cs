@@ -53,7 +53,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the atom in the context of an antecedent
         /// </summary>
-        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology)
+        internal override DataTable EvaluateOnAntecedent(OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
@@ -89,7 +90,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Evaluates the atom in the context of an consequent
         /// </summary>
-        internal override OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
+        internal override OWLReasonerReport EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology,
+            OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
         {
             OWLReasonerReport report = new OWLReasonerReport();
             string leftArgumentString = LeftArgument.ToString();
