@@ -437,7 +437,7 @@ namespace RDFSharp.Semantics
             #endregion
 
             #region Count
-            //Build: we need to count occurrences (Item2) of each subject individual (Item1);
+            //Count: we need to count occurrences (Item2) of each subject individual (Item1);
             //       In case of owl:[Min|Max]QualifiedCardinalityRestriction we must first check
             //       that the object individual effectively belongs to the specified owl:onClass
             var cardinalityRestrictionRegistry = new Dictionary<long, (RDFPatternMember, long)>();
@@ -466,7 +466,9 @@ namespace RDFSharp.Semantics
                     cardinalityRestrictionRegistry[assertionTriple.Subject.PatternMemberID] = (assertionTriple.Subject, occurrencyCounter + 1);
                 }
             }
+            #endregion
 
+            #region Analyze
             //Analyze: we have to consider only individuals that satisfy given Min/Max occurrences
             var cardinalityRestrictionRegistryEnumerator = cardinalityRestrictionRegistry.Values.GetEnumerator();
             while (cardinalityRestrictionRegistryEnumerator.MoveNext())
