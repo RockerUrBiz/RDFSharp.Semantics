@@ -49,4 +49,7 @@
     <PackageReference Include="ProjNet" Version="2.0.0" />
     <PackageReference Include="RDFSharp" Version="3.6.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
 </Project>
