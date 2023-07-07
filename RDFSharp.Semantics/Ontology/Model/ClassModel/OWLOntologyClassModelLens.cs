@@ -119,14 +119,14 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Enlists the individuals which are related with the lens class by rdf:type
         /// </summary>
-        public List<RDFResource> Individuals(OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
-            => Ontology.Data.GetIndividualsOf(Ontology.Model, Class, owlKnowledgeAbsumption);
+        public List<RDFResource> Individuals()
+            => Ontology.Data.GetIndividualsOf(Ontology.Model, Class);
 
         /// <summary>
         /// Asynchronously enlists the individuals which are related with the lens class by rdf:type
         /// </summary>
-        public Task<List<RDFResource>> IndividualsAsync(OWLSemanticsEnums.OWLKnowledgeAbsumption owlKnowledgeAbsumption=OWLSemanticsEnums.OWLKnowledgeAbsumption.ClosedWorld)
-            => Task.Run(() => Individuals(owlKnowledgeAbsumption));
+        public Task<List<RDFResource>> IndividualsAsync()
+            => Task.Run(() => Individuals());
 
         /// <summary>
         /// Enlists the object annotations to which the lens class is related as subject
