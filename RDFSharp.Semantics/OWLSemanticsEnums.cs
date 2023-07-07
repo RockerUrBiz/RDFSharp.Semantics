@@ -239,20 +239,5 @@ namespace RDFSharp.Semantics
             /// </summary>
             Object = 3
         }
-
-        /// <summary>
-        /// Represents an enumeration for possible absumptions about ontology knowledge completeness (OpenWorld VS ClosedWorld)
-        /// </summary>
-        public enum OWLKnowledgeAbsumption
-        {
-            /// <summary>
-            /// Threats the ontology knowledge as incomplete by design, considering the available T-BOX/A-BOX not always sufficient for verity emission (OWL)
-            /// </summary>
-            OpenWorld = 1,
-            /// <summary>
-            /// Threats the ontology knowledge as complete, considering the available T-BOX/A-BOX always sufficient for verity emission (SHACL)
-            /// </summary>
-            ClosedWorld = 2
-        }
     }
 }
