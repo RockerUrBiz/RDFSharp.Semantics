@@ -70,7 +70,7 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Applies the reasoner on the given ontology
         /// </summary>
-        public OWLReasonerReport ApplyToOntology(OWLOntology ontology, OWLOntologyLoaderOptions loaderOptions=null)
+        public OWLReasonerReport ApplyToOntology(OWLOntology ontology)
         {
             OWLReasonerReport reasonerReport = new OWLReasonerReport();
 
@@ -185,8 +185,8 @@ namespace RDFSharp.Semantics
         /// <summary>
         /// Asynchronously applies the reasoner on the given ontology
         /// </summary>
-        public Task<OWLReasonerReport> ApplyToOntologyAsync(OWLOntology ontology, OWLOntologyLoaderOptions loaderOptions=null)
-            => Task.Run(() => ApplyToOntology(ontology, loaderOptions));
+        public Task<OWLReasonerReport> ApplyToOntologyAsync(OWLOntology ontology)
+            => Task.Run(() => ApplyToOntology(ontology));
         #endregion
     }
 }
