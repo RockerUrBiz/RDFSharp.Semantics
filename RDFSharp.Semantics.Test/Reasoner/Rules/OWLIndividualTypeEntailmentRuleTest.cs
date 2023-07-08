@@ -17,6 +17,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace RDFSharp.Semantics.Reasoner.Test
 {
@@ -108,6 +110,69 @@ namespace RDFSharp.Semantics.Reasoner.Test
 
             Assert.IsNotNull(reasonerReport);
             Assert.IsTrue(reasonerReport.EvidencesCount == 2);
+        }
+
+        //E2E: FEAT#25 (COVERING BUG#16)
+        [TestMethod]
+        public void ShouldCorrectlyWorkUnderOWAForCardinalitiesByNotEmittingUndesiredTypeAssignments()
+        {
+            string ontString =
+@"
+@prefix ibx: <http://my.test/ItemBox#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@base <https://rdfsharp.codeplex.com/>.
+
+_:75c93d010f994c8381f3124b0198d989 a owl:Class, owl:Restriction; 
+                                   owl:onClass ibx:Item; 
+                                   owl:onProperty ibx:contains; 
+                                   owl:qualifiedCardinality ""0""^^xsd:nonNegativeInteger. 
+_:8b3ab2d1013849668697f581defd5754 a owl:Class, owl:Restriction; 
+                                   owl:onClass ibx:Item; 
+                                   owl:onProperty ibx:contains; 
+                                   owl:qualifiedCardinality ""1""^^xsd:nonNegativeInteger. 
+<http://my.test/ItemBox> a owl:Ontology. 
+ibx:Box a owl:Class; 
+        rdfs:subClassOf ibx:Corporeal. 
+ibx:contains a owl:ObjectProperty; 
+             rdfs:domain ibx:Box; 
+             rdfs:range ibx:Item. 
+ibx:Corporeal a owl:Class. 
+ibx:Item a owl:Class; 
+         rdfs:subClassOf ibx:Corporeal. 
+ibx:theBox0 a owl:NamedIndividual, ibx:Box, _:75c93d010f994c8381f3124b0198d989. 
+ibx:theBox1 a owl:NamedIndividual, ibx:Box, _:8b3ab2d1013849668697f581defd5754. 
+ibx:theItem a owl:NamedIndividual, ibx:Item. ";
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write(ontString);
+                    writer.Flush();
+                    stream.Position = 0;
+
+                    using (RDFGraph graph = RDFGraph.FromStream(RDFModelEnums.RDFFormats.Turtle, stream))
+                    {
+                        using (OWLOntology ontology = OWLOntology.FromRDFGraph(graph)) 
+                        {
+                            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLSemanticsEnums.OWLReasonerStandardRules.IndividualTypeEntailment);
+                            OWLReasonerReport report = reasoner.ApplyToOntology(ontology);
+
+                            Assert.IsNotNull(report);
+                            Assert.IsTrue(report.EvidencesCount == 3);
+                            Assert.IsTrue(report.Any(evd => evd.EvidenceContent.Equals(new RDFTriple(
+                                new RDFResource("http://my.test/ItemBox#theBox0"), RDFVocabulary.RDF.TYPE, new RDFResource("http://my.test/ItemBox#Corporeal")))));
+                            Assert.IsTrue(report.Any(evd => evd.EvidenceContent.Equals(new RDFTriple(
+                                new RDFResource("http://my.test/ItemBox#theBox1"), RDFVocabulary.RDF.TYPE, new RDFResource("http://my.test/ItemBox#Corporeal")))));
+                            Assert.IsTrue(report.Any(evd => evd.EvidenceContent.Equals(new RDFTriple(
+                                new RDFResource("http://my.test/ItemBox#theItem"), RDFVocabulary.RDF.TYPE, new RDFResource("http://my.test/ItemBox#Corporeal")))));
+                        }
+                    } 
+                } 
+            }
         }
         #endregion
     }

@@ -303,6 +303,22 @@ namespace RDFSharp.Semantics
         /// </summary>
         internal static List<RDFResource> FindIndividualsOfRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction)
         {
+            #region OWA
+            //OWA imposes that Cardinalities (except for Min[Qualified]) and AllValuesFrom
+            //can only be answered by enumerating their explicitly assigned individuals!
+            if (model.ClassModel.CheckHasCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasMaxCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(owlRestriction)
+                 || model.ClassModel.CheckHasAllValuesFromRestrictionClass(owlRestriction))
+                return data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
+                        .Select(t => t.Subject)
+                        .OfType<RDFResource>()
+                        .ToList();
+            #endregion
+
             //Get owl:onProperty of the given owl:Restriction
             RDFResource onProperty = (RDFResource)model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.ON_PROPERTY, null, null].First().Object;
 
@@ -331,24 +347,15 @@ namespace RDFSharp.Semantics
             foreach (RDFResource compatibleProperty in compatibleProperties)
                 assertionsGraph = assertionsGraph.UnionWith(data.ABoxGraph[null, compatibleProperty, null, null]);
 
-            //Detect and handle owl:[Min|Max]CardinalityRestriction
-            if (model.ClassModel.CheckHasCardinalityRestrictionClass(owlRestriction)
-                 || model.ClassModel.CheckHasMinCardinalityRestrictionClass(owlRestriction)
-                  || model.ClassModel.CheckHasMaxCardinalityRestrictionClass(owlRestriction)
-                   || model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(owlRestriction))
-                return data.FindIndividualsOfCardinalityRestriction(model, owlRestriction, assertionsGraph, false);
+            //Detect and handle owl:Min[Qualified]CardinalityRestriction
+            if (model.ClassModel.CheckHasMinCardinalityRestrictionClass(owlRestriction))
+                return data.FindIndividualsOfMinCardinalityRestriction(model, owlRestriction, assertionsGraph, false);
+            else if (model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(owlRestriction))
+                return data.FindIndividualsOfMinCardinalityRestriction(model, owlRestriction, assertionsGraph, true);
 
-            //Detect and handle owl:[Min|Max]QualifiedCardinalityRestriction [OWL2]
-            else if (model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(owlRestriction)
-                      || model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(owlRestriction)
-                       || model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(owlRestriction)
-                        || model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(owlRestriction))
-                return data.FindIndividualsOfCardinalityRestriction(model, owlRestriction, assertionsGraph, true);
-
-            //Detect and handle owl:[All|Some]ValuesFromRestriction
-            else if (model.ClassModel.CheckHasAllValuesFromRestrictionClass(owlRestriction)
-                      || model.ClassModel.CheckHasSomeValuesFromRestrictionClass(owlRestriction))
-                return data.FindIndividualsOfValuesFromRestriction(model, owlRestriction, assertionsGraph);
+            //Detect and handle owl:SomeValuesFromRestriction
+            else if (model.ClassModel.CheckHasSomeValuesFromRestrictionClass(owlRestriction))
+                return data.FindIndividualsOfSomeValuesFromRestriction(model, owlRestriction, assertionsGraph);
 
             //Detect and handle owl:HasValueRestriction
             else if (model.ClassModel.CheckHasValueRestrictionClass(owlRestriction))
@@ -363,82 +370,39 @@ namespace RDFSharp.Semantics
         }
 
         /// <summary>
-        /// Finds "Type(X,owlRestriction)" relations to enlist the individuals of the given owl:[Min|Max][Qualified]CardinalityRestriction [OWL2]
+        /// Finds "Type(X,owlRestriction)" relations to enlist the individuals of the given owl:Min[Qualified]CardinalityRestriction [OWL2]
         /// </summary>
-        internal static List<RDFResource> FindIndividualsOfCardinalityRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction, RDFGraph assertionsGraph, bool isQualified)
+        internal static List<RDFResource> FindIndividualsOfMinCardinalityRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction, RDFGraph assertionsGraph, bool isQualified)
         {
             List<RDFResource> individuals = new List<RDFResource>();
-            List<RDFResource> onClassIndividuals = new List<RDFResource>();
 
             #region Parse
-            int minCardinality = -99, maxCardinality = -99; //Convention meaning that [min|max]cardinality are not expressed
-            RDFResource onClass = null;
-
-            //owl:[Qualified]CardinalityRestriction
-            if (model.ClassModel.CheckHasCardinalityRestrictionClass(owlRestriction)
-                 || model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(owlRestriction))
-            {
-                RDFTriple cardinalityTriple = model.ClassModel.TBoxGraph[owlRestriction, isQualified ? RDFVocabulary.OWL.QUALIFIED_CARDINALITY : RDFVocabulary.OWL.CARDINALITY, null, null].First();
-                if (cardinalityTriple.Object is RDFTypedLiteral cardinalityLiteral && cardinalityLiteral.HasDecimalDatatype())
-                {
-                    int.TryParse(cardinalityLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out minCardinality);
-                    int.TryParse(cardinalityLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out maxCardinality);
-                }
-            }
-
-            //owl:[Min|Max][Qualified]CardinalityRestriction
-            else
-            {
-                //owl:Min[Qualified]Cardinality
-                RDFTriple minCardinalityTriple = model.ClassModel.TBoxGraph[owlRestriction, isQualified ? RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY : RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault();
-                if (minCardinalityTriple != null && minCardinalityTriple.Object is RDFTypedLiteral minCardinalityLiteral && minCardinalityLiteral.HasDecimalDatatype())
-                    int.TryParse(minCardinalityLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out minCardinality);
-
-                //owl:Max[Qualified]Cardinality
-                RDFTriple maxCardinalityTriple = model.ClassModel.TBoxGraph[owlRestriction, isQualified ? RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY : RDFVocabulary.OWL.MAX_CARDINALITY, null, null].FirstOrDefault();
-                if (maxCardinalityTriple != null && maxCardinalityTriple.Object is RDFTypedLiteral maxCardinalityLiteral && maxCardinalityLiteral.HasDecimalDatatype())
-                    int.TryParse(maxCardinalityLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out maxCardinality);
-            }
+            //owl:Min[Qualified]Cardinality
+            int minCardinality = 0;
+            RDFTriple minCardinalityTriple = model.ClassModel.TBoxGraph[owlRestriction, isQualified ? RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY : RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault();
+            if (minCardinalityTriple != null && minCardinalityTriple.Object is RDFTypedLiteral minCardinalityLiteral && minCardinalityLiteral.HasDecimalDatatype())
+                int.TryParse(minCardinalityLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out minCardinality);
+            if (minCardinality <= 0)
+                return individuals;
 
             //owl:onClass [OWL2]
+            RDFResource onClass = null;
+            List<RDFResource> onClassIndividuals = new List<RDFResource>();
             if (isQualified)
             {
                 //Get owl:onClass of the given owl:Restriction
                 onClass = model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
                 if (onClass == null)
-                    throw new OWLSemanticsException($"Cannot find individuals of owl:[Min|Max]QualifiedCardinalityRestriction '{owlRestriction}' because required owl:onClass information is not declared in the model");
+                    throw new OWLSemanticsException($"Cannot find individuals of owl:MinQualifiedCardinalityRestriction '{owlRestriction}' because required owl:onClass information is not declared in the model");
 
                 //Prefetch individuals of owl:onClass
                 onClassIndividuals = data.GetIndividualsOf(model, onClass);
             }
             #endregion
 
-            #region Optimize
-            //Min[Qualified]Cardinality=0
-            // This case is equivalent to targeting all individuals
-            if (minCardinality == 0 && maxCardinality == -99)
-                return data.Individuals.Values.ToList();
-
-            //Max[Qualified]Cardinality=0
-            // This case is equivalent to targeting only individuals:
-            // unqualified => not asserting the restricted property at all
-            // qualified   => not asserting the restricted property against individuals of restricted OnClass
-            if (maxCardinality == 0)
-                return isQualified ? data.Where(idv => !assertionsGraph[idv, null, null, null].Any(idvAsn => onClassIndividuals.Any(ocIdv => ocIdv.Equals(idvAsn.Object)))).ToList()
-                                   : data.Where(idv => !assertionsGraph[idv, null, null, null].Any()).ToList();
-
-            //Max[Qualified]Cardinality=N
-            // This case requires preliminar targeting of individuals:
-            // unqualified => not asserting the restricted property at all
-            // qualified   => not asserting the restricted property against individuals of restricted OnClass
-            if (minCardinality == -99 && maxCardinality != -99)
-                individuals.AddRange(isQualified ? data.Where(idv => !assertionsGraph[idv, null, null, null].Any(idvAsn => onClassIndividuals.Any(ocIdv => ocIdv.Equals(idvAsn.Object))))
-                                                 : data.Where(idv => !assertionsGraph[idv, null, null, null].Any()));
-            #endregion
-
             #region Count
-            //Build: we need to count occurrences (Item2) of each subject individual (Item1);
-            //       In case of owl:[Min|Max]QualifiedCardinalityRestriction we must first check
+            //Count: we need to count occurrences (Item2) of each subject individual (Item1);
+            //       In case of owl:MinQualifiedCardinalityRestriction we must first check
             //       that the object individual effectively belongs to the specified owl:onClass
             var cardinalityRestrictionRegistry = new Dictionary<long, (RDFPatternMember, long)>();
             foreach (RDFTriple assertionTriple in assertionsGraph)
@@ -447,7 +411,7 @@ namespace RDFSharp.Semantics
                 if (!cardinalityRestrictionRegistry.ContainsKey(assertionTriple.Subject.PatternMemberID))
                     cardinalityRestrictionRegistry.Add(assertionTriple.Subject.PatternMemberID, (assertionTriple.Subject, 0));
 
-                //owl:[Min|Max]QualifiedCardinalityRestriction [OWL2]
+                //owl:MinQualifiedCardinalityRestriction [OWL2]
                 if (isQualified)
                 {
                     //Since we have to qualify the object individual, we consider only SPO assertions
@@ -459,29 +423,22 @@ namespace RDFSharp.Semantics
                     }
                 }
 
-                //owl:[Min|Max]CardinalityRestriction
+                //owl:MinCardinalityRestriction
                 else
                 {
                     long occurrencyCounter = cardinalityRestrictionRegistry[assertionTriple.Subject.PatternMemberID].Item2;
                     cardinalityRestrictionRegistry[assertionTriple.Subject.PatternMemberID] = (assertionTriple.Subject, occurrencyCounter + 1);
                 }
             }
+            #endregion
 
-            //Analyze: we have to consider only individuals that satisfy given Min/Max occurrences
+            #region Analyze
+            //Analyze: we have to consider only individuals that satisfy given Min[Qualified] occurrences
             var cardinalityRestrictionRegistryEnumerator = cardinalityRestrictionRegistry.Values.GetEnumerator();
             while (cardinalityRestrictionRegistryEnumerator.MoveNext())
             {
-                bool passesMinCardinality = true;
-                bool passesMaxCardinality = true;
-
-                //owl:MinCardinality requires to reach *at least* the given number of occurrences
-                if (minCardinality > 0 && cardinalityRestrictionRegistryEnumerator.Current.Item2 < minCardinality)
-                    passesMinCardinality = false;
-                //owl:MaxCardinality requires to reach *at most* the given number of occurrences
-                if (maxCardinality > 0 && cardinalityRestrictionRegistryEnumerator.Current.Item2 > maxCardinality)
-                    passesMaxCardinality = false;
-
-                if (passesMinCardinality && passesMaxCardinality)
+                //owl:Min[Qualified]Cardinality requires to reach *at least* the given number of occurrences
+                if (cardinalityRestrictionRegistryEnumerator.Current.Item2 >= minCardinality)
                     individuals.Add((RDFResource)cardinalityRestrictionRegistryEnumerator.Current.Item1);
             }
             #endregion
@@ -490,58 +447,45 @@ namespace RDFSharp.Semantics
         }
 
         /// <summary>
-        /// Finds "Type(X,owlRestriction)" relations to enlist the individuals of the given owl:[All|Some]ValuesFromRestriction
+        /// Finds "Type(X,owlRestriction)" relations to enlist the individuals of the given owl:SomeValuesFromRestriction
         /// </summary>
-        internal static List<RDFResource> FindIndividualsOfValuesFromRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction, RDFGraph assertionsGraph)
+        internal static List<RDFResource> FindIndividualsOfSomeValuesFromRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction, RDFGraph assertionsGraph)
         {
             List<RDFResource> individuals = new List<RDFResource>();
 
             #region Parse
-            //Get owl:[all|some]ValuesFrom class of the given owl:Restriction
-            bool isAllValuesFrom = model.ClassModel.CheckHasAllValuesFromRestrictionClass(owlRestriction);
-            RDFResource valuesFromClass = model.ClassModel.TBoxGraph[owlRestriction, isAllValuesFrom ? RDFVocabulary.OWL.ALL_VALUES_FROM : RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].First().Object as RDFResource;
+            RDFResource valuesFromClass = model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].First().Object as RDFResource;
             if (valuesFromClass == null)
-                throw new OWLSemanticsException($"Cannot find individuals of owl:[All|Some]ValuesFromRestriction '{owlRestriction}' because required owl:[all|some]ValuesFrom information is not declared in the model");
+                throw new OWLSemanticsException($"Cannot find individuals of owl:SomeValuesFromRestriction '{owlRestriction}' because required owl:someValuesFrom information is not declared in the model");
 
             //Materialize individuals of the given owl:[all|some]ValuesFrom class
             List<RDFResource> acceptableIndividuals = data.GetIndividualsOf(model, valuesFromClass);
             #endregion
 
             #region Count
-            //Build: we need to count occurrences of range individuals belonging to compatible classes (Item2) or not (Item3)
-            //       for each subject individual (Item1)
-            var valuesFromRegistry = new Dictionary<long, (RDFPatternMember, long, long)>();
+            //Count: for each subject individual (Item1) we need to count occurrences of range individuals belonging to compatible classes (Item2)   
+            var valuesFromRegistry = new Dictionary<long, (RDFPatternMember, long)>();
             foreach (RDFTriple assertionTriple in assertionsGraph.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //Initialize new subject individual's counter
                 if (!valuesFromRegistry.ContainsKey(assertionTriple.Subject.PatternMemberID))
-                    valuesFromRegistry.Add(assertionTriple.Subject.PatternMemberID, (assertionTriple.Subject, 0, 0));
+                    valuesFromRegistry.Add(assertionTriple.Subject.PatternMemberID, (assertionTriple.Subject, 0));
 
                 //Update the occurrence counters of the subject individual
                 long equalityCounter = valuesFromRegistry[assertionTriple.Subject.PatternMemberID].Item2;
-                long differenceCounter = valuesFromRegistry[assertionTriple.Subject.PatternMemberID].Item3;
                 if (acceptableIndividuals.Any(idv => idv.Equals(assertionTriple.Object)))
-                    valuesFromRegistry[assertionTriple.Subject.PatternMemberID] = (assertionTriple.Subject, equalityCounter + 1, differenceCounter);
-                else
-                    valuesFromRegistry[assertionTriple.Subject.PatternMemberID] = (assertionTriple.Subject, equalityCounter, differenceCounter + 1);
+                    valuesFromRegistry[assertionTriple.Subject.PatternMemberID] = (assertionTriple.Subject, equalityCounter + 1);
             }
+            #endregion
 
-            //Analyze: we have to consider only individuals that satisfy given All/Some occurrences constraint
+            #region Analyze
+            //Analyze: we have to consider only individuals that satisfy given SomeValues constraint
             var valuesFromRegistryEnumerator = valuesFromRegistry.Values.GetEnumerator();
             while (valuesFromRegistryEnumerator.MoveNext())
             {
-                //owl:allValuesFromRestriction => differenceCounter strictly required to be zero
-                if (isAllValuesFrom)
-                {
-                    if (valuesFromRegistryEnumerator.Current.Item2 >= 1 && valuesFromRegistryEnumerator.Current.Item3 == 0)
-                        individuals.Add((RDFResource)valuesFromRegistryEnumerator.Current.Item1);
-                }
-                //owl:someValuesFromRestriction
-                else
-                {
-                    if (valuesFromRegistryEnumerator.Current.Item2 >= 1)
-                        individuals.Add((RDFResource)valuesFromRegistryEnumerator.Current.Item1);
-                }
+                //owl:someValuesFrom requires to reach *at least* one occurrence
+                if (valuesFromRegistryEnumerator.Current.Item2 >= 1)
+                    individuals.Add((RDFResource)valuesFromRegistryEnumerator.Current.Item1);
             }
             #endregion
 
@@ -591,15 +535,10 @@ namespace RDFSharp.Semantics
             List<RDFResource> individuals = new List<RDFResource>();
 
             bool hasSelfTrue = model.ClassModel.TBoxGraph.ContainsTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_SELF, RDFTypedLiteral.True));
-            bool hasSelfFalse = model.ClassModel.TBoxGraph.ContainsTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_SELF, RDFTypedLiteral.False));
             foreach (IGrouping<RDFPatternMember, RDFTriple> assertionGroup in assertionsGraph.GroupBy(asn => asn.Subject))
             {
-                //owl:hasSelf(TRUE) => At least one occurrence of the restricted property must link the same subject/object individual
+                //owl:hasSelf => At least one occurrence of the restricted property must link the same subject/object individual
                 if (hasSelfTrue && assertionGroup.Any(asn => asn.Subject.Equals(asn.Object)))
-                    individuals.Add((RDFResource)assertionGroup.Key);
-
-                //owl:hasSelf(FALSE) => No occurrences of the restricted property must link the same subject/object individual
-                if (hasSelfFalse && !assertionGroup.Any(asn => asn.Subject.Equals(asn.Object)))
                     individuals.Add((RDFResource)assertionGroup.Key);
             }
 
