@@ -376,6 +376,14 @@ namespace RDFSharp.Semantics
         {
             List<RDFResource> individuals = new List<RDFResource>();
 
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals, even if for Min[Qualified]
+            //cardinalities we'll also compute reasoning to materialize indirect ones
+            individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
+                                  .Select(t => t.Subject)
+                                  .OfType<RDFResource>());
+            #endregion
+
             #region Parse
             //owl:Min[Qualified]Cardinality
             int minCardinality = 0;
@@ -453,6 +461,14 @@ namespace RDFSharp.Semantics
         {
             List<RDFResource> individuals = new List<RDFResource>();
 
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals, even if for SomeValuesFrom
+            //restriction we'll also compute reasoning to materialize indirect ones
+            individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
+                                  .Select(t => t.Subject)
+                                  .OfType<RDFResource>());
+            #endregion
+
             #region Parse
             RDFResource valuesFromClass = model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].First().Object as RDFResource;
             if (valuesFromClass == null)
@@ -499,6 +515,14 @@ namespace RDFSharp.Semantics
         {
             List<RDFResource> individuals = new List<RDFResource>();
 
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals, even if for HasValue
+            //restrictions we'll also compute reasoning to materialize indirect ones
+            individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
+                                  .Select(t => t.Subject)
+                                  .OfType<RDFResource>());
+            #endregion
+
             //Get owl:hasValue of the given owl:Restriction
             RDFPatternMember hasValue = model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.HAS_VALUE, null, null].First().Object;
             if (hasValue is RDFResource hasValueIndividual)
@@ -533,6 +557,14 @@ namespace RDFSharp.Semantics
         internal static List<RDFResource> FindIndividualsOfHasSelfRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction, RDFGraph assertionsGraph)
         {
             List<RDFResource> individuals = new List<RDFResource>();
+
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals, even if for HasSelf
+            //restrictions we'll also compute reasoning to materialize indirect ones
+            individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
+                                  .Select(t => t.Subject)
+                                  .OfType<RDFResource>());
+            #endregion
 
             bool hasSelfTrue = model.ClassModel.TBoxGraph.ContainsTriple(new RDFTriple(owlRestriction, RDFVocabulary.OWL.HAS_SELF, RDFTypedLiteral.True));
             foreach (IGrouping<RDFPatternMember, RDFTriple> assertionGroup in assertionsGraph.GroupBy(asn => asn.Subject))

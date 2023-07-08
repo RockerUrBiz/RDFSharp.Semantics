@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyTitle>RDFSharp.Semantics</AssemblyTitle>
     <AssemblyName>RDFSharp.Semantics</AssemblyName>
-    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <AssemblyVersion>$(Version)-rc1</AssemblyVersion>
     <Version>3.6.0</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
