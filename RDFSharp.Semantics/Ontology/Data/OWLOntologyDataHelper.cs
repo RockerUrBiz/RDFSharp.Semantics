@@ -303,7 +303,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         internal static List<RDFResource> FindIndividualsOfRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction)
         {
-            #region OWA           
+            #region OWA
             //OWA imposes that Cardinalities (except for Min[Qualified]) and AllValuesFrom
             //can only be answered by enumerating their explicitly assigned individuals!
             if (model.ClassModel.CheckHasCardinalityRestrictionClass(owlRestriction)
