@@ -303,7 +303,7 @@ namespace RDFSharp.Semantics
         /// </summary>
         internal static List<RDFResource> FindIndividualsOfRestriction(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlRestriction)
         {
-            #region OWA
+            #region OWA           
             //OWA imposes that Cardinalities (except for Min[Qualified]) and AllValuesFrom
             //can only be answered by enumerating their explicitly assigned individuals!
             if (model.ClassModel.CheckHasCardinalityRestrictionClass(owlRestriction)
@@ -377,8 +377,7 @@ namespace RDFSharp.Semantics
             List<RDFResource> individuals = new List<RDFResource>();
 
             #region OWA
-            //Under OWA we must enlist explicitly assigned individuals, even if for Min[Qualified]
-            //cardinalities we'll also compute reasoning to materialize indirect ones
+            //Under OWA we must enlist explicitly assigned individuals
             individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
                                   .Select(t => t.Subject)
                                   .OfType<RDFResource>());
@@ -462,8 +461,7 @@ namespace RDFSharp.Semantics
             List<RDFResource> individuals = new List<RDFResource>();
 
             #region OWA
-            //Under OWA we must enlist explicitly assigned individuals, even if for SomeValuesFrom
-            //restriction we'll also compute reasoning to materialize indirect ones
+            //Under OWA we must enlist explicitly assigned individuals
             individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
                                   .Select(t => t.Subject)
                                   .OfType<RDFResource>());
@@ -516,8 +514,7 @@ namespace RDFSharp.Semantics
             List<RDFResource> individuals = new List<RDFResource>();
 
             #region OWA
-            //Under OWA we must enlist explicitly assigned individuals, even if for HasValue
-            //restrictions we'll also compute reasoning to materialize indirect ones
+            //Under OWA we must enlist explicitly assigned individuals
             individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
                                   .Select(t => t.Subject)
                                   .OfType<RDFResource>());
@@ -559,8 +556,7 @@ namespace RDFSharp.Semantics
             List<RDFResource> individuals = new List<RDFResource>();
 
             #region OWA
-            //Under OWA we must enlist explicitly assigned individuals, even if for HasSelf
-            //restrictions we'll also compute reasoning to materialize indirect ones
+            //Under OWA we must enlist explicitly assigned individuals
             individuals.AddRange(data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlRestriction, null]
                                   .Select(t => t.Subject)
                                   .OfType<RDFResource>());
@@ -584,6 +580,14 @@ namespace RDFSharp.Semantics
         internal static List<RDFResource> FindIndividualsOfComposite(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlComposite)
         {
             List<RDFResource> compositeIndividuals = new List<RDFResource>();
+
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals
+            compositeIndividuals.AddRange(
+                data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlComposite, null]
+                        .Select(t => t.Subject)
+                        .OfType<RDFResource>());
+            #endregion
 
             //owl:unionOf
             if (model.ClassModel.CheckHasCompositeUnionClass(owlComposite))
@@ -639,6 +643,14 @@ namespace RDFSharp.Semantics
         internal static List<RDFResource> FindIndividualsOfEnumerate(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlEnumerate)
         {
             List<RDFResource> enumerateIndividuals = new List<RDFResource>();
+
+            #region OWA
+            //Under OWA we must enlist explicitly assigned individuals
+            enumerateIndividuals.AddRange(
+                data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlEnumerate, null]
+                        .Select(t => t.Subject)
+                        .OfType<RDFResource>());
+            #endregion
 
             //Restrict T-BOX knowledge to owl:oneOf relations (explicit)
             RDFGraph oneOfGraph = model.ClassModel.TBoxGraph[owlEnumerate, RDFVocabulary.OWL.ONE_OF, null, null];
