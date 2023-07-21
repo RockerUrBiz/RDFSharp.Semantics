@@ -1004,15 +1004,18 @@ namespace RDFSharp.Semantics.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indivCC"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv2"), new RDFResource("ex:class2"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv3"), new RDFResource("ex:class1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv3"), new RDFResource("ex:class2"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv3"), new RDFResource("ex:class3"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:indivCC"), new RDFResource("ex:complementClass"));
 
             Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv1"), new RDFResource("ex:complementClass")));
-            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv2"), new RDFResource("ex:complementClass")));
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv2"), new RDFResource("ex:complementClass")));
             Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv3"), new RDFResource("ex:complementClass")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indivCC"), new RDFResource("ex:complementClass")));
         }
         #endregion
 

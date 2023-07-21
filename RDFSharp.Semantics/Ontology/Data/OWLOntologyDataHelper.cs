@@ -582,7 +582,8 @@ namespace RDFSharp.Semantics
             List<RDFResource> compositeIndividuals = new List<RDFResource>();
 
             #region OWA
-            //Under OWA we must enlist explicitly assigned individuals
+            //Under OWA we must enlist explicitly assigned individuals;
+            //we are also not entitled to reason over owl:complementOf
             compositeIndividuals.AddRange(
                 data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, owlComposite, null]
                         .Select(t => t.Subject)
@@ -621,17 +622,6 @@ namespace RDFSharp.Semantics
                     else
                         compositeIndividuals.RemoveAll(individual => !currentClassIndividuals.Any(idv => idv.Equals(individual)));
                 }
-            }
-
-            //owl:complementOf
-            else if (model.ClassModel.CheckHasCompositeComplementClass(owlComposite))
-            {
-                //Restrict T-BOX knowledge to owl:complementOf relations (explicit)
-                RDFGraph complementOfGraph = model.ClassModel.TBoxGraph[owlComposite, RDFVocabulary.OWL.COMPLEMENT_OF, null, null];
-
-                //Compute complement of answered individuals
-                List<RDFResource> complementedClassIndividuals = data.GetIndividualsOf(model, (RDFResource)complementOfGraph.First().Object);
-                compositeIndividuals.AddRange(data.Where(individual => !complementedClassIndividuals.Any(idv => idv.Equals(individual))));
             }
 
             return compositeIndividuals;
