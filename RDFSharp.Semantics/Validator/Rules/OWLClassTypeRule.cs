@@ -27,27 +27,36 @@ namespace RDFSharp.Semantics
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<long, HashSet<long>> disjointWithCache = new Dictionary<long, HashSet<long>>();
-
-            // Precompute the graph with all triples that have predicate rdf:type
-            // to efficiently slice it by subject in the loop.
-            RDFGraph withTypePredicate = ontology.Data.ABoxGraph.SelectTriplesByPredicate(RDFVocabulary.RDF.TYPE);
+            RDFGraph withTypePredicate = ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, null, null];
 
             IEnumerator<RDFResource> individualsEnumerator = ontology.Data.IndividualsEnumerator;
             while (individualsEnumerator.MoveNext())
             {
                 //Extract classes assigned to the current individual
-                List<RDFResource> individualClasses = withTypePredicate.SelectTriplesBySubject(individualsEnumerator.Current)
-                                                                   .Select(t => t.Object)
-                                                                   .OfType<RDFResource>()
-                                                                   .ToList();
+                List<RDFResource> individualClasses = withTypePredicate[individualsEnumerator.Current, null, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>()
+                                                        .ToList();
 
-                //Iterate discovered classes to check for eventual 'owl:disjointWith' clashes
+                //Iterate discovered classes to check for eventual 'owl:disjointWith' or 'owl:complementOf' clashes
                 foreach (RDFResource individualClass in individualClasses)
                 {
                     //Calculate disjoint classes of the current class
                     if (!disjointWithCache.ContainsKey(individualClass.PatternMemberID))
                         disjointWithCache.Add(individualClass.PatternMemberID, new HashSet<long>(ontology.Model.ClassModel.GetDisjointClassesWith(individualClass).Select(cls => cls.PatternMemberID)));
-                
+
+                    //There should not be complement classes assigned as class types of the same individual
+                    List<RDFResource> complementClasses = ontology.Model.ClassModel.TBoxGraph[individualClass, RDFVocabulary.OWL.COMPLEMENT_OF, null, null]
+                                                            .Select(t => t.Object)
+                                                            .OfType<RDFResource>()
+                                                            .ToList();
+                    if (individualClasses.Any(idvClass => complementClasses.Any(cclClass => cclClass.Equals(idvClass))))
+                        validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                            OWLSemanticsEnums.OWLValidatorEvidenceCategory.Error,
+                            nameof(OWLClassTypeRule),
+                            $"Violation of 'rdf:type' relations on individual '{individualsEnumerator.Current}'",
+                            "Revise your class model: you have complement classes to which this individual belongs at the same time!"));
+
                     //There should not be disjoint classes assigned as class types of the same individual
                     if (individualClasses.Any(idvClass => !idvClass.Equals(individualClass) && disjointWithCache[individualClass.PatternMemberID].Contains(idvClass.PatternMemberID)))
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(

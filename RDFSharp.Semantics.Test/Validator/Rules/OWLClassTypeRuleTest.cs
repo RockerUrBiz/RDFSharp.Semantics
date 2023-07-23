@@ -88,6 +88,26 @@ namespace RDFSharp.Semantics.Validator.Test
             Assert.IsNotNull(validatorReport);
             Assert.AreEqual(validatorReport.EvidencesCount, indCount * 2);
         }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnComplement()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
+            ontology.Model.ClassModel.DeclareComplementClass(new RDFResource("ex:cclass1"), new RDFResource("ex:class1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:cclass1")); //clash with class1 because owl:complementOf
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv2"), new RDFResource("ex:class1"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
         #endregion
     }
 }
