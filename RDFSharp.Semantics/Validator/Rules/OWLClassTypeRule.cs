@@ -28,6 +28,7 @@ namespace RDFSharp.Semantics
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
             Dictionary<long, HashSet<long>> disjointWithCache = new Dictionary<long, HashSet<long>>();
             RDFGraph withTypePredicate = ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, null, null];
+            RDFGraph withComplementOfPredicate = ontology.Model.ClassModel.TBoxGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null];
 
             IEnumerator<RDFResource> individualsEnumerator = ontology.Data.IndividualsEnumerator;
             while (individualsEnumerator.MoveNext())
@@ -46,7 +47,7 @@ namespace RDFSharp.Semantics
                         disjointWithCache.Add(individualClass.PatternMemberID, new HashSet<long>(ontology.Model.ClassModel.GetDisjointClassesWith(individualClass).Select(cls => cls.PatternMemberID)));
 
                     //There should not be complement classes assigned as class types of the same individual
-                    List<RDFResource> complementClasses = ontology.Model.ClassModel.TBoxGraph[individualClass, RDFVocabulary.OWL.COMPLEMENT_OF, null, null]
+                    List<RDFResource> complementClasses = withComplementOfPredicate[individualClass, null, null, null]
                                                             .Select(t => t.Object)
                                                             .OfType<RDFResource>()
                                                             .ToList();
