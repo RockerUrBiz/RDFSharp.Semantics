@@ -9,4 +9,4 @@ This is an additional <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a
     <li>Modeling ontology features having a <b>geospatial (GeoSPARQL)</b> and <b>temporal (OWL-TIME)</b> extension</li>
 </ul>
 
-Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.5.0/RDFSharp.Semantics-3.5.0.pdf">here</a>
+Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/RDFSharp.Semantics/releases/download/v3.6.0/RDFSharp.Semantics-3.6.0.pdf">here</a>
